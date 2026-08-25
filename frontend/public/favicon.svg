@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+ viewBox="0 0 400 400"
+ role="img"
+ aria-labelledby="title desc">
+<title id="title">CuratoCV Logo Mark</title>
+<desc id="desc">CuratoCV logo mark with high-contrast outlining for light and dark backgrounds.</desc>
+
+<!-- High-contrast white halo -->
+<g transform="translate(200 190)" fill="none"
+   stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M-90-105H-145Q-165-105-165-85V115Q-165 135-145 135H-5" stroke-width="34"/>
+  <path d="M-65-145H45L105-85V105Q105 125 85 125H-65Q-85 125-85 105V-125Q-85-145-65-145Z" stroke-width="34"/>
+  <path d="M45-145V-95Q45-85 55-85H105" stroke-width="32"/>
+  <path d="M-40-95H25M-40-60H35" stroke-width="32"/>
+  <path d="M15-25C-13-55-65-55-90-22C-119 17-116 78-77 103C-43 126 4 113 27 80" stroke-width="40"/>
+  <path d="M28 93C60 68 78 25 100-21C121-63 149-95 185-112C183-72 169-33 143-5C113 27 75 53 37 70" stroke-width="36"/>
+  <path d="M44 64C75 45 106 22 135-6M65 34C92 15 117-7 135-29M87 1C110-18 128-38 141-58" stroke-width="23"/>
+  <path d="M68 82L100 115L165 5" stroke-width="42"/>
+</g>
+
+<!-- Original logo artwork -->
+<g transform="translate(200 190)" fill="none"
+   stroke="#17375F" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M-90-105H-145Q-165-105-165-85V115Q-165 135-145 135H-5" stroke-width="18"/>
+  <path d="M-65-145H45L105-85V105Q105 125 85 125H-65Q-85 125-85 105V-125Q-85-145-65-145Z" stroke-width="18"/>
+  <path d="M45-145V-95Q45-85 55-85H105" stroke-width="16"/>
+  <path d="M-40-95H25M-40-60H35" stroke-width="16"/>
+
+  <path d="M15-25C-13-55-65-55-90-22C-119 17-116 78-77 103C-43 126 4 113 27 80" stroke-width="24"/>
+
+  <path d="M28 93C60 68 78 25 100-21C121-63 149-95 185-112C183-72 169-33 143-5C113 27 75 53 37 70" stroke-width="20"/>
+  <path d="M44 64C75 45 106 22 135-6M65 34C92 15 117-7 135-29M87 1C110-18 128-38 141-58" stroke-width="9"/>
+
+  <path d="M68 82L100 115L165 5" stroke-width="26"/>
+
+  <path d="M-42 23L-33 44L-12 53L-33 62L-42 83L-51 62L-72 53L-51 44Z"
+        fill="#12B5B0" stroke="#FFFFFF" stroke-width="5"/>
+</g>
+</svg>

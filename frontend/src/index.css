@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+* {
+    font-family: "DM Sans", sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-width: 320px;
+    background: #ffffff;
+    color: #334155;
+    position: relative;
+}
+
+/* Global CuratoCV background */
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    width: 520px;
+    height: 520px;
+    border-radius: 9999px;
+    filter: blur(100px);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Large navy glow */
+body::before {
+    top: -180px;
+    left: -180px;
+    background: rgba(29, 53, 87, 0.13);
+}
+
+/* Large teal glow */
+body::after {
+    right: -180px;
+    bottom: -180px;
+    background: rgba(0, 191, 166, 0.10);
+}
+
+/* Keep the entire application above the background */
+#root {
+    position: relative;
+    isolation: isolate;
+}
+
+/* Additional large soft glows */
+#root::before,
+#root::after {
+    content: "";
+    position: fixed;
+    width: 420px;
+    height: 420px;
+    border-radius: 9999px;
+    filter: blur(110px);
+    pointer-events: none;
+    z-index: -1;
+}
+
+#root::before {
+    top: 38%;
+    right: -220px;
+    background: rgba(74, 144, 226, 0.07);
+}
+
+#root::after {
+    bottom: 15%;
+    left: -220px;
+    background: rgba(29, 53, 87, 0.06);
+}
+
+@layer base {
+    button {
+        @apply cursor-pointer;
+    }
+
+    input:not([type="checkbox"]) {
+        @apply outline-none focus:ring border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-lg;
+    }
+
+    textarea {
+        @apply outline-none focus:ring border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-lg resize-none;
+    }
+}
