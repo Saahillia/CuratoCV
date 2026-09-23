@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../app/features/authSlice';
-import toast from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 import api from '../services/api';
 
 const PASSWORD_RULES = [
