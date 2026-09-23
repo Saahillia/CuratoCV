@@ -6,15 +6,14 @@ settings:
 
 importers:
 
-  frontend:
-    dependencies:
-      '@curatocv/platform-frontend':
-        specifier: workspace:*
-        version: link:../platform/frontend
-      '@curatocv/resumebuilder-frontend':
-        specifier: workspace:*
-        version: link:../resumebuilder/frontend
+  notes/backend: {}
+
+  notes/frontend: {}
 
   platform/backend: {}
 
   platform/frontend: {}
+
+  resumebuilder/backend: {}
+
+  resumebuilder/frontend: {}
