@@ -162,7 +162,7 @@ const Hero = () => {
               </Link>
 
               <Link
-                to="/app"
+                to="/products"
                 className="hidden rounded-full bg-[#1D3557] px-8 py-2 text-white transition hover:bg-[#162E4E] active:scale-95 md:block"
                 hidden={!user}
               >

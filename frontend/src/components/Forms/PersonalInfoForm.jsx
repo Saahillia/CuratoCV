@@ -26,20 +26,27 @@ const PersonalInfoForm = ({
 
     // Create a safe preview URL for newly selected images
     useEffect(() => {
-        if (!data?.image) {
+        const img = data?.photo || data?.image;
+        if (!img) {
             setPreviewUrl("");
             return;
         }
 
-        // Existing ImageKit URL
-        if (typeof data.image === "string") {
-            setPreviewUrl(data.image);
+        // Legacy plain URL string
+        if (typeof img === "string") {
+            setPreviewUrl(img);
             return;
         }
 
-        // Newly selected local image
-        if (data.image instanceof File) {
-            const objectUrl = URL.createObjectURL(data.image);
+        // Canonical { url, fileId } object
+        if (typeof img === "object" && !Array.isArray(img) && !(typeof File !== "undefined" && img instanceof File)) {
+            setPreviewUrl(img.url || "");
+            return;
+        }
+
+        // Newly selected local image (File object)
+        if (typeof File !== "undefined" && img instanceof File) {
+            const objectUrl = URL.createObjectURL(img);
 
             setPreviewUrl(objectUrl);
 
@@ -49,7 +56,7 @@ const PersonalInfoForm = ({
         }
 
         setPreviewUrl("");
-    }, [data?.image]);
+    }, [data?.photo, data?.image]);
 
     const handleImageChange = (event) => {
         const file = event.target.files?.[0];
@@ -79,7 +86,7 @@ const PersonalInfoForm = ({
         }
 
         // New image selected
-        handleChange("image", file);
+        handleChange("photo", file);
 
         // Reset background removal for every newly selected image
         setRemoveBackground(false);
@@ -90,7 +97,7 @@ const PersonalInfoForm = ({
 
     const fields = [
         {
-            key: "full_name",
+            key: "fullName",
             label: "Full Name",
             icon: User,
             type: "text",
@@ -223,7 +230,9 @@ const PersonalInfoForm = ({
                         htmlFor="profile-image"
                         className="mt-2 inline-block cursor-pointer text-xs font-semibold text-[#17375F] transition hover:text-[#24527A]"
                     >
-                        {data?.image
+                        {(typeof data?.photo === "string" && data.photo.trim()) ||
+                         (typeof data?.photo === "object" && data.photo?.url) ||
+                         (typeof data?.image === "string" && data.image.trim())
                             ? "Change image"
                             : "Upload image"}
                     </label>
@@ -232,7 +241,7 @@ const PersonalInfoForm = ({
                 {/* =================================================
                     REMOVE BACKGROUND TOGGLE
                 ================================================== */}
-                {data?.image instanceof File && (
+                {((data?.photo || data?.image) instanceof File) && (
                     <div className="ml-0 flex flex-col gap-2 sm:ml-3">
                         <p className="text-xs font-semibold text-slate-700">
                             Remove Background
@@ -302,7 +311,7 @@ const PersonalInfoForm = ({
                                     event.target.value
                                 )
                             }
-                            className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 outline-none transition-colors placeholder:text-slate-400 focus:border-[#17375F] focus:ring-4 focus:ring-[#17375F]/10"
+                            className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-base text-slate-800 outline-none transition-colors placeholder:text-slate-400 focus:border-[#17375F] focus:ring-4 focus:ring-[#17375F]/10"
                             placeholder={`Enter your ${field.label.toLowerCase()}`}
                             required={field.required}
                         />

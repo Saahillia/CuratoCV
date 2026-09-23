@@ -1,29 +1,130 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// ============================================================
+// CuratoCV Authentication Slice
+// ============================================================
+//
+// IMPORTANT
+// ------------------------------------------------------------
+// This file must NOT import the API client.
+//
+// Dependency direction:
+//
+//     store
+//       ↓
+//     authSlice
+//
+// The API client may import the store for global 401 handling,
+// but authSlice must never import the API client.
+//
+// Keeping TOKEN_STORAGE_KEY here prevents the circular
+// dependency:
+//
+//     store → authSlice → api → store
+//
+// ============================================================
+
+export const TOKEN_STORAGE_KEY = "curatocv_token";
+
+// ============================================================
+// Initial State
+// ============================================================
+
+const initialState = {
+    user: null,
+    token: null,
+    loading: true,
+};
+
+// ============================================================
+// Slice
+// ============================================================
+
 const authSlice = createSlice({
-    name:"auth",
-    initialState:{
-        user:null,
-        token:null,
-        loading:true,
-    
-    }, 
-    reducers:{
-        login:(state, action) => {
-            state.token = action.payload.token;
-            state.user = action.payload.user;
+    name: "auth",
+
+    initialState,
+
+    reducers: {
+        // --------------------------------------------------------
+        // Login
+        // --------------------------------------------------------
+
+        login: (state, action) => {
+            const token = action.payload?.token ?? null;
+            const user = action.payload?.user ?? null;
+
+            state.token = token;
+            state.user = user;
+
+            if (token) {
+                try {
+                    localStorage.setItem(
+                        TOKEN_STORAGE_KEY,
+                        token
+                    );
+                } catch {
+                    // Ignore localStorage failures.
+                    //
+                    // The backend remains authoritative for
+                    // authentication.
+                }
+            }
         },
-        logout:(state) => {
-            state.token = "";
+
+        // --------------------------------------------------------
+        // Logout
+        // --------------------------------------------------------
+
+        logout: (state) => {
+            state.token = null;
             state.user = null;
-            localStorage.removeItem("token");
+
+            try {
+                localStorage.removeItem(
+                    TOKEN_STORAGE_KEY
+                );
+            } catch {
+                // Ignore localStorage failures.
+            }
         },
-        setLoading:(state, action) => {
-            state.loading = action.payload;
-        }
-    }
-})
 
+        // --------------------------------------------------------
+        // Update User Profile
+        // --------------------------------------------------------
 
-export const {login, logout, setLoading} = authSlice.actions;
+        updateUser: (state, action) => {
+            if (state.user && action.payload) {
+                state.user = {
+                    ...state.user,
+                    ...action.payload,
+                };
+            }
+        },
+
+        // --------------------------------------------------------
+        // Loading State
+        // --------------------------------------------------------
+
+        setLoading: (state, action) => {
+            state.loading = Boolean(action.payload);
+        },
+    },
+});
+
+// ============================================================
+// Actions
+// ============================================================
+
+export const {
+    login,
+    logout,
+    updateUser,
+    setLoading,
+} = authSlice.actions;
+
+// ============================================================
+// Reducer
+// ============================================================
+
 export default authSlice.reducer;

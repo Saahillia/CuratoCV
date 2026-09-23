@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=Open+Sans:wght@400;500;600;700&family=Lato:wght@400;700&family=Montserrat:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Merriweather:wght@400;700&family=Source+Sans+3:wght@400;600;700&display=swap');
 @import "tailwindcss";
 
 * {
@@ -81,10 +81,76 @@ body::after {
     }
 
     input:not([type="checkbox"]) {
-        @apply outline-none focus:ring border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-lg;
+        @apply outline-none focus:ring border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-lg text-base;
     }
 
     textarea {
-        @apply outline-none focus:ring border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-lg resize-none;
+        @apply outline-none focus:ring border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-lg resize-none text-base;
     }
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: #94a3b8;
+}
+
+/* Firefox */
+.custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+}
+
+/* Organic rotating blob animation */
+@keyframes blob-morph {
+    0%, 100% {
+        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    }
+    33% {
+        border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+    }
+    66% {
+        border-radius: 50% 50% 30% 70% / 60% 40% 60% 40%;
+    }
+}
+
+.animate-blob {
+    animation: blob-morph 8s ease-in-out infinite alternate, spin 12s linear infinite;
+}
+
+/* Slide-in drawer animation (mobile/tablet nav drawer) */
+@keyframes slide-in-right {
+    from { transform: translateX(100%); }
+    to   { transform: translateX(0); }
+}
+
+.animate-slide-in-right {
+    animation: slide-in-right 0.22s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Safe-area bottom padding utility (mobile bottom nav bar) */
+.pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+/* Page Pagination PDF Printing */
+@page { size: A4 portrait; margin: 0; }
+
+@media print {
+  html, body { width: 210mm; margin: 0; padding: 0; }
+  #resume-preview { width: 210mm; margin: 0; }
+  .resume-page {
+    width: 210mm; height: 297mm; min-height: 297mm; max-height: 297mm;
+    break-after: page; page-break-after: always; box-sizing: border-box;
+  }
 }

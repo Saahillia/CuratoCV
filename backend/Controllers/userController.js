@@ -1,110 +1,373 @@
-import User from "../Models/User.js";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import Resume from "../Models/Resume.js";
+// ============================================================
+// CuratoCV User Controller
+// ============================================================
+//
+// HTTP controller for user authentication and profile operations.
+//
+// Responsibilities:
+// - Handle authentication HTTP requests
+// - Read validated request data
+// - Delegate business logic to userService
+// - Return safe, structured API responses
+// - Handle controller-level errors via next(error)
+//
+// NOT responsible for:
+// - Database queries
+// - Password hashing
+// - JWT generation
+// - Input validation (done by validators)
+// - Rate limiting (done by middleware)
+// - Error envelope formatting (done by errorMiddleware)
+//
+// ============================================================
 
-const generateToken = (userId) => {
-    const token = jwt.sign({ userId }, process.env.JWT_SECRET, {expiresIn: "1h"});
-    return token;
-}
-// Controller for user registration and authentication
-// POST : /api/users/register
-export const registerUser = async (req, res) => {
+import userService from "../Services/userService.js";
+import logger from "../Configs/logger.js";
+
+// ============================================================
+// User Registration
+// ============================================================
+//
+// POST /api/users/register
+// ============================================================
+
+const registerUser = async (req, res, next) => {
     try {
-        const { name, email, password } = req.body;
+        const result = await userService.registerUser(req.validatedBody);
 
-        // Check if required fields are present.
-        if(!name || !email || !password) {
-            return res.status(400).json({ message: "Missing required fields" });
-        }
-        // Check if user already exists
-        const user = await User.findOne({ email });
-        if(user){
-            return res.status(400).json({ message: "User already exists" });
-        }
+        // ----------------------------------------------------
+        // Audit logging - new user registration
+        // ----------------------------------------------------
 
-        // Create new user
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new User({ 
-            name, email, password: hashedPassword 
+        logger.info("User registered", {
+            userId: result.userId,
+            email: result.email,
         });
-        await newUser.save();
 
-        // return success message
-        const token = generateToken(newUser._id);
-        newUser.password = undefined; // Remove password from the response
-        res.status(201).json({ message: "User created successfully", token, user: newUser})
-
+        return res.status(201).json({
+            success: true,
+            data: {
+                userId: result.userId,
+                name: result.name,
+                email: result.email,
+                emailVerified: result.emailVerified,
+                token: result.token,
+                createdAt: result.createdAt,
+            },
+        });
     } catch (error) {
-        return res.status(400).json({ message: "Server error", error: error.message });
+        next(error);
     }
-}
+};
 
-// Controller for user login
-// POST : /api/users/login
+// ============================================================
+// User Login
+// ============================================================
+//
+// POST /api/users/login
+// ============================================================
 
-export const loginUser = async (req, res) => {
+const loginUser = async (req, res, next) => {
     try {
-        const { email, password } = req.body;
+        const result = await userService.loginUser(req.validatedBody);
 
-        // Check if required fields are present.
-        if( !email || !password) {
-            return res.status(400).json({ message: "Missing required fields" });
-        }
-        // Check if user already exists
-        const user = await User.findOne({ email });
-        if(!user){
-            return res.status(400).json({ message: "Invalid credentials" });
-        }
+        // ----------------------------------------------------
+        // Audit logging - successful login
+        // ----------------------------------------------------
 
-        // Check if password is correct
-        if(!user.comparePassword(password)){
-            return res.status(400).json({ message: "Invalid credentials" });
-        }
+        logger.info("User logged in", {
+            userId: result.userId,
+        });
 
-        // return success message
-        const token = generateToken(user._id);
-        user.password = undefined; // Remove password from the response
-        res.status(200).json({ message: "User logged in successfully", token, user });
-
+        return res.status(200).json({
+            success: true,
+            data: {
+                userId: result.userId,
+                name: result.name,
+                email: result.email,
+                emailVerified: result.emailVerified,
+                token: result.token,
+            },
+        });
     } catch (error) {
-        return res.status(400).json({ message: "Server error", error: error.message });
+        // ----------------------------------------------------
+        // Security logging: authentication failure
+        // ----------------------------------------------------
+
+        if (error?.code === "UNAUTHORIZED") {
+            logger.warn("Authentication failure", {
+                email: req.validatedBody?.email || "unknown",
+            });
+        }
+
+        next(error);
     }
-}
+};
 
-// Controller for getting user by ID
-// GET : /api/users/data
+// ============================================================
+// Get Current User
+// ============================================================
+//
+// GET /api/users/data
+// ============================================================
 
-export const getUserById = async (req, res) => {
+const getUserById = async (req, res, next) => {
     try {
-        
-        const userId = req.userId; // Assuming you have a middleware that sets req.userId after verifying the token
+        const user = await userService.getUserById(req.userId);
 
-        // Check if user already exists
-        const user = await User.findById(userId);
-        if(!user){
-            return res.status(404).json({ message: "User not found" });
-        }
-        // return User 
-        user.password = undefined; // Remove password from the response
-        return res.status(200).json({user});
-
+        return res.status(200).json({
+            success: true,
+            data: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                emailVerified: user.emailVerified,
+                createdAt: user.createdAt,
+                updatedAt: user.updatedAt,
+            },
+        });
     } catch (error) {
-        return res.status(400).json({ message: "Server error", error: error.message });
+        next(error);
     }
-}
+};
 
+// ============================================================
+// Get User Resumes
+// ============================================================
+//
+// GET /api/users/resumes
+// ============================================================
 
-// Controller for getting user resumes
-// GET:/api/users/resumes
-export const getUserResumes = async (req, res) => {
+const getUserResumes = async (req, res, next) => {
     try {
-        const userId = req.userId; // Assuming you have a middleware that sets req.userId after verifying the token
+        const resumes = await userService.getUserResumes(req.userId);
 
-        // Return user resumes
-        const resumes = await Resume.find({ userId });
-        return res.status(200).json({resumes});
+        return res.status(200).json({
+            success: true,
+            data: {
+                resumes,
+                count: resumes.length,
+            },
+        });
     } catch (error) {
-        return res.status(400).json({ message: "Server error", error: error.message });
+        next(error);
     }
-}
+};
+
+// ============================================================
+// Delete User Account
+// ============================================================
+//
+// DELETE /api/users/account
+// ============================================================
+
+const deleteAccount = async (req, res, next) => {
+    try {
+        await userService.deleteUser(req.userId);
+
+        logger.info("User account and associated assets deleted", {
+            userId: req.userId,
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: "User account and all associated data have been permanently deleted.",
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// ============================================================
+// Request Email Verification
+// ============================================================
+//
+// POST /api/users/request-email-verification
+// ============================================================
+
+const requestEmailVerification = async (req, res, next) => {
+    try {
+        const result = await userService.requestEmailVerification(req.userId);
+
+        return res.status(200).json({
+            success: true,
+            message: result.message,
+            data: {
+                emailSent: result.emailSent,
+            },
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// ============================================================
+// Verify Email
+// ============================================================
+//
+// POST /api/users/verify-email
+// ============================================================
+
+const verifyEmail = async (req, res, next) => {
+    try {
+        const { otp } = req.validatedBody;
+        const result = await userService.verifyEmail(req.userId, otp);
+
+        logger.info("User completed email verification", {
+            userId: result.userId,
+            email: result.email,
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: result.message,
+            data: {
+                emailVerified: true,
+            },
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// ============================================================
+// Resend Email Verification
+// ============================================================
+//
+// POST /api/users/resend-verification
+// ============================================================
+
+const resendVerificationEmail = async (req, res, next) => {
+    try {
+        const result = await userService.resendVerificationEmail(req.userId);
+
+        return res.status(200).json({
+            success: true,
+            message: result.message,
+            data: {
+                emailSent: result.emailSent,
+            },
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// ============================================================
+// Forgot Password
+// ============================================================
+//
+// POST /api/users/forgot-password
+// ============================================================
+
+const forgotPassword = async (req, res, next) => {
+    try {
+        const { email } = req.validatedBody;
+        const result = await userService.forgotPassword(email);
+        return res.status(200).json({ success: true, message: result.message });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// ============================================================
+// Verify Password Reset OTP
+// ============================================================
+//
+// POST /api/users/verify-password-reset-otp
+// ============================================================
+
+const verifyPasswordResetOtp = async (req, res, next) => {
+    try {
+        const { email, otp } = req.validatedBody;
+        const result = await userService.verifyPasswordResetOtp(email, otp);
+        return res.status(200).json({ success: true, data: { resetToken: result.resetToken } });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// ============================================================
+// Reset Password
+// ============================================================
+//
+// POST /api/users/reset-password
+// ============================================================
+
+const resetPassword = async (req, res, next) => {
+    try {
+        const { resetToken, password } = req.validatedBody;
+        const result = await userService.resetPassword(resetToken, password);
+        return res.status(200).json({ success: true, message: result.message });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// ============================================================
+// Get Current User Profile (Canonical 11B)
+// ============================================================
+//
+// GET /api/users/me
+// Requires authentication.
+// ============================================================
+
+const getMe = async (req, res, next) => {
+    try {
+        const user = await userService.getCurrentUser(req.userId);
+
+        return res.status(200).json({
+            success: true,
+            data: user,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// ============================================================
+// Update Current User Profile (Canonical 11B)
+// ============================================================
+//
+// PATCH /api/users/me
+// Requires authentication.
+// ============================================================
+
+const updateMe = async (req, res, next) => {
+    try {
+        const user = await userService.updateCurrentUser(
+            req.userId,
+            req.validatedBody
+        );
+
+        return res.status(200).json({
+            success: true,
+            data: user,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// ============================================================
+// Export
+// ============================================================
+
+const userController = Object.freeze({
+    registerUser,
+    loginUser,
+    getMe,
+    updateMe,
+    getUserById,
+    getUserResumes,
+    deleteAccount,
+    requestEmailVerification,
+    verifyEmail,
+    resendVerificationEmail,
+    forgotPassword,
+    verifyPasswordResetOtp,
+    resetPassword,
+});
+
+
+export default userController;

@@ -57,11 +57,11 @@ const Footer = () => {
         {/* Footer Content */}
         <div className="relative z-10 flex flex-wrap justify-center gap-10 md:gap-20 lg:justify-between">
 
-          <div className="flex flex-wrap items-start gap-10 md:gap-[60px] xl:gap-[140px]">
+          <div className="flex flex-wrap items-start gap-10 md:gap-[50px] xl:gap-[100px]">
 
             {/* Brand */}
             <a
-              href="#"
+              href="/"
               className="group"
               aria-label="CuratoCV Home"
             >
@@ -80,135 +80,109 @@ const Footer = () => {
               </div>
 
               <p className="mt-4 max-w-[220px] leading-6 text-slate-500">
-                Build a professional resume with confidence.
+                Build a professional resume with confidence and organize your ideas.
               </p>
             </a>
 
-            {/* Product */}
+            {/* Products */}
             <div>
               <p className="font-semibold text-[#17375F]">
-                Product
+                Products
               </p>
 
               <ul className="mt-3 space-y-2.5">
                 <li>
                   <a
-                    href="/"
+                    href="/products"
                     className="transition hover:text-[#17375F]"
                   >
-                    Home
+                    Resume Builder
                   </a>
                 </li>
-
                 <li>
                   <a
-                    href="/"
+                    href="/notes"
                     className="transition hover:text-[#17375F]"
                   >
-                    Support
+                    Notes Taking App
                   </a>
                 </li>
-
                 <li>
                   <a
-                    href="/"
+                    href="/pricing"
                     className="transition hover:text-[#17375F]"
                   >
-                    Pricing
-                  </a>
-                </li>
-
-                <li>
-                  <a
-                    href="/"
-                    className="transition hover:text-[#17375F]"
-                  >
-                    Affiliate
+                    Pricing & Plans
                   </a>
                 </li>
               </ul>
             </div>
 
-            {/* Resources */}
+            {/* Platform / Account */}
             <div>
               <p className="font-semibold text-[#17375F]">
-                Resources
+                Platform
               </p>
 
               <ul className="mt-3 space-y-2.5">
                 <li>
                   <a
-                    href="/"
+                    href="/products"
                     className="transition hover:text-[#17375F]"
                   >
-                    Company
+                    All Products
                   </a>
                 </li>
-
                 <li>
                   <a
-                    href="/"
+                    href="/app/profile"
                     className="transition hover:text-[#17375F]"
                   >
-                    Blogs
+                    Profile Settings
                   </a>
                 </li>
-
                 <li>
                   <a
-                    href="/"
+                    href="/app/billing"
                     className="transition hover:text-[#17375F]"
                   >
-                    Community
-                  </a>
-                </li>
-
-                <li>
-                  <a
-                    href="/"
-                    className="transition hover:text-[#17375F]"
-                  >
-                    Careers
-
-                    <span className="ml-2 rounded-md bg-[#17375F] px-2 py-1 text-xs text-white shadow-sm shadow-[#17375F]/20">
-                      We're hiring!
-                    </span>
-                  </a>
-                </li>
-
-                <li>
-                  <a
-                    href="/"
-                    className="transition hover:text-[#17375F]"
-                  >
-                    About
+                    Billing & Plan
                   </a>
                 </li>
               </ul>
             </div>
 
-            {/* Legal */}
+            {/* Support & Legal */}
             <div>
               <p className="font-semibold text-[#17375F]">
-                Legal
+                Support & Legal
               </p>
 
               <ul className="mt-3 space-y-2.5">
                 <li>
                   <a
-                    href="/"
+                    href="mailto:support@curatocv.com"
                     className="transition hover:text-[#17375F]"
                   >
-                    Privacy
+                    Help & Support
                   </a>
                 </li>
-
                 <li>
                   <a
-                    href="/"
+                    href="#terms"
+                    onClick={(e) => { e.preventDefault(); alert("CuratoCV Terms of Service v1.0"); }}
                     className="transition hover:text-[#17375F]"
                   >
-                    Terms
+                    Terms of Service
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#privacy"
+                    onClick={(e) => { e.preventDefault(); alert("CuratoCV Privacy Policy v1.0"); }}
+                    className="transition hover:text-[#17375F]"
+                  >
+                    Privacy Policy
                   </a>
                 </li>
               </ul>

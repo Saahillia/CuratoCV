@@ -1,22 +1,19 @@
-import { Loader2, Sparkles, SparklesIcon } from 'lucide-react'
+import { Loader2, Sparkles } from 'lucide-react'
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { useSelector } from 'react-redux';
-import api from '../../configs/api';
+import api from '../../services/api';
 
-const ProfessionalSummaryForm = ({data, onChange, setResumeData}) => {
+const ProfessionalSummaryForm = ({data, onChange}) => {
 
-    const {token} = useSelector((state) => state.auth);
     const[ isGenerating, setIsGenerating] = useState(false);
 
     const generateSummary = async () => {
         try {
             setIsGenerating(true);
-            // Simulate API call
-            const prompt = `Generate a professional summary for a resume based on the following information: ${data}`;
-            const response = await api.post("https://api.openai.com/v1/completions", {userContent:prompt}, {headers: {"Authorization": `Bearer ${token}`}})
-            setResumeData(prev => ({...prev, professional_summary: response.data.enhancedContent}));
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            // Delegate to the backend, which enforces the AI credit
+            // entitlement and never exposes the AI provider key.
+            const response = await api.post("/ai/enhance-pro-sum", { userContent: data || "" });
+            onChange(response.data.enhancedContent);
             setIsGenerating(false);
         } catch (error) {
             toast.error(error?.response?.data?.message || error.message);

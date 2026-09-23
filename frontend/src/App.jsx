@@ -1,65 +1,207 @@
-import { Route, Routes } from "react-router-dom";
+// ============================================================
+// CuratoCV App Routes
+// ============================================================
+//
+// Main routing setup. Uses the centralized API client (services/api)
+// with the correct token storage key and global 401 handling.
+// ============================================================
+
+import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Layout from "./pages/Layout";
+import Products from "./pages/Products";
+import NotesPlaceholder from "./pages/NotesPlaceholder";
 import Dashboard from "./pages/Dashboard";
 import ResumeBuilder from "./pages/ResumeBuilder";
 import Preview from "./pages/Preview";
 import Login from "./pages/Login";
-import { useDispatch } from "react-redux";
-import api from "./configs/api";
+import VerifyEmail from "./pages/VerifyEmail";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import Pricing from "./pages/Pricing";
+import Checkout from "./pages/Checkout";
+import Billing from "./pages/Billing";
+import Profile from "./pages/Profile";
+import NotFound from "./pages/NotFound";
+import { useDispatch, useSelector } from "react-redux";
+import api, { TOKEN_STORAGE_KEY } from "./services/api";
 import { login, logout, setLoading } from "./app/features/authSlice";
 import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 
+// ============================================================
+// ProtectedRoute
+// ============================================================
+//
+// Guards routes that require authentication. Redirects unauthenticated
+// users to /login. The actual authorization rules are enforced by
+// the backend — this is UX-only routing protection.
+// ============================================================
+
+const ProtectedRoute = ({ children }) => {
+    const { token, loading } = useSelector((state) => state.auth);
+    const navigate = useNavigate();
+
+    if (loading) {
+        return <div className="p-8 text-center text-gray-500">Loading...</div>;
+    }
+
+    if (!token) {
+        return <Navigate to="/login" replace />;
+    }
+
+    return children;
+};
 
 const App = () => {
+    const dispatch = useDispatch();
 
-  const dispatch = useDispatch();
-
-  const getUserData = async () =>{
-    const token = localStorage.getItem("token");
-    try {
-      if(token){
-        const {data} = await api.get("/api/users/data", {headers : {Authorization: `Bearer ${token}`}});
-        if(data.user){
-          dispatch(login({token, user:data.user}));
+    const getUserData = async () => {
+        const token = localStorage.getItem(TOKEN_STORAGE_KEY);
+        try {
+            if (token) {
+                const { data } = await api.get("/users/me");
+                if (data.success && data.data) {
+                    dispatch(
+                        login({
+                            token,
+                            user: {
+                                id: data.data.id,
+                                name: data.data.name,
+                                email: data.data.email,
+                                emailVerified: data.data.emailVerified,
+                                createdAt: data.data.createdAt,
+                                updatedAt: data.data.updatedAt,
+                            },
+                        })
+                    );
+                }
+            }
+        } catch (error) {
+            if (error.response?.status === 401) {
+                dispatch(logout());
+            }
+            console.error("Error fetching user data:", error);
+        } finally {
+            dispatch(setLoading(false));
         }
-        dispatch(setLoading(false));
-      }else{
-        dispatch(setLoading(false));
-      }
-    } catch (error) {
-      if([401, 404].includes(error.response?.status)){
-        dispatch(logout());
-      }
-      dispatch(setLoading(false));
-      console.error("Error fetching user data:", error);
-    }
-  }
+    };
 
-  useEffect(() => {
-    getUserData();
-  }, []);
+    useEffect(() => {
+        getUserData();
+    }, []);
 
-  return(
-    <>
-    <Toaster />
-      <Routes>
-        
-        <Route path='/' element={<Home/>} />
+    return (
+        <>
+            <Toaster />
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
 
-        <Route path='app' element={<Layout/>} >
-          <Route index element={<Dashboard/>} />
-          <Route path='builder/:resumeId' element={<ResumeBuilder/>} />
-        </Route>
+                {/* Auth email & password reset flows — public, no auth required */}
+                <Route path="/verify-email" element={<VerifyEmail />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
 
-        <Route path='view/:resumeId' element={<Preview/>} />
-        <Route path='login' element={<Login/>} />
+                <Route path="/pricing" element={<Pricing />} />
 
+                {/* Public resume share page — no auth required */}
+                <Route path="/resume/:shareId" element={<Preview />} />
 
-      </Routes>
-    </>
-  )
+                {/* Platform Landing - entry point post-login */}
+                <Route
+                    path="/products"
+                    element={
+                        <ProtectedRoute>
+                            <Navigate to="/products/resume-builder" replace />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/products/resume-builder"
+                    element={
+                        <ProtectedRoute>
+                            <Products />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/products/notes"
+                    element={
+                        <ProtectedRoute>
+                            <NotesPlaceholder />
+                        </ProtectedRoute>
+                    }
+                />
+
+                {/* Notes Workspace Entry Point (Alias / Redirect) */}
+                <Route
+                    path="/notes"
+                    element={
+                        <ProtectedRoute>
+                            <Navigate to="/products/notes" replace />
+                        </ProtectedRoute>
+                    }
+                />
+
+                {/* Authenticated routes with global Navbar (Resume Builder Module) */}
+                <Route
+                    path="/app"
+                    element={
+                        <ProtectedRoute>
+                            <Layout />
+                        </ProtectedRoute>
+                    }
+                >
+                    <Route index element={<Dashboard />} />
+                    <Route path="resumes" element={<Dashboard />} />
+                    <Route path="resumes/:resumeId/preview" element={<Preview />} />
+                    <Route path="billing" element={<Billing />} />
+                    <Route path="profile" element={<Profile />} />
+                </Route>
+
+                {/* Standalone Authenticated Resume Builder (no global Navbar) */}
+                <Route
+                    path="/app/resumes/:resumeId/edit"
+                    element={
+                        <ProtectedRoute>
+                            <ResumeBuilder />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/app/builder/:resumeId"
+                    element={
+                        <ProtectedRoute>
+                            <ResumeBuilder />
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/checkout"
+                    element={
+                        <ProtectedRoute>
+                            <Checkout />
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/billing"
+                    element={
+                        <ProtectedRoute>
+                            <Billing />
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route path="/view/:resumeId" element={<Preview />} />
+
+                <Route path="*" element={<NotFound />} />
+            </Routes>
+        </>
+    );
 };
 
 export default App;
