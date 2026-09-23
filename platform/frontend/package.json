@@ -1,0 +1,14 @@
+{
+  "name": "@curatocv/platform-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./services/*": "./src/services/*.js",
+    "./components/*": "./src/components/*.jsx",
+    "./pages/*": "./src/pages/*.jsx",
+    "./configs/*": "./src/configs/*.js",
+    "./utils/*": "./src/utils/*.js",
+    "./features/*": "./src/app/features/*.js"
+  }
+}

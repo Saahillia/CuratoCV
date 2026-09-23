@@ -1,0 +1,18 @@
+{
+  "name": "@curatocv/platform-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./configs/*": "./src/configs/*.js",
+    "./constants/*": "./src/constants/*.js",
+    "./controllers/*": "./src/controllers/*.js",
+    "./emails/*": "./src/emails/*.js",
+    "./middlewares/*": "./src/middlewares/*.js",
+    "./models/*": "./src/models/*.js",
+    "./repositories/*": "./src/repositories/*.js",
+    "./routes/*": "./src/routes/*.js",
+    "./services/*": "./src/services/*.js",
+    "./utils/*": "./src/utils/*.js"
+  }
+}

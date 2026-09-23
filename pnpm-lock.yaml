@@ -1,0 +1,17 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  frontend:
+    dependencies:
+      '@curatocv/platform-frontend':
+        specifier: workspace:*
+        version: link:../platform/frontend
+
+  platform/backend: {}
+
+  platform/frontend: {}
