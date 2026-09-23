@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import mongoose from "mongoose";
 import crypto from "crypto";
-import OTP from "../Models/OTP.js";
-import otpService from "../Services/otpService.js";
+import OTP from "../../platform/backend/src/models/OTP.js";
+import otpService from "../../platform/backend/src/services/otpService.js";
 import ApiError from "../Utils/apiError.js";
 
 describe("OTP Service Tests", () => {

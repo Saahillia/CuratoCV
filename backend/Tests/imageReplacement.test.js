@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import User from "../Models/User.js";
+import User from "../../platform/backend/src/models/User.js";
 import Resume from "../Models/Resume.js";
 import imageService from "../Services/imageService.js";
 

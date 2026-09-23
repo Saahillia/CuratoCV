@@ -1,4 +1,4 @@
-import Subscription from "../Models/Subscription.js";
+import Subscription from "../models/Subscription.js";
 
 // ============================================================
 // CuratoCV Subscription Repository

@@ -5,7 +5,7 @@ import "dotenv/config";
 import connectDB from "./Configs/db.js";
 import securityConfig from "./Configs/security.js";
 
-import userRouter from "./Routes/userRoutes.js";
+import userRouter from "../platform/backend/src/routes/userRoutes.js";
 import resumeRouter from "./Routes/resumeRoutes.js";
 import aiRouter from "./Routes/aiRoutes.js";
 import paymentRouter from "./Routes/paymentRoutes.js";

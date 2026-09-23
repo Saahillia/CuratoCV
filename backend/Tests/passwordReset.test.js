@@ -1,10 +1,10 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import userService from "../Services/userService.js";
+import userService from "../../platform/backend/src/services/userService.js";
 import emailService from "../Services/emailService.js";
-import otpService from "../Services/otpService.js";
-import User from "../Models/User.js";
-import PasswordResetToken from "../Models/PasswordResetToken.js";
-import OTP from "../Models/OTP.js";
+import otpService from "../../platform/backend/src/services/otpService.js";
+import User from "../../platform/backend/src/models/User.js";
+import PasswordResetToken from "../../platform/backend/src/models/PasswordResetToken.js";
+import OTP from "../../platform/backend/src/models/OTP.js";
 import protect from "../Middlewares/authMiddleware.js";
 import authUtils from "../Utils/authUtils.js";
 import { createUser } from "./factories.js";

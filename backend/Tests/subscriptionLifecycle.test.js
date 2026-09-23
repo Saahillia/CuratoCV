@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { createUser, createSubscription, createPayment } from "./factories.js";
-import billingService from "../Services/billingService.js";
+import billingService from "../../platform/backend/src/services/billingService.js";
 import { PLAN_IDS, BILLING_PERIODS } from "../Constants/plans.js";
 // Status constants accessed via model statics: Subscription.statuses, Payment.statuses
 const SUBSCRIPTION_STATUSES = {

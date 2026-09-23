@@ -1,4 +1,4 @@
-import billingService from "./billingService.js";
+import billingService from "../platform/backend/src/services/billingService.js";
 import aiProvider from "./aiProvider.js";
 import logger from "../Configs/logger.js";
 

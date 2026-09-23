@@ -1,15 +1,15 @@
 import crypto from "node:crypto";
 
-import razorpay from "../Configs/razorpay.js";
+import razorpay from "../../../../backend/Configs/razorpay.js";
 
-import plans from "../Constants/plans.js";
+import plans from "../../../../backend/Constants/plans.js";
 
-import paymentRepository from "../Repositories/paymentRepository.js";
-import subscriptionRepository from "../Repositories/subscriptionRepository.js";
+import paymentRepository from "../repositories/paymentRepository.js";
+import subscriptionRepository from "../repositories/subscriptionRepository.js";
 
 import billingService from "./billingService.js";
-import emailService from "./emailService.js";
-import userRepository from "../Repositories/userRepository.js";
+import emailService from "../../../../backend/Services/emailService.js";
+import userRepository from "../repositories/userRepository.js";
 
 // ============================================================
 // CuratoCV Payment Service

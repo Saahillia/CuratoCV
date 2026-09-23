@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import request from "supertest";
 import express from "express";
-import User from "../Models/User.js";
-import OTP from "../Models/OTP.js";
-import userController from "../Controllers/userController.js";
+import User from "../../platform/backend/src/models/User.js";
+import OTP from "../../platform/backend/src/models/OTP.js";
+import userController from "../../platform/backend/src/controllers/userController.js";
 import errorMiddleware from "../Middlewares/errorMiddleware.js";
 import {
     otpIpLimitMiddleware,
@@ -15,7 +15,7 @@ import {
     createEmailPurposeRateLimiter
 } from "../Middlewares/rateLimitMiddleware.js";
 import emailService from "../Services/emailService.js";
-import otpService from "../Services/otpService.js";
+import otpService from "../../platform/backend/src/services/otpService.js";
 
 // Mock email service
 vi.mock("../Services/emailService.js", () => ({

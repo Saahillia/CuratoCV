@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import userService from "../Services/userService.js";
+import userService from "../../platform/backend/src/services/userService.js";
 import userValidator from "../Validators/userValidator.js";
-import User from "../Models/User.js";
+import User from "../../platform/backend/src/models/User.js";
 import { createUser } from "./factories.js";
 
 describe("Phase 11B — Canonical Account/Profile API", () => {

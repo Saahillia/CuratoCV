@@ -1,11 +1,11 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import request from "supertest";
 import express from "express";
-import User from "../Models/User.js";
+import User from "../../platform/backend/src/models/User.js";
 import Resume from "../Models/Resume.js";
-import Subscription from "../Models/Subscription.js";
+import Subscription from "../../platform/backend/src/models/Subscription.js";
 import { uploadResume } from "../Controllers/aiControllers.js";
-import billingService from "../Services/billingService.js";
+import billingService from "../../platform/backend/src/services/billingService.js";
 import errorMiddleware from "../Middlewares/errorMiddleware.js";
 import ai from "../Configs/ai.js";
 
@@ -19,7 +19,7 @@ vi.mock("../Configs/ai.js", () => ({
 	},
 }));
 
-vi.mock("../Services/billingService.js", () => ({
+vi.mock("../../platform/backend/src/services/billingService.js", () => ({
 	default: {
 		getResumeLimit: vi.fn(),
 	},

@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { createUser, createSubscription, createPayment } from "./factories.js";
-import paymentService from "../Services/paymentService.js";
+import paymentService from "../../platform/backend/src/services/paymentService.js";
 // Status constants accessed via model statics: Payment.statuses
 const PAYMENT_STATUSES = {
     CREATED: "created",

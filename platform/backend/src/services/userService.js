@@ -26,18 +26,18 @@
 // - Always validate ownership before returning data
 // ============================================================
 
-import User from "../Models/User.js";
-import Resume from "../Models/Resume.js";
-import OTP from "../Models/OTP.js";
-import PasswordResetToken from "../Models/PasswordResetToken.js";
-import authUtils from "../Utils/authUtils.js";
-import ApiError from "../Utils/apiError.js";
-import imageService from "./imageService.js";
-import emailService from "./emailService.js";
+import User from "../models/User.js";
+import Resume from "../../../../backend/Models/Resume.js";
+import OTP from "../models/OTP.js";
+import PasswordResetToken from "../models/PasswordResetToken.js";
+import authUtils from "../../../../backend/Utils/authUtils.js";
+import ApiError from "../../../../backend/Utils/apiError.js";
+import imageService from "../../../../backend/Services/imageService.js";
+import emailService from "../../../../backend/Services/emailService.js";
 import otpService from "./otpService.js";
-import emailConfig from "../Configs/resend.js";
-import logger from "../Configs/logger.js";
-import resumeRepository from "../Repositories/resumeRepository.js";
+import emailConfig from "../../../../backend/Configs/resend.js";
+import logger from "../../../../backend/Configs/logger.js";
+import resumeRepository from "../../../../backend/Repositories/resumeRepository.js";
 
 // ============================================================
 // Validation Helpers

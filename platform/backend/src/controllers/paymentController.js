@@ -30,7 +30,7 @@
 //     Razorpay / Repository
 // ============================================================
 
-import paymentService from "../Services/paymentService.js";
+import paymentService from "../services/paymentService.js";
 
 // ============================================================
 // Controller Helpers

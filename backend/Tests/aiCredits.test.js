@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { createUser, createSubscription } from "./factories.js";
-import billingService from "../Services/billingService.js";
+import billingService from "../../platform/backend/src/services/billingService.js";
 import aiService from "../Services/aiService.js";
 import { PLAN_IDS, BILLING_PERIODS } from "../Constants/plans.js";
 import ai from "../Configs/ai.js";

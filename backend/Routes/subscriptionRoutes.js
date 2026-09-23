@@ -38,7 +38,7 @@
 
 import express from "express";
 
-import subscriptionController from "../Controllers/subscriptionController.js";
+import subscriptionController from "../../platform/backend/src/controllers/subscriptionController.js";
 
 import authMiddleware from "../Middlewares/authMiddleware.js";
 

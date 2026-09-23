@@ -22,7 +22,7 @@
 
 import express from "express";
 
-import paymentController from "../Controllers/paymentController.js";
+import paymentController from "../../platform/backend/src/controllers/paymentController.js";
 
 import authMiddleware from "../Middlewares/authMiddleware.js";
 import razorpayWebhookMiddleware from "../Middlewares/razorpayWebhookMiddleware.js";

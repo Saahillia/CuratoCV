@@ -3,7 +3,7 @@ import aiProvider from "../Services/aiProvider.js";
 import aiService from "../Services/aiService.js";
 import resumeService from "../Services/resumeService.js";
 import resumeRepository from "../Repositories/resumeRepository.js";
-import billingService from "../Services/billingService.js";
+import billingService from "../../platform/backend/src/services/billingService.js";
 import limits from "../Constants/limits.js";
 import logger from "../Configs/logger.js";
 

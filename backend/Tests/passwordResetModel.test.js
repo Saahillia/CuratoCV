@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import request from "supertest";
 import express from "express";
-import User from "../Models/User.js";
-import PasswordResetToken from "../Models/PasswordResetToken.js";
+import User from "../../platform/backend/src/models/User.js";
+import PasswordResetToken from "../../platform/backend/src/models/PasswordResetToken.js";
 import errorMiddleware from "../Middlewares/errorMiddleware.js";
 
 // Mock App Setup

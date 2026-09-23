@@ -1,5 +1,5 @@
 import resumeRepository from "../Repositories/resumeRepository.js";
-import billingService from "./billingService.js";
+import billingService from "../platform/backend/src/services/billingService.js";
 import imageService from "./imageService.js";
 
 import resumeDefaults from "../Constants/resumeDefaults.js";

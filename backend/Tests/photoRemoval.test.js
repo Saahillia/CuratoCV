@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import request from "supertest";
 import express from "express";
-import User from "../Models/User.js";
+import User from "../../platform/backend/src/models/User.js";
 import Resume from "../Models/Resume.js";
 import * as resumeController from "../Controllers/resumeController.js";
 import imageService from "../Services/imageService.js";

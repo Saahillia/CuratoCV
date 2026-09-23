@@ -38,9 +38,9 @@
 //
 // ============================================================
 
-import billingService from "../Services/billingService.js";
+import billingService from "../services/billingService.js";
 
-import subscriptionRepository from "../Repositories/subscriptionRepository.js";
+import subscriptionRepository from "../repositories/subscriptionRepository.js";
 
 // ============================================================
 // Authentication Helper

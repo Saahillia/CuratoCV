@@ -1,4 +1,4 @@
-import Payment from "../Models/Payment.js";
+import Payment from "../models/Payment.js";
 
 // ============================================================
 // CuratoCV Payment Repository

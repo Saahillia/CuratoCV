@@ -26,20 +26,20 @@
 
 import express from "express";
 
-import userController from "../Controllers/userController.js";
+import userController from "../controllers/userController.js";
 
-import authMiddleware from "../Middlewares/authMiddleware.js";
-import { validateBody } from "../Middlewares/validationMiddleware.js";
+import authMiddleware from "../../../../backend/Middlewares/authMiddleware.js";
+import { validateBody } from "../../../../backend/Middlewares/validationMiddleware.js";
 import {
     authRateLimitMiddleware,
     otpIpLimitMiddleware,
     otpVerifyIpLimitMiddleware,
     otpCooldownMiddleware,
     otpEmailHourlyLimitMiddleware
-} from "../Middlewares/rateLimitMiddleware.js";
+} from "../../../../backend/Middlewares/rateLimitMiddleware.js";
 
-import authValidator from "../Validators/authValidator.js";
-import userValidator from "../Validators/userValidator.js";
+import authValidator from "../../../../backend/Validators/authValidator.js";
+import userValidator from "../../../../backend/Validators/userValidator.js";
 
 // ============================================================
 // Router

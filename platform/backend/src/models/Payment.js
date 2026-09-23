@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import plans from "../Constants/plans.js";
+import plans from "../../../../backend/Constants/plans.js";
 
 // ============================================================
 // CuratoCV Payment Model

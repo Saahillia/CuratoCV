@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import mongoose from "mongoose";
-import OTP from "../Models/OTP.js";
+import OTP from "../../platform/backend/src/models/OTP.js";
 import { createUser } from "./factories.js";
 
 describe("OTP Model Schema Tests", () => {

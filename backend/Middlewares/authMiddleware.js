@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import logger from "../Configs/logger.js";
 import ApiError from "../Utils/apiError.js";
-import User from "../Models/User.js";
+import User from "../../platform/backend/src/models/User.js";
 
 // ============================================================
 // Configuration

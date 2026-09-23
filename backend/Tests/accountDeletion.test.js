@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import request from "supertest";
 import express from "express";
-import User from "../Models/User.js";
+import User from "../../platform/backend/src/models/User.js";
 import Resume from "../Models/Resume.js";
-import userController from "../Controllers/userController.js";
+import userController from "../../platform/backend/src/controllers/userController.js";
 import imageService from "../Services/imageService.js";
 import errorMiddleware from "../Middlewares/errorMiddleware.js";
 
