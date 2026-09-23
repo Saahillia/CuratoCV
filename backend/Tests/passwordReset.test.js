@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import userService from "../../platform/backend/src/services/userService.js";
-import emailService from "../Services/emailService.js";
+import emailService from "../../platform/backend/src/services/emailService.js";
 import otpService from "../../platform/backend/src/services/otpService.js";
 import User from "../../platform/backend/src/models/User.js";
 import PasswordResetToken from "../../platform/backend/src/models/PasswordResetToken.js";

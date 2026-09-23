@@ -8,7 +8,7 @@ import paymentRepository from "../repositories/paymentRepository.js";
 import subscriptionRepository from "../repositories/subscriptionRepository.js";
 
 import billingService from "./billingService.js";
-import emailService from "../../../../backend/Services/emailService.js";
+import emailService from "./emailService.js";
 import userRepository from "../repositories/userRepository.js";
 
 // ============================================================

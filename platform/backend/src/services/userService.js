@@ -33,9 +33,9 @@ import PasswordResetToken from "../models/PasswordResetToken.js";
 import authUtils from "../../../../backend/Utils/authUtils.js";
 import ApiError from "../../../../backend/Utils/apiError.js";
 import imageService from "../../../../backend/Services/imageService.js";
-import emailService from "../../../../backend/Services/emailService.js";
+import emailService from "./emailService.js";
 import otpService from "./otpService.js";
-import emailConfig from "../../../../backend/Configs/resend.js";
+import emailConfig from "../configs/resend.js";
 import logger from "../../../../backend/Configs/logger.js";
 import resumeRepository from "../../../../backend/Repositories/resumeRepository.js";
 

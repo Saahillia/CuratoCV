@@ -6,7 +6,7 @@ import OTP from "../../platform/backend/src/models/OTP.js";
 import userController from "../../platform/backend/src/controllers/userController.js";
 import errorMiddleware from "../Middlewares/errorMiddleware.js";
 import otpService from "../../platform/backend/src/services/otpService.js";
-import emailService from "../Services/emailService.js";
+import emailService from "../../platform/backend/src/services/emailService.js";
 
 // ============================================================
 // Phase 10F: Email Verification API Endpoint Tests
@@ -25,7 +25,7 @@ import emailService from "../Services/emailService.js";
 // Mock email service (non-blocking email sending)
 // ----------------------------------------------------
 
-vi.mock("../Services/emailService.js", () => {
+vi.mock("../../platform/backend/src/services/emailService.js", () => {
     return {
         default: {
             sendEmailVerification: vi.fn().mockResolvedValue({ success: true }),

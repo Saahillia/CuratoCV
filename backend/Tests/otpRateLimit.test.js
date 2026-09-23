@@ -14,11 +14,11 @@ import {
     createRateLimiter,
     createEmailPurposeRateLimiter
 } from "../Middlewares/rateLimitMiddleware.js";
-import emailService from "../Services/emailService.js";
+import emailService from "../../platform/backend/src/services/emailService.js";
 import otpService from "../../platform/backend/src/services/otpService.js";
 
 // Mock email service
-vi.mock("../Services/emailService.js", () => ({
+vi.mock("../../platform/backend/src/services/emailService.js", () => ({
     default: {
         sendEmailVerification: vi.fn().mockResolvedValue({ success: true }),
         sendWelcome: vi.fn(),

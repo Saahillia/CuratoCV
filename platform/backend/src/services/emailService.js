@@ -31,18 +31,18 @@
 // - Never expose Resend API errors to end users
 // ============================================================
 
-import emailConfig from "../Configs/resend.js";
-import logger from "../Configs/logger.js";
-import { EMAIL_TYPES } from "../Constants/email.js";
+import emailConfig from "../configs/resend.js";
+import logger from "../../../../backend/Configs/logger.js";
+import { EMAIL_TYPES } from "../constants/email.js";
 
 import {
     escapeHtml,
     renderEmail,
-} from "../Emails/emailRenderer.js";
+} from "../emails/emailRenderer.js";
 
-import generateOrderConfirmationHTML from "../Emails/templates/billing/OrderConfirmation.js";
-import generateSubscriptionActiveHTML from "../Emails/templates/billing/SubscriptionActive.js";
-import generatePaymentFailedHTML from "../Emails/templates/billing/PaymentFailed.js";
+import generateOrderConfirmationHTML from "../emails/templates/billing/OrderConfirmation.js";
+import generateSubscriptionActiveHTML from "../emails/templates/billing/SubscriptionActive.js";
+import generatePaymentFailedHTML from "../emails/templates/billing/PaymentFailed.js";
 
 // ============================================================
 // Email Masking

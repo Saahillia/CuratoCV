@@ -12,7 +12,7 @@
 //
 // ============================================================
 
-import { EMAIL_TYPES, EMAIL_SUBJECTS } from "../Constants/email.js";
+import { EMAIL_TYPES, EMAIL_SUBJECTS } from "../constants/email.js";
 import { renderBaseTemplate } from "./templates/system/baseTemplate.js";
 
 // Account Template imports
