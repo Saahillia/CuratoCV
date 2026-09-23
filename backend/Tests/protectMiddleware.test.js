@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import jwt from "jsonwebtoken";
-import protect from "../Middlewares/authMiddleware.js";
+import protect from "../../platform/backend/src/middlewares/authMiddleware.js";
 import User from "../../platform/backend/src/models/User.js";
 import { createUser } from "./factories.js";
 import dotenv from "dotenv";

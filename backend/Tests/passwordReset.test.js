@@ -5,8 +5,8 @@ import otpService from "../../platform/backend/src/services/otpService.js";
 import User from "../../platform/backend/src/models/User.js";
 import PasswordResetToken from "../../platform/backend/src/models/PasswordResetToken.js";
 import OTP from "../../platform/backend/src/models/OTP.js";
-import protect from "../Middlewares/authMiddleware.js";
-import authUtils from "../Utils/authUtils.js";
+import protect from "../../platform/backend/src/middlewares/authMiddleware.js";
+import authUtils from "../../platform/backend/src/utils/authUtils.js";
 import { createUser } from "./factories.js";
 import dotenv from "dotenv";
 

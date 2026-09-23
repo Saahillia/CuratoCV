@@ -1,6 +1,6 @@
 import OpenAI from "openai";
 import primaryAi from "../Configs/ai.js";
-import logger from "../Configs/logger.js";
+import logger from "../../platform/backend/src/configs/logger.js";
 
 const PRIMARY_PROVIDER = "gemini";
 const FALLBACK_PROVIDER = "groq";

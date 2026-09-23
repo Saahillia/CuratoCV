@@ -3,7 +3,7 @@ import Resume from "../Models/Resume.js";
 import Subscription from "../../platform/backend/src/models/Subscription.js";
 import Payment from "../../platform/backend/src/models/Payment.js";
 import { PLAN_IDS, BILLING_PERIODS } from "../Constants/plans.js";
-import authUtils from "../Utils/authUtils.js";
+import authUtils from "../../platform/backend/src/utils/authUtils.js";
 
 // ============================================================
 // User Factory

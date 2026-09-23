@@ -28,15 +28,15 @@ import express from "express";
 
 import userController from "../controllers/userController.js";
 
-import authMiddleware from "../../../../backend/Middlewares/authMiddleware.js";
-import { validateBody } from "../../../../backend/Middlewares/validationMiddleware.js";
+import authMiddleware from "../middlewares/authMiddleware.js";
+import { validateBody } from "../middlewares/validationMiddleware.js";
 import {
     authRateLimitMiddleware,
     otpIpLimitMiddleware,
     otpVerifyIpLimitMiddleware,
     otpCooldownMiddleware,
     otpEmailHourlyLimitMiddleware
-} from "../../../../backend/Middlewares/rateLimitMiddleware.js";
+} from "../middlewares/rateLimitMiddleware.js";
 
 import authValidator from "../../../../backend/Validators/authValidator.js";
 import userValidator from "../../../../backend/Validators/userValidator.js";

@@ -5,7 +5,7 @@ import resumeService from "../Services/resumeService.js";
 import resumeRepository from "../Repositories/resumeRepository.js";
 import billingService from "../../platform/backend/src/services/billingService.js";
 import limits from "../Constants/limits.js";
-import logger from "../Configs/logger.js";
+import logger from "../../platform/backend/src/configs/logger.js";
 
 // ============================================================
 // Configuration

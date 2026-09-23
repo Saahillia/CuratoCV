@@ -15,7 +15,7 @@ const PAYMENT_STATUSES = {
 import { PLAN_IDS, BILLING_PERIODS } from "../Constants/plans.js";
 import crypto from "crypto";
 
-import razorpay from "../Configs/razorpay.js";
+import razorpay from "../../platform/backend/src/configs/razorpay.js";
 
 const SUBSCRIPTION_STATUSES = {
     ACTIVE: "active",
@@ -27,7 +27,7 @@ const SUBSCRIPTION_STATUSES = {
 };
 
 // Mock Razorpay client
-vi.mock("../Configs/razorpay.js", () => ({
+vi.mock("../../platform/backend/src/configs/razorpay.js", () => ({
     default: {
         orders: {
             create: vi.fn(),

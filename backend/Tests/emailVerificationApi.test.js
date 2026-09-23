@@ -4,7 +4,7 @@ import express from "express";
 import User from "../../platform/backend/src/models/User.js";
 import OTP from "../../platform/backend/src/models/OTP.js";
 import userController from "../../platform/backend/src/controllers/userController.js";
-import errorMiddleware from "../Middlewares/errorMiddleware.js";
+import errorMiddleware from "../../platform/backend/src/middlewares/errorMiddleware.js";
 import otpService from "../../platform/backend/src/services/otpService.js";
 import emailService from "../../platform/backend/src/services/emailService.js";
 

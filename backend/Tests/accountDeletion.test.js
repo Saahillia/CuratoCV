@@ -5,7 +5,7 @@ import User from "../../platform/backend/src/models/User.js";
 import Resume from "../Models/Resume.js";
 import userController from "../../platform/backend/src/controllers/userController.js";
 import imageService from "../Services/imageService.js";
-import errorMiddleware from "../Middlewares/errorMiddleware.js";
+import errorMiddleware from "../../platform/backend/src/middlewares/errorMiddleware.js";
 
 // ============================================================
 // CuratoCV User Account Deletion Asset Cleanup Tests (Step 6F-6)

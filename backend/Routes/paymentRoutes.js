@@ -24,8 +24,8 @@ import express from "express";
 
 import paymentController from "../../platform/backend/src/controllers/paymentController.js";
 
-import authMiddleware from "../Middlewares/authMiddleware.js";
-import razorpayWebhookMiddleware from "../Middlewares/razorpayWebhookMiddleware.js";
+import authMiddleware from "../../platform/backend/src/middlewares/authMiddleware.js";
+import razorpayWebhookMiddleware from "../../platform/backend/src/middlewares/razorpayWebhookMiddleware.js";
 
 // ============================================================
 // Router

@@ -30,13 +30,13 @@ import User from "../models/User.js";
 import Resume from "../../../../backend/Models/Resume.js";
 import OTP from "../models/OTP.js";
 import PasswordResetToken from "../models/PasswordResetToken.js";
-import authUtils from "../../../../backend/Utils/authUtils.js";
-import ApiError from "../../../../backend/Utils/apiError.js";
+import authUtils from "../utils/authUtils.js";
+import ApiError from "../utils/apiError.js";
 import imageService from "../../../../backend/Services/imageService.js";
 import emailService from "./emailService.js";
 import otpService from "./otpService.js";
 import emailConfig from "../configs/resend.js";
-import logger from "../../../../backend/Configs/logger.js";
+import logger from "../configs/logger.js";
 import resumeRepository from "../../../../backend/Repositories/resumeRepository.js";
 
 // ============================================================

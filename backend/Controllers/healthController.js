@@ -18,7 +18,7 @@
 
 import mongoose from "mongoose";
 
-import ApiError from "../Utils/apiError.js";
+import ApiError from "../../platform/backend/src/utils/apiError.js";
 
 // ============================================================
 // Health Checks

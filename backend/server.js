@@ -2,8 +2,8 @@ import express from "express";
 import cors from "cors";
 import "dotenv/config";
 
-import connectDB from "./Configs/db.js";
-import securityConfig from "./Configs/security.js";
+import connectDB from "../platform/backend/src/configs/db.js";
+import securityConfig from "../platform/backend/src/configs/security.js";
 
 import userRouter from "../platform/backend/src/routes/userRoutes.js";
 import resumeRouter from "./Routes/resumeRoutes.js";
@@ -12,8 +12,8 @@ import paymentRouter from "./Routes/paymentRoutes.js";
 import subscriptionRouter from "./Routes/subscriptionRoutes.js";
 import healthRouter from "./Routes/healthRoutes.js";
 
-import errorMiddleware from "./Middlewares/errorMiddleware.js";
-import rateLimitMiddleware from "./Middlewares/rateLimitMiddleware.js";
+import errorMiddleware from "../platform/backend/src/middlewares/errorMiddleware.js";
+import rateLimitMiddleware from "../platform/backend/src/middlewares/rateLimitMiddleware.js";
 import { closePdfBrowser } from "./Services/pdfService.js";
 
 // ============================================================

@@ -3,7 +3,7 @@ import request from "supertest";
 import express from "express";
 import User from "../../platform/backend/src/models/User.js";
 import PasswordResetToken from "../../platform/backend/src/models/PasswordResetToken.js";
-import errorMiddleware from "../Middlewares/errorMiddleware.js";
+import errorMiddleware from "../../platform/backend/src/middlewares/errorMiddleware.js";
 
 // Mock App Setup
 const app = express();

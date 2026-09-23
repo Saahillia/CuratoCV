@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { createUser, createAuthToken } from "./factories.js";
 import userService from "../../platform/backend/src/services/userService.js";
-import authUtils from "../Utils/authUtils.js";
+import authUtils from "../../platform/backend/src/utils/authUtils.js";
 import User from "../../platform/backend/src/models/User.js";
 import jwt from "jsonwebtoken";
 

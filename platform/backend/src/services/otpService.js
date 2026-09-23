@@ -1,6 +1,6 @@
 import crypto from "crypto";
 import OTP from "../models/OTP.js";
-import ApiError from "../../../../backend/Utils/apiError.js";
+import ApiError from "../utils/apiError.js";
 
 // ============================================================
 // CuratoCV OTP Service

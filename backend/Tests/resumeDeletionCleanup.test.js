@@ -5,7 +5,7 @@ import User from "../../platform/backend/src/models/User.js";
 import Resume from "../Models/Resume.js";
 import * as resumeController from "../Controllers/resumeController.js";
 import imageService from "../Services/imageService.js";
-import errorMiddleware from "../Middlewares/errorMiddleware.js";
+import errorMiddleware from "../../platform/backend/src/middlewares/errorMiddleware.js";
 
 // ============================================================
 // CuratoCV Resume Deletion Asset Cleanup Tests (Step 6F-5)

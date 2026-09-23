@@ -1,5 +1,5 @@
 import imageKit from "../Configs/imageKit.js";
-import logger from "../Configs/logger.js";
+import logger from "../../platform/backend/src/configs/logger.js";
 
 // ============================================================
 // CuratoCV Image Service

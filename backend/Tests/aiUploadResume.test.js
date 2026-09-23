@@ -6,7 +6,7 @@ import Resume from "../Models/Resume.js";
 import Subscription from "../../platform/backend/src/models/Subscription.js";
 import { uploadResume } from "../Controllers/aiControllers.js";
 import billingService from "../../platform/backend/src/services/billingService.js";
-import errorMiddleware from "../Middlewares/errorMiddleware.js";
+import errorMiddleware from "../../platform/backend/src/middlewares/errorMiddleware.js";
 import ai from "../Configs/ai.js";
 
 vi.mock("../Configs/ai.js", () => ({

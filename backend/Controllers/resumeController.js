@@ -3,7 +3,7 @@ import resumeService from "../Services/resumeService.js";
 import resumeSections from "../Constants/resumeSections.js";
 import imageService from "../Services/imageService.js";
 import { validateSafeImage, validatePhotoObject } from "../Utils/imageValidation.js";
-import logger from "../Configs/logger.js";
+import logger from "../../platform/backend/src/configs/logger.js";
 import { generateResumePdf } from "../Services/pdfService.js";
 import { renderResumeHtml } from "../Services/resumeHtmlRenderer.js";
 

@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 
-import razorpay from "../../../../backend/Configs/razorpay.js";
+import razorpay from "../configs/razorpay.js";
 
 import plans from "../../../../backend/Constants/plans.js";
 

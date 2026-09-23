@@ -66,6 +66,7 @@ export default defineConfig({
                 "Models/**/*.js",
                 "Repositories/**/*.js",
                 "Utils/**/*.js",
+                "../platform/backend/src/**/*.js",
             ],
             exclude: [
                 "Tests/**",

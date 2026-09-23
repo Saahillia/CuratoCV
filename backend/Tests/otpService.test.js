@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import crypto from "crypto";
 import OTP from "../../platform/backend/src/models/OTP.js";
 import otpService from "../../platform/backend/src/services/otpService.js";
-import ApiError from "../Utils/apiError.js";
+import ApiError from "../../platform/backend/src/utils/apiError.js";
 
 describe("OTP Service Tests", () => {
     const testEmail = "Service.Test@Example.com";

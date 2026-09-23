@@ -1,5 +1,5 @@
 import express from "express";
-import protect from "../Middlewares/authMiddleware.js";
+import protect from "../../platform/backend/src/middlewares/authMiddleware.js";
 import {
     enhanceJobDescription,
     enhanceProfessionalSummary,

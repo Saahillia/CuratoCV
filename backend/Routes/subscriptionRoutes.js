@@ -40,7 +40,7 @@ import express from "express";
 
 import subscriptionController from "../../platform/backend/src/controllers/subscriptionController.js";
 
-import authMiddleware from "../Middlewares/authMiddleware.js";
+import authMiddleware from "../../platform/backend/src/middlewares/authMiddleware.js";
 
 // ============================================================
 // Router

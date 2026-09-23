@@ -22,7 +22,7 @@
 // ============================================================
 
 import userService from "../services/userService.js";
-import logger from "../../../../backend/Configs/logger.js";
+import logger from "../configs/logger.js";
 
 // ============================================================
 // User Registration

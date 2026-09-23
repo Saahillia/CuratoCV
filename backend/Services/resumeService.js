@@ -6,9 +6,9 @@ import resumeDefaults from "../Constants/resumeDefaults.js";
 import resumeSections from "../Constants/resumeSections.js";
 import limits from "../Constants/limits.js";
 
-import ApiError from "../Utils/apiError.js";
-import logger from "../Configs/logger.js";
-import { isValidObjectId } from "../Utils/objectId.js";
+import ApiError from "../../platform/backend/src/utils/apiError.js";
+import logger from "../../platform/backend/src/configs/logger.js";
+import { isValidObjectId } from "../../platform/backend/src/utils/objectId.js";
 
 // ============================================================
 // CuratoCV Resume Service

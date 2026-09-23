@@ -32,7 +32,7 @@
 // ============================================================
 
 import emailConfig from "../configs/resend.js";
-import logger from "../../../../backend/Configs/logger.js";
+import logger from "../configs/logger.js";
 import { EMAIL_TYPES } from "../constants/email.js";
 
 import {

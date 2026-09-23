@@ -1,6 +1,6 @@
 import billingService from "../platform/backend/src/services/billingService.js";
 import aiProvider from "./aiProvider.js";
-import logger from "../Configs/logger.js";
+import logger from "../../platform/backend/src/configs/logger.js";
 
 // ============================================================
 // CuratoCV AI Service
