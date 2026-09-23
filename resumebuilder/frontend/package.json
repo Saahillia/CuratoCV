@@ -1,0 +1,16 @@
+{
+  "name": "@curatocv/resumebuilder-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./components/*": "./src/components/*.jsx",
+    "./pages/*": "./src/pages/*.jsx",
+    "./services/*": "./src/services/*.js",
+    "./hooks/*": "./src/hooks/*.js",
+    "./utils/*": "./src/utils/*.js",
+    "./constants/*": "./src/constants/*.js",
+    "./config/*": "./src/config/*.js",
+    "./features/*": "./src/app/features/*.js"
+  }
+}

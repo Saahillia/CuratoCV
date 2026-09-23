@@ -1,0 +1,15 @@
+{
+  "name": "@curatocv/resumebuilder-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./configs/*": "./src/configs/*.js",
+    "./controllers/*": "./src/controllers/*.js",
+    "./models/*": "./src/models/*.js",
+    "./repositories/*": "./src/repositories/*.js",
+    "./routes/*": "./src/routes/*.js",
+    "./services/*": "./src/services/*.js",
+    "./utils/*": "./src/utils/*.js"
+  }
+}

@@ -11,6 +11,9 @@ importers:
       '@curatocv/platform-frontend':
         specifier: workspace:*
         version: link:../platform/frontend
+      '@curatocv/resumebuilder-frontend':
+        specifier: workspace:*
+        version: link:../resumebuilder/frontend
 
   platform/backend: {}
 
