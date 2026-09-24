@@ -1,0 +1,14 @@
+{
+  "name": "curatocv-monorepo",
+  "private": true,
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "test": "vitest run --dir backend/Tests",
+    "test:all": "turbo run test"
+  },
+  "devDependencies": {
+    "turbo": "latest",
+    "vitest": "^5.0.1"
+  }
+}

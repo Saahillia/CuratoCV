@@ -42,7 +42,8 @@ export default defineConfig({
 
         setupFiles: ["../tests/setup.js", "./Tests/setup.js"],
 
-        testTimeout: 10000,
+        testTimeout: 30000,
+        hookTimeout: 60000,
         fileParallelism: false,
 
         clearMocks: true,

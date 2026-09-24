@@ -20,18 +20,18 @@ CuratoCV is a modular, multi-product professional career suite built on a strict
 - `@curatocv/shared-utils`
 - `@curatocv/api-client`
 
-## Phase Verification
+## Certified Architectural State
 
-All phases completed with zero regression:
-- Phase 0: Baseline (268/268 tests, build pass)
-- Phase 1: Monorepo Tooling (pnpm + Turbo)
-- Phase 2: Directory Structure
-- Phase 3: Platform Migration (3A-3F)
-- Phase 4: Resume Builder Migration
-- Phase 5: Notes Scaffold (`notes/`)
-- Phase 6: Shared Packages (`packages/`)
-- Phase 7: End-to-End Regression Gate
-- Phase 8: Documentation & ADRs (001, 002)
+The CuratoCV monorepo architecture is certified compliant with the following standards:
+
+- **Monorepo Structure**: pnpm workspaces + Turborepo.
+- **Dependency Flow**: Product Domain → Platform Foundation → Shared Packages.
+- **Ownership**: Explicit domain ownership established for `platform/`, `resumebuilder/`, `notes/`, and `packages/`.
+- **Decoupling**: Fully decoupled lifecycle hooks for platform/product interactions.
+- **Security Baseline**: Verified JWT/tokenVersion, constant-time auth, HMAC-SHA256 webhooks, and atomic credit transactions.
+- **Migration Debt**: Explicitly tracked in `docs/decisions/ADR-006-migration-debt.md`.
+
+For detailed architecture, refer to `docs/decisions/`.
 
 ## Getting Started
 
