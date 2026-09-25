@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, NotebookPen, Sparkles } from "lucide-react";
 
-const NotesPlaceholder = () => {
+const MemoPlaceholder = () => {
     const navigate = useNavigate();
 
     return (
@@ -16,7 +16,7 @@ const NotesPlaceholder = () => {
                     </Link>
                     <span className="text-[#D9E0E7]">/</span>
                     <span className="text-xs font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200/60 px-3 py-1 rounded-full">
-                        Notes Workspace
+                        Memo Workspace
                     </span>
                 </div>
 
@@ -41,11 +41,11 @@ const NotesPlaceholder = () => {
                     </div>
 
                     <h1 className="text-2xl font-bold text-[#172033] mb-2 tracking-tight">
-                        Notes Workspace
+                        Memo Workspace
                     </h1>
 
                     <p className="text-[#667085] text-sm leading-relaxed mb-6">
-                        The Notes Workspace module is the next project on the roadmap. It will feature rich-text editing, infinite tree organization, drawing canvas, and local-first offline synchronization.
+                        The Memo Workspace module is the next project on the roadmap. It will feature rich-text editing, infinite tree organization, drawing canvas, and local-first offline synchronization.
                     </p>
 
                     <div className="space-y-3">
@@ -73,4 +73,4 @@ const NotesPlaceholder = () => {
     );
 };
 
-export default NotesPlaceholder;
+export default MemoPlaceholder;
