@@ -1,7 +1,7 @@
 import { Loader2, Sparkles } from 'lucide-react'
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import api from '../../services/api';
+import api from '@curatocv/api-client';
 
 const ProfessionalSummaryForm = ({data, onChange}) => {
 

@@ -26,14 +26,14 @@ import CustomizeLayout from "../components/Customize/CustomizeLayout";
 import ContentEditor from "../components/ContentEditor/ContentEditor";
 import FullScreenEntryEditor from "../components/ContentEditor/FullScreenEntryEditor";
 import ResumeBuilderHeader from "../components/ResumeBuilder/ResumeBuilderHeader";
-import { saveResumeToLocal, loadResumeFromLocal } from "../utils/localStorage";
+import { saveResumeToLocal, loadResumeFromLocal } from "@curatocv/platform-frontend/utils/localStorage";
 import {
     toCanonicalResume,
     resetDesignCategory,
     resetAllCustomization,
 } from "../utils/resume";
 
-import api from "../services/api";
+import api from "@curatocv/api-client";
 import toast from "react-hot-toast";
 
 const ResumeBuilder = () => {

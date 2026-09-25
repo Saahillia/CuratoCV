@@ -7,7 +7,7 @@
 //
 // ============================================================
 
-import api from "./api.js";
+import api from "@curatocv/api-client";
 
 // ============================================================
 // Subscription / Plan Endpoints

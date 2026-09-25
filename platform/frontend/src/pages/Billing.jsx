@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import billingService from "../services/billingService";
-import resumeService from "../services/resumeService";
-import PaymentStatus from "../components/Billing/PaymentStatus";
-import UsageMeter from "../components/Billing/UsageMeter";
+import api from "@curatocv/api-client";
+import PaymentStatus from "../components/billing/PaymentStatus";
+import UsageMeter from "../components/billing/UsageMeter";
 
 const Billing = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const Billing = () => {
         const [subData, entData, resumesData] = await Promise.all([
           billingService.getCurrentSubscription(),
           billingService.getEntitlements(),
-          resumeService.getUserResumes(),
+          api.get("/users/resumes").catch(() => ({ data: [] })),
         ]);
 
         const sub = subData?.data || subData;

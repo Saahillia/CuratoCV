@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../app/features/authSlice';
 import { useNavigate, Link } from 'react-router-dom';
 import { LogOut, LayoutGrid, HelpCircle, Settings, User, ChevronDown, Menu, X, Home, ArrowLeft, FileText, NotebookPen, ChevronRight } from 'lucide-react';
-import Breadcrumbs from '../components/Common/Breadcrumbs';
+import Breadcrumbs from '../components/common/Breadcrumbs';
 
 import toast from 'react-hot-toast';
 

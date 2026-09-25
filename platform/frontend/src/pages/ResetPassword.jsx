@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { Check, X, Eye, EyeOff } from 'lucide-react';
 import emailService from '../services/emailService';
-import OtpInput from '../components/Email/OtpInput';
+import OtpInput from '../components/auth/OtpInput';
 
 const PASSWORD_RULES = [
     { label: 'At least 8 characters', test: (pwd) => pwd.length >= 8 },

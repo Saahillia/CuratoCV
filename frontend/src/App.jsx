@@ -7,22 +7,22 @@
 // ============================================================
 
 import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
-import Home from "./pages/Home";
-import Layout from "./pages/Layout";
-import Products from "./pages/Products";
-import NotesPlaceholder from "./pages/NotesPlaceholder";
-import Dashboard from "./pages/Dashboard";
-import ResumeBuilder from "./pages/ResumeBuilder";
-import Preview from "./pages/Preview";
-import Login from "./pages/Login";
-import VerifyEmail from "./pages/VerifyEmail";
-import ForgotPassword from "./pages/ForgotPassword";
-import ResetPassword from "./pages/ResetPassword";
-import Pricing from "./pages/Pricing";
-import Checkout from "./pages/Checkout";
-import Billing from "./pages/Billing";
-import Profile from "./pages/Profile";
-import NotFound from "./pages/NotFound";
+import Home from "@curatocv/platform-frontend/pages/Home";
+import Layout from "@curatocv/platform-frontend/pages/Layout";
+import Products from "@curatocv/platform-frontend/pages/Products";
+import NotesPlaceholder from "@curatocv/notes-frontend/pages/NotesPlaceholder";
+import Dashboard from "@curatocv/resumebuilder-frontend/pages/Dashboard";
+import ResumeBuilder from "@curatocv/resumebuilder-frontend/pages/ResumeBuilder";
+import Preview from "@curatocv/resumebuilder-frontend/pages/Preview";
+import Login from "@curatocv/platform-frontend/pages/Login";
+import VerifyEmail from "@curatocv/platform-frontend/pages/VerifyEmail";
+import ForgotPassword from "@curatocv/platform-frontend/pages/ForgotPassword";
+import ResetPassword from "@curatocv/platform-frontend/pages/ResetPassword";
+import Pricing from "@curatocv/platform-frontend/pages/Pricing";
+import Checkout from "@curatocv/platform-frontend/pages/Checkout";
+import Billing from "@curatocv/platform-frontend/pages/Billing";
+import Profile from "@curatocv/platform-frontend/pages/Profile";
+import NotFound from "@curatocv/platform-frontend/pages/NotFound";
 import { useDispatch, useSelector } from "react-redux";
 import api, { TOKEN_STORAGE_KEY } from "@curatocv/api-client";
 import { login, logout, setLoading } from "./app/features/authSlice";

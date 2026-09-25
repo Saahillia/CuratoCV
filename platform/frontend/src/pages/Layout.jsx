@@ -1,8 +1,8 @@
 import { Outlet, Link } from 'react-router-dom'
-import Navbar from '../components/Navbar'
+import Navbar from '../components/common/Navbar'
 import { useSelector } from 'react-redux'
-import Loader from '../components/Loader'
-import Login from '../pages/Login'
+import Loader from '../components/common/Loader'
+import Login from './Login'
 import { ShieldCheck } from 'lucide-react'
 
 const Layout = () => {

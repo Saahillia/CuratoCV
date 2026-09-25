@@ -25,7 +25,7 @@
 //   subscriptionService.getAIEntitlement() for UX only.
 // ============================================================
 
-import api from "./api";
+import api from "@curatocv/api-client";
 
 // ============================================================
 // Public methods (current backend endpoints)

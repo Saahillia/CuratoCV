@@ -1,6 +1,6 @@
 import { Loader2, Sparkle } from "lucide-react";
 import { useState } from "react";
-import api from "../../services/api";
+import api from "@curatocv/api-client";
 import toast from "react-hot-toast";
 
 /**

@@ -27,7 +27,7 @@
 //   present we still use FormData so the field shape matches.
 // ============================================================
 
-import api from "./api";
+import api from "@curatocv/api-client";
 
 // ============================================================
 // Public methods

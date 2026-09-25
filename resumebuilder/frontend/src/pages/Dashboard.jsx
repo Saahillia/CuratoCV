@@ -10,13 +10,13 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import api from "../services/api";
+import api from "@curatocv/api-client";
 import aiService from "../services/aiService";
-import subscriptionService from "../services/subscriptionService";
+import subscriptionService from "@curatocv/platform-frontend/services/subscriptionService";
 import resumeService from "../services/resumeService";
 import ResumeCardPreview from "../components/ResumeCardPreview";
-import UpgradeModal from "../components/Billing/UpgradeModal";
-import Breadcrumbs from "../components/Common/Breadcrumbs";
+import UpgradeModal from "@curatocv/platform-frontend/components/billing/UpgradeModal";
+import Breadcrumbs from "@curatocv/platform-frontend/components/common/Breadcrumbs";
 import toast from "react-hot-toast";
 import pdfToText from "react-pdftotext";
 

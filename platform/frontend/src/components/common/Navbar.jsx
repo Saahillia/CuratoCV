@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { logout } from "../app/features/authSlice.js";
+import { logout } from "@curatocv/platform-frontend/features/authSlice";
 import toast from "react-hot-toast";
 
 const Navbar = () => {

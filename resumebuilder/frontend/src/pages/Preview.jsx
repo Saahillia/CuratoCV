@@ -1,9 +1,9 @@
 import { useParams, Link, useLocation } from "react-router-dom";
 import ResumePreview from "../components/ResumePreview";
 import { useEffect, useState } from "react";
-import Loader from "../components/Loader";
+import Loader from "@curatocv/platform-frontend/components/common/Loader";
 import { ArrowLeftIcon, Download, Globe, Loader2 } from "lucide-react";
-import api from "../services/api";
+import api from "@curatocv/api-client";
 import { toast } from "react-hot-toast";
 
 const Preview = () => {

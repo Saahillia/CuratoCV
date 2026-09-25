@@ -3,14 +3,23 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "test": "vitest run"
+  },
   "exports": {
     "./pages/*": "./src/pages/*.jsx",
     "./components/*": "./src/components/*.jsx",
     "./services/*": "./src/services/*.js"
   },
   "dependencies": {
+    "lucide-react": "^1.47.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.20.0",
     "@curatocv/api-client": "workspace:*",
     "@curatocv/shared-utils": "workspace:*"
   }

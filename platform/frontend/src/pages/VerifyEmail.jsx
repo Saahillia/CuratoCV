@@ -21,7 +21,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { login } from '../app/features/authSlice';
 import emailService from '../services/emailService';
-import OtpInput from '../components/Email/OtpInput';
+import OtpInput from '../components/auth/OtpInput';
 
 const VerifyEmail = () => {
     const navigate = useNavigate();

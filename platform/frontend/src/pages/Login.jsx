@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../app/features/authSlice';
 import { toast } from 'react-hot-toast';
-import api from '../services/api';
+import api from '@curatocv/api-client';
 
 const PASSWORD_RULES = [
     { label: 'At least 8 characters', test: (pwd) => pwd.length >= 8 },

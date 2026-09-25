@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from "react";
-import api from "../services/api";
+import api from "@curatocv/api-client";
 
 export function useResumeAutosave({ resumeId, resumeData, token, delay = 1000, onSaveSuccess, onSaveError }) {
   const [isSaving, setIsSaving] = useState(false);

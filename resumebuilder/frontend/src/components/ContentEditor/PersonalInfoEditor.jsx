@@ -11,7 +11,7 @@ import {
     MapPin,
 } from "lucide-react";
 import { useSelector } from "react-redux";
-import api from "../../services/api";
+import api from "@curatocv/api-client";
 import toast from "react-hot-toast";
 
 const PersonalInfoEditor = ({

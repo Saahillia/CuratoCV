@@ -1,5 +1,5 @@
 import React from 'react';
-import { PRODUCTS } from '../../config/products';
+import { PRODUCTS } from '../../configs/products';
 import { ProductCard } from './ProductCard';
 
 export const ProductGrid = () => {

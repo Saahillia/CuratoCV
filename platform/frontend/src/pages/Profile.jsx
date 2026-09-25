@@ -17,10 +17,10 @@ import {
     Pencil,
 } from "lucide-react";
 import toast from "react-hot-toast";
-import api from "../services/api";
+import api from "@curatocv/api-client";
 import authService from "../services/authService";
 import { updateUser, logout } from "../app/features/authSlice";
-import Breadcrumbs from "../components/Common/Breadcrumbs";
+import Breadcrumbs from "../components/common/Breadcrumbs";
 
 const Profile = () => {
     const dispatch = useDispatch();

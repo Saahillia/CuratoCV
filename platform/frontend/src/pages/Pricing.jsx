@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import billingService from "../services/billingService";
-import BillingPeriodSelector from "../components/Billing/BillingPeriodSelector";
-import PlanCard from "../components/Billing/PlanCard";
+import BillingPeriodSelector from "../components/billing/BillingPeriodSelector";
+import PlanCard from "../components/billing/PlanCard";
 
 const Pricing = () => {
   const navigate = useNavigate();

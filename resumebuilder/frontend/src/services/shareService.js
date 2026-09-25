@@ -8,7 +8,7 @@
 // via resume updates (since share toggle is just resume schema data).
 // ============================================================
 
-import api from "./api.js";
+import api from "@curatocv/api-client";
 
 /**
  * Get the public URL for a resume

@@ -1,5 +1,5 @@
 import express from "express";
-import protect from "@curatocv/platform-backend/middlewares/authMiddleware.js";
+import protect from "@curatocv/platform-backend/middlewares/authMiddleware";
 import {
     createNote,
     getNoteById,
