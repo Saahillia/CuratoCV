@@ -1,8 +1,8 @@
 import User from "../../platform/backend/src/models/User.js";
-import Resume from "../Models/Resume.js";
+import Resume from "../../resumebuilder/backend/src/models/Resume.js";
 import Subscription from "../../platform/backend/src/models/Subscription.js";
 import Payment from "../../platform/backend/src/models/Payment.js";
-import { PLAN_IDS, BILLING_PERIODS } from "../Constants/plans.js";
+import { PLAN_IDS, BILLING_PERIODS } from "../../platform/backend/src/constants/plans.js";
 import authUtils from "../../platform/backend/src/utils/authUtils.js";
 
 // ============================================================

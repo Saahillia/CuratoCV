@@ -12,5 +12,14 @@
     "./constants/*": "./src/constants/*.js",
     "./config/*": "./src/config/*.js",
     "./features/*": "./src/app/features/*.js"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.20.0",
+    "@reduxjs/toolkit": "^2.0.0",
+    "react-redux": "^9.0.0",
+    "@curatocv/api-client": "workspace:*",
+    "@curatocv/shared-utils": "workspace:*"
   }
 }

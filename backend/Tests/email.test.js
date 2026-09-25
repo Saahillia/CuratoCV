@@ -2,9 +2,9 @@
  * Tests for CuratoCV email rendering and sending functionality.
  */
 import { describe, it, expect } from 'vitest';
-import { renderEmail, escapeHtml } from '../platform/backend/src/emails/emailRenderer.js';
-import emailService from '../platform/backend/src/services/emailService.js';
-import { EMAIL_TYPES } from "../platform/backend/src/constants/email.js";
+import { renderEmail, escapeHtml } from '../../platform/backend/src/emails/emailRenderer.js';
+import emailService from '../../platform/backend/src/services/emailService.js';
+import { EMAIL_TYPES } from "../../platform/backend/src/constants/email.js";
 
 describe('Email renderer utilities', () => {
     describe('escapeHtml', () => {

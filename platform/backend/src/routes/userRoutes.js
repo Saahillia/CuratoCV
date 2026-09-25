@@ -38,8 +38,8 @@ import {
     otpEmailHourlyLimitMiddleware
 } from "../middlewares/rateLimitMiddleware.js";
 
-import authValidator from "../../../../backend/Validators/authValidator.js";
-import userValidator from "../../../../backend/Validators/userValidator.js";
+import authValidator from "../validators/authValidator.js";
+import userValidator from "../validators/userValidator.js";
 
 // ============================================================
 // Router

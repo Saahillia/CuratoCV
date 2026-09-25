@@ -1,11 +1,11 @@
 import express from "express";
-import protect from "../../platform/backend/src/middlewares/authMiddleware.js";
+import protect from "@curatocv/platform-backend/middlewares/authMiddleware";
 import {
     enhanceJobDescription,
     enhanceProfessionalSummary,
     getEntryTips,
     uploadResume,
-} from "./controllers/aiControllers.js";
+} from "../controllers/aiControllers.js";
 
 const aiRouter = express.Router();
 

@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { createUser, createSubscription } from "./factories.js";
 import billingService from "../../platform/backend/src/services/billingService.js";
-import aiService from "../Services/aiService.js";
-import { PLAN_IDS, BILLING_PERIODS } from "../Constants/plans.js";
-import ai from "../Configs/ai.js";
+import aiService from "../../resumebuilder/backend/src/services/aiService.js";
+import { PLAN_IDS, BILLING_PERIODS } from "../../platform/backend/src/constants/plans.js";
+import ai from "../../resumebuilder/backend/src/configs/ai.js";
 
 // Status constants accessed via model statics: Subscription.statuses
 const SUBSCRIPTION_STATUSES = {
@@ -16,7 +16,7 @@ const SUBSCRIPTION_STATUSES = {
 };
 
 // Mock the AI client
-vi.mock("../Configs/ai.js", () => ({
+vi.mock("../../resumebuilder/backend/src/configs/ai.js", () => ({
     default: {
         chat: {
             completions: {

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-import plans from "../../../../backend/Constants/plans.js";
+import plans from "../constants/plans.js";
 
 // ============================================================
 // CuratoCV Subscription Model

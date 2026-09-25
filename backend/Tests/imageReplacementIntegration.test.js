@@ -2,16 +2,16 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import request from "supertest";
 import express from "express";
 import User from "../../platform/backend/src/models/User.js";
-import Resume from "../Models/Resume.js";
-import * as resumeController from "../Controllers/resumeController.js";
-import imageService from "../Services/imageService.js";
-import { validateSafeImage } from "../Utils/imageValidation.js";
+import Resume from "../../resumebuilder/backend/src/models/Resume.js";
+import * as resumeController from "../../resumebuilder/backend/src/controllers/resumeController.js";
+import imageService from "../../resumebuilder/backend/src/services/imageService.js";
+import { validateSafeImage } from "../../resumebuilder/backend/src/utils/imageValidation.js";
 
 // ============================================================
 // CuratoCV Image Replacement Lifecycle API Tests (Step 6F-3)
 // ============================================================
 
-vi.mock("../Services/imageService.js", () => ({
+vi.mock("../../resumebuilder/backend/src/services/imageService.js", () => ({
     default: {
         uploadImage: vi.fn(),
         deleteImage: vi.fn(),
@@ -20,7 +20,7 @@ vi.mock("../Services/imageService.js", () => ({
     },
 }));
 
-vi.mock("../Utils/imageValidation.js", () => ({
+vi.mock("../../resumebuilder/backend/src/utils/imageValidation.js", () => ({
     validateSafeImage: vi.fn(),
 }));
 

@@ -1,6 +1,6 @@
-import billingService from "../platform/backend/src/services/billingService.js";
+import billingService from "@curatocv/platform-backend/services/billingService";
 import aiProvider from "./aiProvider.js";
-import logger from "../../platform/backend/src/configs/logger.js";
+import logger from "@curatocv/platform-backend/configs/logger";
 
 // ============================================================
 // CuratoCV AI Service
@@ -297,7 +297,7 @@ export const generateContent = async (
         // Log Failed Generation
         // ================================================
 
-        console.error("AI generation failed:", {
+        logger.error("AI generation failed:", {
             userId,
             name: error?.name,
             message: error?.message,
@@ -346,7 +346,7 @@ export const generateContent = async (
     const generatedContent = getMessageContent(response);
 
     if (!generatedContent || generatedContent.length > MAX_AI_OUTPUT_LENGTH) {
-        console.error("AI returned invalid content:", {
+        logger.error("AI returned invalid content:", {
             userId,
             contentLength: generatedContent?.length,
         });
@@ -372,7 +372,7 @@ export const generateContent = async (
         // Log Successful Generation
         // ================================================
 
-        console.info("AI generation succeeded:", {
+        logger.info("AI generation succeeded:", {
             userId,
             type: "generate",
             creditsConsumed: creditsNeeded,
@@ -390,7 +390,7 @@ export const generateContent = async (
         // Log Credit Exhaustion
         // ================================================
 
-        console.warn("AI credit exhaustion detected:", {
+        logger.warn("AI credit exhaustion detected:", {
             userId,
             attemptedCreditsNeeded: creditsNeeded,
             availableCredits: entitlement.remaining,
@@ -512,7 +512,7 @@ export const improveContent = async (
         // Log Failed Improvement
         // ================================================
 
-        console.error("AI improvement failed:", {
+        logger.error("AI improvement failed:", {
             userId,
             name: error?.name,
             message: error?.message,
@@ -561,7 +561,7 @@ export const improveContent = async (
     const improvedContent = getMessageContent(response);
 
     if (!improvedContent || improvedContent.length > MAX_AI_OUTPUT_LENGTH) {
-        console.error("AI returned invalid content:", {
+        logger.error("AI returned invalid content:", {
             userId,
             contentLength: improvedContent?.length,
         });
@@ -585,7 +585,7 @@ export const improveContent = async (
         // Log Successful Improvement
         // ================================================
 
-        console.info("AI improvement succeeded:", {
+        logger.info("AI improvement succeeded:", {
             userId,
             type: "improve",
             creditsConsumed: creditsNeeded,
@@ -603,7 +603,7 @@ export const improveContent = async (
         // Log Credit Exhaustion
         // ================================================
 
-        console.warn("AI credit exhaustion detected:", {
+        logger.warn("AI credit exhaustion detected:", {
             userId,
             attemptedCreditsNeeded: creditsNeeded,
             availableCredits: entitlement.remaining,

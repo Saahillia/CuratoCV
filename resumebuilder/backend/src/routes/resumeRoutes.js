@@ -1,5 +1,5 @@
 import express from "express";
-import protect from "../../platform/backend/src/middlewares/authMiddleware.js";
+import protect from "@curatocv/platform-backend/middlewares/authMiddleware";
 import {
   createResume,
   deleteResume,
@@ -7,8 +7,8 @@ import {
   getPublicResumeById,
   getResumeById,
   updateResume,
-} from "./controllers/resumeController.js";
-import upload from "../../platform/backend/src/configs/multer.js";
+} from "../controllers/resumeController.js";
+import upload from "@curatocv/platform-backend/configs/multer";
 
 const resumeRouter = express.Router();
 resumeRouter.post("/create", protect, createResume);

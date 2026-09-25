@@ -38,9 +38,9 @@
 
 import express from "express";
 
-import subscriptionController from "../../platform/backend/src/controllers/subscriptionController.js";
+import subscriptionController from "../controllers/subscriptionController.js";
 
-import authMiddleware from "../../platform/backend/src/middlewares/authMiddleware.js";
+import authMiddleware from "../middlewares/authMiddleware.js";
 
 // ============================================================
 // Router

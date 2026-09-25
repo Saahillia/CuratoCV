@@ -16,6 +16,8 @@
     "@curatocv/platform-frontend": "workspace:*",
     "@curatocv/resumebuilder-frontend": "workspace:*",
     "@curatocv/notes-frontend": "workspace:*",
+    "@curatocv/api-client": "workspace:*",
+    "@curatocv/shared-utils": "workspace:*",
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",

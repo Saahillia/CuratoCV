@@ -1,14 +1,14 @@
-import resumeRepository from "./repositories/resumeRepository.js";
-import billingService from "../platform/backend/src/services/billingService.js";
+import resumeRepository from "../repositories/resumeRepository.js";
+import billingService from "@curatocv/platform-backend/services/billingService";
 import imageService from "./imageService.js";
 
-import resumeDefaults from "./constants/resumeDefaults.js";
-import resumeSections from "./constants/resumeSections.js";
-import limits from "./constants/limits.js";
+import resumeDefaults from "../constants/resumeDefaults.js";
+import resumeSections from "../constants/resumeSections.js";
+import limits from "../constants/limits.js";
 
-import ApiError from "../../platform/backend/src/utils/apiError.js";
-import logger from "../../platform/backend/src/configs/logger.js";
-import { isValidObjectId } from "../../platform/backend/src/utils/objectId.js";
+import ApiError from "@curatocv/platform-backend/utils/apiError";
+import logger from "@curatocv/platform-backend/configs/logger";
+import { isValidObjectId } from "@curatocv/platform-backend/utils/objectId";
 
 // ============================================================
 // CuratoCV Resume Service

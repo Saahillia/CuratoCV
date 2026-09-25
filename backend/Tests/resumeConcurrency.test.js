@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { createUser, createResume } from "./factories.js";
-import resumeService from "../Services/resumeService.js";
-import resumeRepository from "../Repositories/resumeRepository.js";
-import Resume from "../Models/Resume.js";
+import resumeService from "../../resumebuilder/backend/src/services/resumeService.js";
+import resumeRepository from "../../resumebuilder/backend/src/repositories/resumeRepository.js";
+import Resume from "../../resumebuilder/backend/src/models/Resume.js";
 
 describe("Resume Optimistic Concurrency Control Tests", () => {
     let user;

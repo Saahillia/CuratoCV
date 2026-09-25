@@ -5,5 +5,8 @@
   "type": "module",
   "exports": {
     "./*": "./src/*.js"
+  },
+  "dependencies": {
+    "mongoose": "^8.0.0"
   }
 }

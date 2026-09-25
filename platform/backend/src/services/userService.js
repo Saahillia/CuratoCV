@@ -27,17 +27,15 @@
 // ============================================================
 
 import User from "../models/User.js";
-import Resume from "../../../../backend/Models/Resume.js";
 import OTP from "../models/OTP.js";
 import PasswordResetToken from "../models/PasswordResetToken.js";
 import authUtils from "../utils/authUtils.js";
 import ApiError from "../utils/apiError.js";
-import imageService from "../../../../backend/Services/imageService.js";
+import { executeUserDeleteHooks, executeResumeProviders } from "./userServiceHooks.js";
 import emailService from "./emailService.js";
 import otpService from "./otpService.js";
 import emailConfig from "../configs/resend.js";
 import logger from "../configs/logger.js";
-import resumeRepository from "../../../../backend/Repositories/resumeRepository.js";
 
 // ============================================================
 // Validation Helpers
@@ -224,10 +222,7 @@ const getUserById = async (userId) => {
 const getUserResumes = async (userId) => {
     const normalizedUserId = requireString(String(userId), "User ID");
 
-    // ----------------------------------------------------
     // Verify user exists
-    // ----------------------------------------------------
-
     const user = await User.findById(normalizedUserId);
 
     if (!user) {
@@ -236,14 +231,8 @@ const getUserResumes = async (userId) => {
         );
     }
 
-    // ----------------------------------------------------
-    // Retrieve user's resumes
-    // ----------------------------------------------------
-
-    const resumes = await Resume.find({ userId: normalizedUserId })
-        .sort({ createdAt: -1 });
-
-    return resumes;
+    // Retrieve user's resumes using registered provider
+    return await executeResumeProviders(normalizedUserId);
 };
 
 // ============================================================
@@ -477,54 +466,11 @@ const deleteUser = async (userId) => {
         throw ApiError.notFound("User not found.");
     }
 
-    // 2. Cascade delete all resumes and associated ImageKit assets
+    // 2. Execute registered product delete hooks (cascade delete resumes, etc.)
     try {
-        const deletedResumes = await resumeRepository.deleteAllByUserId(normalizedUserId);
-
-        for (const resume of deletedResumes) {
-            const photoFileId = resume.personalInfo?.photo?.fileId;
-            if (photoFileId) {
-                // Remove photo after resume deletion
-                imageService.deleteImage(photoFileId).catch((error) => {
-                    logger.warn("Failed to delete photo from external storage during account deletion. Orphaned asset may require manual cleanup.", {
-                        userId: normalizedUserId,
-                        resumeId: resume._id.toString(),
-                        fileId: photoFileId,
-                        error: error.message,
-                    });
-                });
-            }
-        }
-
-        // --- Orphan Asset Cleanup (Reconciliation) ---
-        // List all files in the user's folder to ensure no orphaned images remain.
-        try {
-            const userFolder = `curatocv/resumes/${normalizedUserId}`;
-            const files = await imageService.listImages({
-                path: userFolder,
-            });
-
-            if (files && Array.isArray(files)) {
-                for (const file of files) {
-                    // Delete any file in user folder not referenced by the user's deleted resumes
-                    // The above loop already deleted referenced assets.
-                    await imageService.deleteImage(file.fileId).catch((error) => {
-                        logger.warn("Failed to delete orphaned photo during account deletion.", {
-                            userId: normalizedUserId,
-                            fileId: file.fileId,
-                            error: error.message,
-                        });
-                    });
-                }
-            }
-        } catch (error) {
-            logger.warn("Image reconciliation during account deletion failed.", {
-                userId: normalizedUserId,
-                error: error.message,
-            });
-        }
+        await executeUserDeleteHooks(normalizedUserId);
     } catch (error) {
-        logger.error("Error during cascaded resume cleanup on account deletion:", {
+        logger.error("Error during cascaded product hooks on account deletion:", {
             userId: normalizedUserId,
             error: error.message,
         });

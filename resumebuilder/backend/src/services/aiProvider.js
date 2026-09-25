@@ -1,6 +1,6 @@
 import OpenAI from "openai";
-import primaryAi from "./configs/ai.js";
-import logger from "../../platform/backend/src/configs/logger.js";
+import primaryAi from "../configs/ai.js";
+import logger from "@curatocv/platform-backend/configs/logger";
 
 const PRIMARY_PROVIDER = "gemini";
 const FALLBACK_PROVIDER = "groq";

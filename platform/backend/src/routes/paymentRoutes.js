@@ -22,10 +22,10 @@
 
 import express from "express";
 
-import paymentController from "../../platform/backend/src/controllers/paymentController.js";
+import paymentController from "../controllers/paymentController.js";
 
-import authMiddleware from "../../platform/backend/src/middlewares/authMiddleware.js";
-import razorpayWebhookMiddleware from "../../platform/backend/src/middlewares/razorpayWebhookMiddleware.js";
+import authMiddleware from "../middlewares/authMiddleware.js";
+import razorpayWebhookMiddleware from "../middlewares/razorpayWebhookMiddleware.js";
 
 // ============================================================
 // Router

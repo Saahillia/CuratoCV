@@ -2,16 +2,16 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import request from "supertest";
 import express from "express";
 import User from "../../platform/backend/src/models/User.js";
-import Resume from "../Models/Resume.js";
+import Resume from "../../resumebuilder/backend/src/models/Resume.js";
 import userController from "../../platform/backend/src/controllers/userController.js";
-import imageService from "../Services/imageService.js";
+import imageService from "../../resumebuilder/backend/src/services/imageService.js";
 import errorMiddleware from "../../platform/backend/src/middlewares/errorMiddleware.js";
 
 // ============================================================
 // CuratoCV User Account Deletion Asset Cleanup Tests (Step 6F-6)
 // ============================================================
 
-vi.mock("../Services/imageService.js", () => ({
+vi.mock("../../resumebuilder/backend/src/services/imageService.js", () => ({
     default: {
         deleteImage: vi.fn(),
         listImages: vi.fn(),

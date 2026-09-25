@@ -17,6 +17,10 @@
     "express": "^4.18.0",
     "puppeteer": "^21.0.0",
     "openai": "^4.0.0",
-    "imagekit": "^5.0.0"
+    "imagekit": "^5.0.0",
+    "@imagekit/nodejs": "^7.12.1",
+    "sharp": "^0.35.4",
+    "@curatocv/shared-utils": "workspace:*",
+    "@curatocv/platform-backend": "workspace:*"
   }
 }

@@ -4,6 +4,16 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./*": "./src/*.js"
+    "./controllers/*": "./src/controllers/*.js",
+    "./models/*": "./src/models/*.js",
+    "./repositories/*": "./src/repositories/*.js",
+    "./routes/*": "./src/routes/*.js",
+    "./services/*": "./src/services/*.js"
+  },
+  "dependencies": {
+    "mongoose": "^8.0.0",
+    "express": "^4.18.0",
+    "@curatocv/shared-utils": "workspace:*",
+    "@curatocv/platform-backend": "workspace:*"
   }
 }

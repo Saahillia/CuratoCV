@@ -2,7 +2,7 @@ import crypto from "node:crypto";
 
 import razorpay from "../configs/razorpay.js";
 
-import plans from "../../../../backend/Constants/plans.js";
+import plans from "../constants/plans.js";
 
 import paymentRepository from "../repositories/paymentRepository.js";
 import subscriptionRepository from "../repositories/subscriptionRepository.js";

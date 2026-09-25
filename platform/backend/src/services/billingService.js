@@ -1,4 +1,4 @@
-import plans from "../../../../backend/Constants/plans.js";
+import plans from "../constants/plans.js";
 
 import subscriptionRepository from "../repositories/subscriptionRepository.js";
 import paymentRepository from "../repositories/paymentRepository.js";

@@ -6,15 +6,17 @@ import connectDB from "../platform/backend/src/configs/db.js";
 import securityConfig from "../platform/backend/src/configs/security.js";
 
 import userRouter from "../platform/backend/src/routes/userRoutes.js";
-import resumeRouter from "./Routes/resumeRoutes.js";
-import aiRouter from "./Routes/aiRoutes.js";
-import paymentRouter from "./Routes/paymentRoutes.js";
-import subscriptionRouter from "./Routes/subscriptionRoutes.js";
-import healthRouter from "./Routes/healthRoutes.js";
+import "../resumebuilder/backend/src/services/userLifecycleHooks.js";
+import resumeRouter from "../resumebuilder/backend/src/routes/resumeRoutes.js";
+import aiRouter from "../resumebuilder/backend/src/routes/aiRoutes.js";
+import paymentRouter from "../platform/backend/src/routes/paymentRoutes.js";
+import subscriptionRouter from "../platform/backend/src/routes/subscriptionRoutes.js";
+import healthRouter from "../platform/backend/src/routes/healthRoutes.js";
+import notesRouter from "../notes/backend/src/routes/notesRoutes.js";
 
 import errorMiddleware from "../platform/backend/src/middlewares/errorMiddleware.js";
 import rateLimitMiddleware from "../platform/backend/src/middlewares/rateLimitMiddleware.js";
-import { closePdfBrowser } from "./Services/pdfService.js";
+import { closePdfBrowser } from "../resumebuilder/backend/src/services/pdfService.js";
 
 // ============================================================
 // CuratoCV Backend Server
@@ -327,6 +329,11 @@ app.use(
 app.use(
     "/api/subscriptions",
     subscriptionRouter,
+);
+
+app.use(
+    "/api/notes",
+    notesRouter,
 );
 
 app.use(

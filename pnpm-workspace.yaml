@@ -3,5 +3,6 @@ packages:
   - 'resumebuilder/*'
   - 'notes/*'
   - 'packages/*'
+  - 'frontend'
 allowBuilds:
   puppeteer: set this to true or false

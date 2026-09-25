@@ -1,11 +1,11 @@
-import Resume from "./models/Resume.js";
-import aiProvider from "./services/aiProvider.js";
-import aiService from "./services/aiService.js";
-import resumeService from "./services/resumeService.js";
-import resumeRepository from "./repositories/resumeRepository.js";
-import billingService from "../../platform/backend/src/services/billingService.js";
-import limits from "./constants/limits.js";
-import logger from "../../platform/backend/src/configs/logger.js";
+import Resume from "../models/Resume.js";
+import aiProvider from "../services/aiProvider.js";
+import aiService from "../services/aiService.js";
+import resumeService from "../services/resumeService.js";
+import resumeRepository from "../repositories/resumeRepository.js";
+import billingService from "@curatocv/platform-backend/services/billingService";
+import limits from "../constants/limits.js";
+import logger from "@curatocv/platform-backend/configs/logger";
 
 // ============================================================
 // Configuration

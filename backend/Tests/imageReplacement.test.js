@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import User from "../../platform/backend/src/models/User.js";
-import Resume from "../Models/Resume.js";
-import imageService from "../Services/imageService.js";
+import Resume from "../../resumebuilder/backend/src/models/Resume.js";
+import imageService from "../../resumebuilder/backend/src/services/imageService.js";
 
 // ============================================================
 // CuratoCV Image Replacement Lifecycle Unit Tests (Step 6F-3)
@@ -15,7 +15,7 @@ import imageService from "../Services/imageService.js";
 // is covered in imageReplacementIntegration.test.js.
 // ============================================================
 
-vi.mock("../Services/imageService.js", () => ({
+vi.mock("../../resumebuilder/backend/src/services/imageService.js", () => ({
     default: {
         uploadImage: vi.fn(),
         deleteImage: vi.fn().mockResolvedValue(true),

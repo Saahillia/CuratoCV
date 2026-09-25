@@ -4,6 +4,14 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./pages/*": "./src/pages/*.jsx"
+    "./pages/*": "./src/pages/*.jsx",
+    "./components/*": "./src/components/*.jsx",
+    "./services/*": "./src/services/*.js"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "@curatocv/api-client": "workspace:*",
+    "@curatocv/shared-utils": "workspace:*"
   }
 }

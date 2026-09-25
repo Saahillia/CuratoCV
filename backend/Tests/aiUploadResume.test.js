@@ -2,14 +2,14 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import request from "supertest";
 import express from "express";
 import User from "../../platform/backend/src/models/User.js";
-import Resume from "../Models/Resume.js";
+import Resume from "../../resumebuilder/backend/src/models/Resume.js";
 import Subscription from "../../platform/backend/src/models/Subscription.js";
-import { uploadResume } from "../Controllers/aiControllers.js";
+import { uploadResume } from "../../resumebuilder/backend/src/controllers/aiControllers.js";
 import billingService from "../../platform/backend/src/services/billingService.js";
 import errorMiddleware from "../../platform/backend/src/middlewares/errorMiddleware.js";
-import ai from "../Configs/ai.js";
+import ai from "../../resumebuilder/backend/src/configs/ai.js";
 
-vi.mock("../Configs/ai.js", () => ({
+vi.mock("../../resumebuilder/backend/src/configs/ai.js", () => ({
 	default: {
 		chat: {
 			completions: {

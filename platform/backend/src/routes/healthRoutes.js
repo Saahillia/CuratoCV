@@ -17,7 +17,7 @@
 
 import express from "express";
 
-import healthController from "../Controllers/healthController.js";
+import healthController from "../controllers/healthController.js";
 
 // ============================================================
 // Router

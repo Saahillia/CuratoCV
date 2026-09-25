@@ -1,11 +1,11 @@
-import Resume from "./models/Resume.js";
-import resumeService from "./services/resumeService.js";
-import resumeSections from "./constants/resumeSections.js";
-import imageService from "./services/imageService.js";
-import { validateSafeImage, validatePhotoObject } from "./utils/imageValidation.js";
-import logger from "../../platform/backend/src/configs/logger.js";
-import { generateResumePdf } from "./services/pdfService.js";
-import { renderResumeHtml } from "./services/resumeHtmlRenderer.js";
+import Resume from "../models/Resume.js";
+import resumeService from "../services/resumeService.js";
+import resumeSections from "../constants/resumeSections.js";
+import imageService from "../services/imageService.js";
+import { validateSafeImage, validatePhotoObject } from "../utils/imageValidation.js";
+import logger from "@curatocv/platform-backend/configs/logger";
+import { generateResumePdf } from "../services/pdfService.js";
+import { renderResumeHtml } from "../services/resumeHtmlRenderer.js";
 
 // ============================================================
 // Configuration

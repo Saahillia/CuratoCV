@@ -12,7 +12,7 @@ const PAYMENT_STATUSES = {
     PARTIALLY_REFUNDED: "partially_refunded",
     CANCELLED: "cancelled",
 };
-import { PLAN_IDS, BILLING_PERIODS } from "../Constants/plans.js";
+import { PLAN_IDS, BILLING_PERIODS } from "../../platform/backend/src/constants/plans.js";
 import crypto from "crypto";
 
 import razorpay from "../../platform/backend/src/configs/razorpay.js";

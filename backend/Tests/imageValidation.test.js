@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import sharp from "sharp";
-import { validateMagicBytes, validateSafeImage, validatePhotoObject } from "../Utils/imageValidation.js";
+import { validateMagicBytes, validateSafeImage, validatePhotoObject } from "../../resumebuilder/backend/src/utils/imageValidation.js";
 
 // ============================================================
 // CuratoCV Image Validation Unit Tests (6D)

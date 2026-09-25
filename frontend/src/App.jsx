@@ -24,7 +24,7 @@ import Billing from "./pages/Billing";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import { useDispatch, useSelector } from "react-redux";
-import api, { TOKEN_STORAGE_KEY } from "./services/api";
+import api, { TOKEN_STORAGE_KEY } from "@curatocv/api-client";
 import { login, logout, setLoading } from "./app/features/authSlice";
 import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";

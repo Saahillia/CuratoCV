@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
-import resumeSections from "./constants/resumeSections.js";
-import resumeCustomization from "./constants/resumeCustomization.js";
-import resumeDefaults from "./constants/resumeDefaults.js";
-import limits from "./constants/limits.js";
+import resumeSections from "../constants/resumeSections.js";
+import resumeCustomization from "../constants/resumeCustomization.js";
+import resumeDefaults from "../constants/resumeDefaults.js";
+import limits from "../constants/limits.js";
 
 // ============================================================
 // CuratoCV Resume Model

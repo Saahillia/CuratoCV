@@ -20,23 +20,17 @@
 // ============================================================
 
 import axios from "axios";
-import { store } from "../app/store.js";
-import { logout } from "../app/features/authSlice.js";
 
 // ============================================================
 // Configuration
 // ============================================================
-//
-// VITE_ env vars are statically inlined by Vite at build time.
-// VITE_API_URL is the preferred variable. We also fall back to
-// VITE_API_BASE_URL / VITE_BASE_URL so older .env files still
-// work. Default points at the local backend.
-// ============================================================
 
 let rawBaseUrl =
-    import.meta.env.VITE_API_URL ||
-    import.meta.env.VITE_API_BASE_URL ||
-    import.meta.env.VITE_BASE_URL ||
+    (typeof import.meta !== "undefined" && import.meta.env && (
+        import.meta.env.VITE_API_URL ||
+        import.meta.env.VITE_API_BASE_URL ||
+        import.meta.env.VITE_BASE_URL
+    )) ||
     "http://localhost:5000/api";
 
 if (rawBaseUrl.endsWith("/")) {
@@ -50,6 +44,13 @@ const API_BASE_URL = rawBaseUrl.endsWith("/api")
 // localStorage key used to persist the JWT. Must match the key
 // used by authService when storing/removing the token.
 export const TOKEN_STORAGE_KEY = "curatocv_token";
+
+// Callback handler for 401 Unauthorized events (e.g. Redux logout dispatch)
+let unauthorizedHandler = null;
+
+export const setUnauthorizedHandler = (handler) => {
+    unauthorizedHandler = handler;
+};
 
 // ============================================================
 // Axios instance
@@ -66,23 +67,17 @@ const api = axios.create({
 // ============================================================
 // Request interceptor
 // ============================================================
-//
-// Attaches the Bearer token to every outgoing request. The
-// token is read fresh on each request so logout/refresh is
-// reflected immediately without recreating the instance.
-// ============================================================
 
 api.interceptors.request.use(
     (config) => {
         try {
-            const token = localStorage.getItem(TOKEN_STORAGE_KEY);
-            if (token) {
-                config.headers.Authorization = `Bearer ${token}`;
+            if (typeof localStorage !== "undefined") {
+                const token = localStorage.getItem(TOKEN_STORAGE_KEY);
+                if (token) {
+                    config.headers.Authorization = `Bearer ${token}`;
+                }
             }
         } catch (error) {
-            // localStorage may be unavailable (e.g. privacy mode).
-            // Proceed without a token; the backend will reject if
-            // auth is required.
             console.warn("Unable to read auth token from storage:", error);
         }
         return config;
@@ -91,27 +86,22 @@ api.interceptors.request.use(
 );
 
 // ============================================================
-// Response interceptor (optional convenience)
-// ============================================================
-//
-// Surfaces a normalized error shape so callers can rely on
-// error.response.data, but does NOT swallow 401 handling here
-// so individual services/components can decide what to do
-// (e.g. redirect to login). Keep it minimal.
+// Response interceptor
 // ============================================================
 
 api.interceptors.response.use(
     (response) => response,
     (error) => {
-        // Global 401 handling: clear auth and redirect to login
+        // Global 401 handling
         if (error.response && error.response.status === 401) {
-            try {
-                store.dispatch(logout());
-            } catch {
-                // ignore dispatch errors
+            if (typeof unauthorizedHandler === "function") {
+                try {
+                    unauthorizedHandler();
+                } catch (handlerErr) {
+                    console.error("Error executing unauthorizedHandler:", handlerErr);
+                }
             }
-            // Redirect to login for UX
-            if (typeof window !== "undefined") {
+            if (typeof window !== "undefined" && window.location) {
                 window.location.href = "/login";
             }
         }
