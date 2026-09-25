@@ -1,20 +1,14 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import request from "supertest";
 import express from "express";
-import mongoose from "mongoose";
 import User from "../../platform/backend/src/models/User.js";
-import Note from "../../notes/backend/src/models/Note.js";
-import notesRouter from "../../notes/backend/src/routes/notesRoutes.js";
+import Note from "../../memo/backend/src/models/Note.js";
+import notesRouter from "../../memo/backend/src/routes/notesRoutes.js";
 import errorMiddleware from "../../platform/backend/src/middlewares/errorMiddleware.js";
+import { createAuthToken } from "./factories.js";
 
-// Mock auth middleware to inject req.userId from header for targeted testing
 const app = express();
 app.use(express.json());
-
-app.use((req, res, next) => {
-    req.userId = req.headers["x-user-id"];
-    next();
-});
 
 // Mount the controller/route logic
 app.use("/api/notes", notesRouter);
@@ -23,6 +17,8 @@ app.use(errorMiddleware);
 describe("Notes Foundation & API Verification", () => {
     let testUser;
     let otherUser;
+    let testToken;
+    let otherToken;
 
     beforeEach(async () => {
         await User.deleteMany({});
@@ -39,12 +35,15 @@ describe("Notes Foundation & API Verification", () => {
             email: `notes-other-${Date.now()}@example.com`,
             password: "HashedPassword123!",
         });
+
+        testToken = createAuthToken(testUser);
+        otherToken = createAuthToken(otherUser);
     });
 
     it("should create a new note with valid payload", async () => {
         const response = await request(app)
             .post("/api/notes/create")
-            .set("x-user-id", testUser._id.toString())
+            .set("Authorization", `Bearer ${testToken}`)
             .send({
                 title: "Engineering Architecture Note",
                 content: "Detailed markdown content discussing monorepos.",
@@ -85,7 +84,7 @@ describe("Notes Foundation & API Verification", () => {
 
         const response = await request(app)
             .get("/api/notes?folder=Work")
-            .set("x-user-id", testUser._id.toString());
+            .set("Authorization", `Bearer ${testToken}`);
 
         expect(response.status).toBe(200);
         expect(response.body.success).toBe(true);
@@ -104,7 +103,7 @@ describe("Notes Foundation & API Verification", () => {
         // First update with valid version
         const update1 = await request(app)
             .put(`/api/notes/${note._id}`)
-            .set("x-user-id", testUser._id.toString())
+            .set("Authorization", `Bearer ${testToken}`)
             .send({
                 title: "Updated Title",
                 expectedVersion: 1,
@@ -116,7 +115,7 @@ describe("Notes Foundation & API Verification", () => {
         // Second update with stale version
         const update2 = await request(app)
             .put(`/api/notes/${note._id}`)
-            .set("x-user-id", testUser._id.toString())
+            .set("Authorization", `Bearer ${testToken}`)
             .send({
                 title: "Conflicting Title",
                 expectedVersion: 1,
@@ -134,27 +133,27 @@ describe("Notes Foundation & API Verification", () => {
         // Soft delete
         const delRes = await request(app)
             .delete(`/api/notes/${note._id}`)
-            .set("x-user-id", testUser._id.toString());
+            .set("Authorization", `Bearer ${testToken}`);
 
         expect(delRes.status).toBe(200);
 
         // Verify it doesn't show in standard list
         const listRes = await request(app)
             .get("/api/notes")
-            .set("x-user-id", testUser._id.toString());
+            .set("Authorization", `Bearer ${testToken}`);
 
         expect(listRes.body.data.notes.length).toBe(0);
 
         // Restore
         const restoreRes = await request(app)
             .post(`/api/notes/${note._id}/restore`)
-            .set("x-user-id", testUser._id.toString());
+            .set("Authorization", `Bearer ${testToken}`);
 
         expect(restoreRes.status).toBe(200);
 
         const restoredList = await request(app)
             .get("/api/notes")
-            .set("x-user-id", testUser._id.toString());
+            .set("Authorization", `Bearer ${testToken}`);
 
         expect(restoredList.body.data.notes.length).toBe(1);
     });
@@ -167,13 +166,13 @@ describe("Notes Foundation & API Verification", () => {
 
         const getRes = await request(app)
             .get(`/api/notes/${note._id}`)
-            .set("x-user-id", otherUser._id.toString());
+            .set("Authorization", `Bearer ${otherToken}`);
 
         expect(getRes.status).toBe(404);
 
         const updateRes = await request(app)
             .put(`/api/notes/${note._id}`)
-            .set("x-user-id", otherUser._id.toString())
+            .set("Authorization", `Bearer ${otherToken}`)
             .send({ title: "Hacked" });
 
         expect(updateRes.status).toBe(404);

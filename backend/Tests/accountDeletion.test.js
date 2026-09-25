@@ -6,6 +6,9 @@ import Resume from "../../resumebuilder/backend/src/models/Resume.js";
 import userController from "../../platform/backend/src/controllers/userController.js";
 import imageService from "../../resumebuilder/backend/src/services/imageService.js";
 import errorMiddleware from "../../platform/backend/src/middlewares/errorMiddleware.js";
+// Match the production composition root, which registers Resume Builder's
+// account-deletion cleanup hooks before accepting requests.
+import "../../resumebuilder/backend/src/services/userLifecycleHooks.js";
 
 // ============================================================
 // CuratoCV User Account Deletion Asset Cleanup Tests (Step 6F-6)

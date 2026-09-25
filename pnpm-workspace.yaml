@@ -4,5 +4,8 @@ packages:
   - 'memo/*'
   - 'packages/*'
   - 'frontend'
+  - 'backend'
 allowBuilds:
-  puppeteer: set this to true or false
+  bcrypt: true
+  mongodb-memory-server: true
+  puppeteer: true

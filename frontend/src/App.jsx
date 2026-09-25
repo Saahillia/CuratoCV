@@ -25,7 +25,7 @@ import Profile from "@curatocv/platform-frontend/pages/Profile";
 import NotFound from "@curatocv/platform-frontend/pages/NotFound";
 import { useDispatch, useSelector } from "react-redux";
 import api, { TOKEN_STORAGE_KEY } from "@curatocv/api-client";
-import { login, logout, setLoading } from "./app/features/authSlice";
+import { login, logout, setLoading } from "@curatocv/platform-frontend/features/authSlice";
 import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 
@@ -134,9 +134,27 @@ const App = () => {
                     }
                 />
 
+                {/* Compatibility redirects for legacy notes routes */}
+                <Route
+                    path="/products/notes"
+                    element={
+                        <ProtectedRoute>
+                            <Navigate to="/products/memo" replace />
+                        </ProtectedRoute>
+                    }
+                />
+
                 {/* Memo Workspace Entry Point (Alias / Redirect) */}
                 <Route
                     path="/memo"
+                    element={
+                        <ProtectedRoute>
+                            <Navigate to="/products/memo" replace />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/notes"
                     element={
                         <ProtectedRoute>
                             <Navigate to="/products/memo" replace />

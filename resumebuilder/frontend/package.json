@@ -3,12 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "preview": "vite preview",
-    "lint": "eslint .",
-    "test": "vitest run"
-  },
   "exports": {
     "./components/*": "./src/components/*.jsx",
     "./pages/*": "./src/pages/*.jsx",

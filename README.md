@@ -5,9 +5,9 @@ CuratoCV is a modular, multi-product professional career suite built on a strict
 ## Architecture
 
 - **Platform (`platform/`):** Shared identity, billing, security, and communications.
-- **Products (`resumebuilder/`, `notes/`):** Independent product domains.
+- **Products (`resumebuilder/`, `memo/`):** Independent product domains (Memo formerly known as Notes).
 - **Shared Packages (`packages/`):** `@curatocv/shared-utils`, `@curatocv/api-client`.
-- **Dependency Direction:** Product → Platform → Packages. Products must never import from each other.
+- **Dependency Direction:** Products may depend on Platform and shared packages. Product-to-product, Platform-to-product, and shared-package-to-product dependencies are forbidden.
 
 ## Workspace Packages
 
@@ -15,23 +15,16 @@ CuratoCV is a modular, multi-product professional career suite built on a strict
 - `@curatocv/platform-frontend`
 - `@curatocv/resumebuilder-backend`
 - `@curatocv/resumebuilder-frontend`
-- `@curatocv/notes-backend`
-- `@curatocv/notes-frontend`
+- `@curatocv/memo-backend`
+- `@curatocv/memo-frontend`
 - `@curatocv/shared-utils`
 - `@curatocv/api-client`
 
-## Certified Architectural State
+## Architecture Status
 
-The CuratoCV monorepo architecture is certified compliant with the following standards:
+Workspace ownership and dependency rules are documented in `docs/architecture/CODEBASE_MAP.md`. The API composition root is `backend/server.js`; domain backend routes remain owned by Platform, Resume Builder, and Memo. The Memo UI is currently a placeholder, while `/api/notes` remains its backend contract for compatibility. Architecture or security certification is made only after the relevant checks have been run.
 
-- **Monorepo Structure**: pnpm workspaces + Turborepo.
-- **Dependency Flow**: Product Domain → Platform Foundation → Shared Packages.
-- **Ownership**: Explicit domain ownership established for `platform/`, `resumebuilder/`, `notes/`, and `packages/`.
-- **Decoupling**: Fully decoupled lifecycle hooks for platform/product interactions.
-- **Security Baseline**: Verified JWT/tokenVersion, constant-time auth, HMAC-SHA256 webhooks, and atomic credit transactions.
-- **Migration Debt**: Explicitly tracked in `docs/decisions/ADR-006-migration-debt.md`.
-
-For detailed architecture, refer to `docs/decisions/`.
+For detailed architecture, refer to `docs/architecture/CODEBASE_MAP.md` and `docs/decisions/`.
 
 ## Getting Started
 

@@ -1,10 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "./features/authSlice.js";
-import resumeReducer from "./features/resumeSlice.js";
+import authReducer from "@curatocv/platform-frontend/features/authSlice";
 
 export const store = configureStore({
     reducer: {
         auth: authReducer,
-        resumes: resumeReducer,
     },
 });
