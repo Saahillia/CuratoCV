@@ -118,3 +118,7 @@ public/uploads/
 
 *.map*.log
 ! .env.example
+dist/
+*.log
+.env*
+! .env.example
