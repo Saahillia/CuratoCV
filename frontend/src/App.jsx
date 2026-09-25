@@ -10,7 +10,7 @@ import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 import Home from "@curatocv/platform-frontend/pages/Home";
 import Layout from "@curatocv/platform-frontend/pages/Layout";
 import Products from "@curatocv/platform-frontend/pages/Products";
-import NotesPlaceholder from "@curatocv/notes-frontend/pages/NotesPlaceholder";
+import MemoPlaceholder from "@curatocv/memo-frontend/pages/MemoPlaceholder";
 import Dashboard from "@curatocv/resumebuilder-frontend/pages/Dashboard";
 import ResumeBuilder from "@curatocv/resumebuilder-frontend/pages/ResumeBuilder";
 import Preview from "@curatocv/resumebuilder-frontend/pages/Preview";
@@ -126,20 +126,20 @@ const App = () => {
                     }
                 />
                 <Route
-                    path="/products/notes"
+                    path="/products/memo"
                     element={
                         <ProtectedRoute>
-                            <NotesPlaceholder />
+                            <MemoPlaceholder />
                         </ProtectedRoute>
                     }
                 />
 
-                {/* Notes Workspace Entry Point (Alias / Redirect) */}
+                {/* Memo Workspace Entry Point (Alias / Redirect) */}
                 <Route
-                    path="/notes"
+                    path="/memo"
                     element={
                         <ProtectedRoute>
-                            <Navigate to="/products/notes" replace />
+                            <Navigate to="/products/memo" replace />
                         </ProtectedRoute>
                     }
                 />

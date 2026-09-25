@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import plans from "../../../../backend/Constants/plans.js";
+import plans from "../../../../platform/backend/src/constants/plans.js";
 
 // ============================================================
 // CuratoCV Plan Configuration Tests
@@ -9,7 +9,7 @@ import plans from "../../../../backend/Constants/plans.js";
 // These tests verify the immutable business configuration
 // defined in:
 //
-//     backend/Constants/plans.js
+//     platform/backend/src/constants/plans.js
 //
 // These are unit tests.
 //

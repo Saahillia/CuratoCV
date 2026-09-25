@@ -3,7 +3,7 @@
  * Maps canonical enum values from resumeCustomization.js to CSS styles.
  */
 
-// Canonical enum values (mirrors backend/Constants/resumeCustomization.js)
+// Canonical enum values (mirrors resumebuilder/backend/src/constants/resumeCustomization.js)
 export const VALID_FONT_FAMILIES = Object.freeze([
   "system",
   "inter",

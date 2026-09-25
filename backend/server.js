@@ -12,7 +12,7 @@ import aiRouter from "../resumebuilder/backend/src/routes/aiRoutes.js";
 import paymentRouter from "../platform/backend/src/routes/paymentRoutes.js";
 import subscriptionRouter from "../platform/backend/src/routes/subscriptionRoutes.js";
 import healthRouter from "../platform/backend/src/routes/healthRoutes.js";
-import notesRouter from "../notes/backend/src/routes/notesRoutes.js";
+import memoRouter from "../.memo/backend0/src/routes/notesRoutes.js";
 
 import errorMiddleware from "../platform/backend/src/middlewares/errorMiddleware.js";
 import rateLimitMiddleware from "../platform/backend/src/middlewares/rateLimitMiddleware.js";
@@ -333,7 +333,7 @@ app.use(
 
 app.use(
     "/api/notes",
-    notesRouter,
+    memoRouter,
 );
 
 app.use(
