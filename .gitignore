@@ -116,4 +116,5 @@ public/uploads/
 # Generated source maps
 # ============================================================
 
-*.map
+*.map*.log
+! .env.example
