@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/backend/src/repositories/paymentRepository.js.
+ * Purpose: perform Platform payment Repository persistence operations.
+ * Why here: database access is separated from HTTP and platform policy.
+ */
 import Payment from "../models/Payment.js";
 
 // ============================================================

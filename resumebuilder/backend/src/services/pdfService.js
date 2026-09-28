@@ -1,3 +1,9 @@
+/**
+ * Developer context for resumebuilder/backend/src/services/pdfService.js.
+ * Purpose: render resume HTML to PDF and reuse/close the Puppeteer browser process.
+ * Why here: product policy stays in Resume Builder; Platform and repositories supply common capabilities/data access.
+ */
+import fs from "node:fs";
 import puppeteer from "puppeteer";
 
 // ============================================================
@@ -54,6 +60,83 @@ const PDF_CONFIG = Object.freeze({
 });
 
 // ============================================================
+// Chrome Resolution
+// ============================================================
+//
+// Puppeteer pins one exact Chrome build. If that download is
+// missing on the host, `puppeteer.launch()` rejects with
+// "Could not find Chrome" and every PDF request fails with a
+// 500 instead of returning a PDF.
+//
+// Resolution order:
+//   1. PUPPETEER_EXECUTABLE_PATH — explicit operator override
+//   2. Puppeteer's own pinned build, when it is installed
+//   3. A Chrome/Chromium already installed on the host
+//
+// Returning `undefined` keeps Puppeteer's default resolution,
+// so behavior is unchanged on hosts that have the pinned build.
+// ============================================================
+
+const CHROME_FALLBACK_PATHS = Object.freeze([
+    "/usr/bin/google-chrome",
+    "/usr/bin/google-chrome-stable",
+    "/opt/google/chrome/chrome",
+    "/usr/bin/chromium",
+    "/usr/bin/chromium-browser",
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+]);
+
+const isUsableExecutable = (value) => {
+    if (
+        typeof value !== "string" ||
+        !value.trim()
+    ) {
+        return false;
+    }
+
+    try {
+        return fs.existsSync(value);
+    } catch {
+        return false;
+    }
+};
+
+const resolveChromeExecutable = () => {
+    const configured =
+        process.env.PUPPETEER_EXECUTABLE_PATH;
+
+    if (
+        isUsableExecutable(configured)
+    ) {
+        return configured;
+    }
+
+    try {
+        const pinned =
+            puppeteer.executablePath();
+
+        if (
+            isUsableExecutable(pinned)
+        ) {
+            /*
+             * The pinned build is installed; let Puppeteer
+             * resolve it exactly as before.
+             */
+            return undefined;
+        }
+    } catch {
+        /*
+         * The pinned download is missing on this host, so
+         * fall through to a locally installed Chrome.
+         */
+    }
+
+    return CHROME_FALLBACK_PATHS.find(
+        isUsableExecutable,
+    );
+};
+
+// ============================================================
 // Browser Instance
 // ============================================================
 //
@@ -67,16 +150,24 @@ let browserPromise = null;
 
 const launchBrowser = async () => {
     if (!browserPromise) {
-        browserPromise =
+        const executablePath =
+            resolveChromeExecutable();
+
+        browserPromise = Promise.race([
             puppeteer.launch({
                 headless: true,
+
+                executablePath,
 
                 args: [
                     "--no-sandbox",
                     "--disable-setuid-sandbox",
                     "--disable-dev-shm-usage",
+                    "--disable-gpu",
                 ],
-            });
+            }),
+            new Promise((_, reject) => setTimeout(() => reject(new Error("Browser launch timed out")), 20000))
+        ]);
 
         /*
          * If browser startup fails, clear the promise so a
@@ -283,20 +374,17 @@ const generateResumePdf = async ({
 
         /*
          * We inject controlled HTML directly into the page.
-         *
-         * We do not navigate to arbitrary external URLs.
+         * Set a timeout to prevent hanging if content injection fails.
          */
-        await page.setContent(
-            validatedHtml,
-            {
-                waitUntil:
-                    "networkidle0",
-            }
-        );
+        await Promise.race([
+            page.setContent(validatedHtml, { waitUntil: "load" }),
+            new Promise((_, reject) => setTimeout(() => reject(new Error("Content injection timed out")), 60000))
+        ]);
 
         /*
          * Wait for fonts so the generated PDF matches the
-         * resume preview as closely as possible.
+         * resume preview as closely as possible, but with a timeout
+         * so it doesn't hang indefinitely if CDN fonts fail.
          */
         await page.evaluate(
             async () => {
@@ -304,62 +392,71 @@ const generateResumePdf = async ({
                     document.fonts &&
                     document.fonts.ready
                 ) {
-                    await document.fonts
-                        .ready;
+                    await Promise.race([
+                        document.fonts.ready,
+                        new Promise((resolve) => setTimeout(resolve, 5000))
+                    ]);
                 }
             }
         );
 
         /*
          * Wait for all images to finish loading/decoding.
+         * Add a timeout here as well.
          */
-        await page.evaluate(
-            async () => {
-                const images =
-                    Array.from(
-                        document.images
-                    );
+        await Promise.race([
+            page.evaluate(
+                async () => {
+                    const images =
+                        Array.from(
+                            document.images
+                        );
 
-                await Promise.all(
-                    images.map(
-                        (image) => {
-                            if (
-                                image.complete
-                            ) {
-                                return Promise.resolve();
-                            }
-
-                            return new Promise(
-                                (
-                                    resolve
-                                ) => {
-                                    image.addEventListener(
-                                        "load",
-                                        resolve,
-                                        {
-                                            once: true,
-                                        }
-                                    );
-
-                                    image.addEventListener(
-                                        "error",
-                                        resolve,
-                                        {
-                                            once: true,
-                                        }
-                                    );
+                    await Promise.all(
+                        images.map(
+                            (image) => {
+                                if (
+                                    image.complete
+                                ) {
+                                    return Promise.resolve();
                                 }
-                            );
-                        }
-                    )
-                );
-            }
-        );
+
+                                return new Promise(
+                                    (
+                                        resolve
+                                    ) => {
+                                        image.addEventListener(
+                                            "load",
+                                            resolve,
+                                            {
+                                                once: true,
+                                            }
+                                        );
+
+                                        image.addEventListener(
+                                            "error",
+                                            resolve,
+                                            {
+                                                once: true,
+                                            }
+                                        );
+                                    }
+                                );
+                            }
+                        )
+                    );
+                }
+            ),
+            new Promise((_, reject) => setTimeout(() => reject(new Error("Image loading timed out")), 15000))
+        ]);
 
         const pdfBuffer =
-            await page.pdf({
-                ...PDF_CONFIG,
-            });
+            await Promise.race([
+                page.pdf({
+                    ...PDF_CONFIG,
+                }),
+                new Promise((_, reject) => setTimeout(() => reject(new Error("PDF generation timed out")), 30000))
+            ]);
 
         return {
             buffer:

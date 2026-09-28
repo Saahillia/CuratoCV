@@ -34,7 +34,9 @@ import {
 } from "../utils/resume";
 
 import api from "@curatocv/api-client";
-import toast from "react-hot-toast";
+// Named import: react-hot-toast's default export is the CJS exports object,
+// not the toast function — `import toast from` made toast.error/success undefined.
+import { toast } from "react-hot-toast";
 
 const ResumeBuilder = () => {
     const { resumeId } = useParams();
@@ -624,40 +626,24 @@ const ResumeBuilder = () => {
         }
         setIsGeneratingPdf(true);
         try {
-            // Ensure latest changes are saved before downloading
-            if (saveInFlightRef.current) {
-                await new Promise((resolve) => {
-                    const check = setInterval(() => {
-                        if (!saveInFlightRef.current) { clearInterval(check); resolve(); }
-                    }, 100);
-                });
-            } else if (prevDataRef.current !== resumeData) {
-                await saveToServer(resumeData);
-                if (saveInFlightRef.current) {
-                    await new Promise((resolve) => {
-                        const check = setInterval(() => {
-                            if (!saveInFlightRef.current) { clearInterval(check); resolve(); }
-                        }, 100);
-                    });
-                }
-            }
-
             const response = await api.get(`/resumes/pdf/${resumeId}`, {
                 responseType: "blob",
+                timeout: 90000, // Explicitly extend timeout to 90s for PDF generation
             });
 
             const blob = new Blob([response.data], { type: "application/pdf" });
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
             a.href = url;
-            a.download = response.headers["content-disposition"]?.split("filename=")?.[1]?.replace(/"/g, '') || `${resumeData.title || "resume"}_CuratoCV.pdf`;
+            a.download = `${(resumeData.title || "Resume").trim()}_CuratoCV.pdf`;
             document.body.appendChild(a);
             a.click();
             a.remove();
             URL.revokeObjectURL(url);
             toast.success("PDF downloaded!");
         } catch (err) {
-            toast.error("Unable to generate your PDF. Please try again.");
+            console.error("Download error:", err);
+            toast.error(err?.message || "Unable to generate your PDF. Please try again.");
         } finally {
             setIsGeneratingPdf(false);
         }

@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/frontend/src/pages/Login.jsx.
+ * Purpose: implement the Platform Login page workflow.
+ * Why here: account, navigation, and billing surfaces are common platform capabilities mounted by the root shell.
+ */
 import { Lock, Mail, User2Icon, Check, X, Eye, EyeOff } from 'lucide-react'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
@@ -5,6 +10,8 @@ import { useNavigate } from 'react-router-dom';
 import { login } from '../app/features/authSlice';
 import { toast } from 'react-hot-toast';
 import api from '@curatocv/api-client';
+import AuthPageLayout from '../components/auth/AuthPageLayout';
+import Button from '../components/common/Button';
 
 const PASSWORD_RULES = [
     { label: 'At least 8 characters', test: (pwd) => pwd.length >= 8 },
@@ -18,6 +25,8 @@ const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    // The pricing/product UI can open this page in registration mode with a
+    // query parameter; absent that hint, show the normal login form.
     const query = new URLSearchParams(window.location.search);
     const urlState = query.get('state');
     const [state, setState] = React.useState(urlState || "login")
@@ -36,10 +45,14 @@ const Login = () => {
         e.preventDefault();
         setLoadingState(true);
         try {
+            // `state` is either "login" or "register", so the same form uses
+            // the matching Platform endpoint without duplicating submit logic.
             const { data } = await api.post(`/users/${state}`, formData);
 
             // The API returns { success, data: { userId, name, email, token } }.
             // login() expects { token, user }.
+            // Support both the current `{ data: {...} }` envelope and an older
+            // direct payload, then adapt API field names to the auth slice shape.
             const payload = data?.data ?? data;
 
             dispatch(login({
@@ -57,6 +70,8 @@ const Login = () => {
             toast.success(`${state === "login" ? "Logged in" : "Registered"} successfully!`, { duration: 3000 });
             navigate("/app", { replace: true });
         } catch (error) {
+            // Validators can return several field errors. Show them together;
+            // otherwise display the server's safe message or Axios fallback.
             const errorDetails = error?.response?.data?.error?.details;
             const errorMessage = Array.isArray(errorDetails) && errorDetails.length > 0
                 ? errorDetails.join('\n')
@@ -68,11 +83,13 @@ const Login = () => {
     }
 
     const handleChange = (e) => {
+        // Keep all input fields in one state object, changing only the field
+        // whose `name` matches the edited input.
         const { name, value } = e.target
         setFormData(prev => ({ ...prev, [name]: value }))
     }
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-50 py-8 px-4">
+        <AuthPageLayout>
             <form onSubmit={handleSubmit} className="sm:w-[400px] w-full text-center border border-gray-300/60 rounded-2xl px-8 bg-white shadow-sm">
                 <h1 className="text-gray-900 text-3xl mt-10 font-medium">{state === "login" ? "Login" : "Sign up"}</h1>
                 <p className="text-gray-500 text-sm mt-2">Please {state === "login" ? "log in" : "sign up"} to continue</p>
@@ -101,7 +118,7 @@ const Login = () => {
                     <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="p-1 hover:text-gray-600"
+                        className="cv-touch-target inline-flex items-center justify-center rounded-md p-1 hover:text-gray-600"
                     >
                         {showPassword ? (
                             <EyeOff size={16} color="#6B7280" />
@@ -141,16 +158,16 @@ const Login = () => {
                         </button>
                     </div>
                 )}
-                <button type="submit" disabled={loading} className="mt-5 w-full h-11 rounded-full text-white bg-blue-500 hover:opacity-90 transition-opacity disabled:opacity-50 font-medium">
+                <Button type="submit" disabled={loading} className="mt-5 w-full rounded-full">
                     {loading ? "Please wait..." : state === "login" ? "Login" : "Sign up"}
-                </button>
+                </Button>
                 <p onClick={() => setState(prev => prev === "login" ? "register" : "login")} className="text-gray-500 text-sm mt-3 mb-10 cursor-pointer">
                     {state === "login" ? "Don't have an account?" : "Already have an account?"}{" "}
                     <span className="text-blue-500 hover:underline font-medium">click here</span>
                 </p>
             </form>
 
-        </div>
+        </AuthPageLayout>
     )
 }
 

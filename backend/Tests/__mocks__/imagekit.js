@@ -1,3 +1,8 @@
+/**
+ * Developer context for backend/Tests/__mocks__/imagekit.js.
+ * Purpose: documents the test scenarios for imagekit.
+ * Why separate: keep expected behavior and regression checks close to the tested contract; production behavior stays in its owning module.
+ */
 import { vi } from "vitest";
 
 /**

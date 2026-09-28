@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/backend/src/repositories/userRepository.js.
+ * Purpose: perform Platform user Repository persistence operations.
+ * Why here: database access is separated from HTTP and platform policy.
+ */
 import User from "../models/User.js";
 
 // ============================================================

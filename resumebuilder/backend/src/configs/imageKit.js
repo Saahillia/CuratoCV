@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/backend/src/configs/imageKit.js.
+ * Purpose: configure Resume Builder's image Kit provider/integration.
+ * Why here: integration settings belong near their product service and must be supplied through environment configuration.
+ */
 import ImageKit from "@imagekit/nodejs";
 
 // ============================================================

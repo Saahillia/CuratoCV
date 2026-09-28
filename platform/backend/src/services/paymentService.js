@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/backend/src/services/paymentService.js.
+ * Purpose: verify payment-provider events and coordinate trusted payment and billing state.
+ * Why here: identity, billing, and shared platform policy have one owner that product packages consume.
+ */
 import crypto from "node:crypto";
 
 import razorpay from "../configs/razorpay.js";

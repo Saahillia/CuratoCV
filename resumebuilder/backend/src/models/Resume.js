@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/backend/src/models/Resume.js.
+ * Purpose: define the Mongoose document schema and behavior for resume data.
+ * Why here: resume-owned data schema belongs to the resume domain and should not leak into other products.
+ */
 import mongoose from "mongoose";
 
 import resumeSections from "../constants/resumeSections.js";
@@ -437,6 +442,10 @@ const typographySchema =
                         .typography
                         .lineHeight,
             },
+            fontSizePt: { type: Number, default: 10.5, min: 8, max: 18 },
+            nameSizePt: { type: Number, default: 22, min: 14, max: 36 },
+            sectionHeadingSizePt: { type: Number, default: 13.5, min: 9, max: 24 },
+            entryHeadingSizePt: { type: Number, default: 11.5, min: 8, max: 18 },
         },
 
         embeddedSchemaOptions
@@ -490,6 +499,9 @@ const spacingSchema =
                         .spacing
                         .entrySpacing,
             },
+            lineHeightMultiplier: { type: Number, default: 1.25, min: 1, max: 2 },
+            sectionSpacingMm: { type: Number, default: 3, min: 0, max: 12 },
+            pageMarginMm: { type: Number, default: 10, min: 5, max: 20 },
         },
 
         embeddedSchemaOptions

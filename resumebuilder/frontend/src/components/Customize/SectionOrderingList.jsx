@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/Customize/SectionOrderingList.jsx.
+ * Purpose: implement a Resume Builder presentation/customization control for Section Ordering List.
+ * Why here: design-setting interactions belong to the resume domain; shared shell code should only mount the product.
+ */
 import React from "react";
 import {
   DndContext,
@@ -21,6 +26,8 @@ import { GripVertical } from "lucide-react";
  * Sortable section item.
  */
 const SortableSectionItem = ({ id, section }) => {
+  // useSortable supplies pointer/keyboard bindings and the temporary drag
+  // transform; the list below owns the final order update.
   const {
     attributes,
     listeners,
@@ -67,6 +74,8 @@ const SortableSectionItem = ({ id, section }) => {
 };
 
 const SectionOrderingList = ({ sections = [], onChange }) => {
+  // Pointer dragging needs a small movement before activation so a normal
+  // click does not accidentally start a reorder; keyboard users get a sensor too.
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -80,12 +89,15 @@ const SectionOrderingList = ({ sections = [], onChange }) => {
 
   // Filter visible/active sections if needed, or allow reordering all?
   // We should reorder all sections that might appear. We'll sort them by their current order first.
+  // Copy before sorting: sorting the prop array in place would mutate parent state.
   const activeSections = [...sections].sort((a, b) => (a.order || 0) - (b.order || 0));
 
   const handleDragEnd = (event) => {
     const { active, over } = event;
 
     if (over && active.id !== over.id) {
+      // Convert dragged item IDs back to indexes, move the item, then rewrite
+      // order as 0..n-1 so later renders do not depend on sparse old numbers.
       const oldIndex = activeSections.findIndex((s) => s._id === active.id);
       const newIndex = activeSections.findIndex((s) => s._id === over.id);
 

@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/frontend/src/pages/Billing.jsx.
+ * Purpose: implement the Platform Billing page workflow.
+ * Why here: account, navigation, and billing surfaces are common platform capabilities mounted by the root shell.
+ */
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";

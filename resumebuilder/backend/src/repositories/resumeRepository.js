@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/backend/src/repositories/resumeRepository.js.
+ * Purpose: perform Resume Builder persistence queries for resume Repository.
+ * Why here: data access stays separate from HTTP handling and domain workflow decisions.
+ */
 import Resume from "../models/Resume.js";
 
 // ============================================================

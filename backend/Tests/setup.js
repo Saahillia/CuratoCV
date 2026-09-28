@@ -1,3 +1,8 @@
+/**
+ * Developer context for backend/Tests/setup.js.
+ * Purpose: documents the test scenarios for setup.
+ * Why separate: keep expected behavior and regression checks close to the tested contract; production behavior stays in its owning module.
+ */
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import { beforeAll, afterAll, beforeEach, afterEach } from "vitest";

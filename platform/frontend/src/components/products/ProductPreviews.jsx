@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/frontend/src/components/products/ProductPreviews.jsx.
+ * Purpose: provide reusable Platform Product Previews UI.
+ * Why here: common interface elements are owned by Platform and consumed through workspace exports.
+ */
 import React from 'react';
 import { FileText, NotebookPen } from 'lucide-react';
 

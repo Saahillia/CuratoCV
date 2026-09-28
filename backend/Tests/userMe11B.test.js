@@ -1,3 +1,8 @@
+/**
+ * Developer context for backend/Tests/userMe11B.test.js.
+ * Purpose: documents the test scenarios for user Me11 B.test.
+ * Why separate: keep expected behavior and regression checks close to the tested contract; production behavior stays in its owning module.
+ */
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import userService from "../../platform/backend/src/services/userService.js";
 import userValidator from "../../platform/backend/src/validators/userValidator.js";

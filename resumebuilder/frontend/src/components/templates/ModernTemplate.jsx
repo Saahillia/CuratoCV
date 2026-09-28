@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/templates/ModernTemplate.jsx.
+ * Purpose: provide the Modern Template resume layout/template implementation.
+ * Why here: visual template decisions belong to Resume Builder, separate from canonical content and Platform shell concerns.
+ */
 import { Mail, Phone, MapPin, Globe } from "lucide-react";
 import { resolveSpacing } from "../../utils/layoutSpacing";
 import { resolveColors } from "../../utils/colorResolver";
@@ -5,6 +10,7 @@ import { resolveHeader } from "../../utils/headerResolver";
 import { resolvePhoto } from "../../utils/photoResolver";
 import { resolveLinks } from "../../utils/linksResolver";
 import { resolveFooter } from "../../utils/footerResolver";
+import { formatResumeDate } from "../../utils/dateFormatting";
 
 const LinkedInIcon = ({ className = "size-4" }) => (
   <svg
@@ -18,7 +24,8 @@ const LinkedInIcon = ({ className = "size-4" }) => (
   </svg>
 );
 
-const ModernTemplate = ({ data, colors, accentColor, spacing, header, photo, links, footer }) => {
+const ModernTemplate = ({ data, colors, accentColor, spacing, header, photo, links, footer, document }) => {
+  // Resolve user settings once into render-ready values so the template markup stays focused on layout.
   const sp = resolveSpacing(spacing);
   const col = resolveColors(colors || { accent: accentColor });
   const hdr = resolveHeader(header);
@@ -26,11 +33,13 @@ const ModernTemplate = ({ data, colors, accentColor, spacing, header, photo, lin
   const lnks = resolveLinks(links);
   const ftr = resolveFooter(footer);
 
+  // External links open safely in a new tab by default; noopener prevents the new page controlling this one.
   const linkTarget = lnks.target === "same-tab" ? "_self" : "_blank";
   const linkRel = lnks.target === "same-tab" ? undefined : "noopener noreferrer";
   const linkClass = lnks.style === "underline" ? "underline" : "hover:underline";
   const linkColor = lnks.style === "accent" ? col.accent : "#FFFFFF";
 
+  // Resume images may be saved URLs or temporary File objects selected in the current browser session.
   const image = data?.personal_info?.image;
   const isImageUrl = typeof image === "string" && image.trim().length > 0;
   const isImageFile = typeof File !== "undefined" && image instanceof File;
@@ -50,16 +59,8 @@ const ModernTemplate = ({ data, colors, accentColor, spacing, header, photo, lin
   const alignmentClass = hdr.alignment === "center" ? "text-center" : hdr.alignment === "right" ? "text-right" : "text-left";
   const flexAlignmentClass = hdr.alignment === "center" ? "justify-center" : hdr.alignment === "right" ? "justify-end" : "justify-start";
 
-  const formatDate = (dateStr) => {
-    if (!dateStr) return "";
-
-    const [year, month] = dateStr.split("-");
-
-    return new Date(year, month - 1).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-    });
-  };
+  // Stored dates use YYYY-MM; convert them into a short human-readable label for the resume.
+  const formatDate = (dateStr) => formatResumeDate(dateStr, document?.dateFormat);
 
   return (
     <div

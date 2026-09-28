@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/backend/src/configs/multer.js.
+ * Purpose: configure Platform's multer infrastructure or security integration.
+ * Why here: common infrastructure has one configuration owner and should not be independently re-created by products.
+ */
 import multer from "multer";
 
 // ============================================================

@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/templates/MinimalTemplate.jsx.
+ * Purpose: provide the Minimal Template resume layout/template implementation.
+ * Why here: visual template decisions belong to Resume Builder, separate from canonical content and Platform shell concerns.
+ */
 import { resolveSpacing } from "../../utils/layoutSpacing";
 import { resolveColors } from "../../utils/colorResolver";
 import { resolveHeader } from "../../utils/headerResolver";
@@ -5,8 +10,9 @@ import { resolvePhoto } from "../../utils/photoResolver";
 import { resolveLinks } from "../../utils/linksResolver";
 import { resolveFooter } from "../../utils/footerResolver";
 import { resolveSectionCustomization, resolveEntryCustomization } from "../../utils/sectionCustomization";
+import { formatResumeDate } from "../../utils/dateFormatting";
 
-const MinimalTemplate = ({ data, colors, accentColor, spacing, header, photo, links, footer }) => {
+const MinimalTemplate = ({ data, colors, accentColor, spacing, header, photo, links, footer, document }) => {
   const sp = resolveSpacing(spacing);
   const col = resolveColors(colors || { accent: accentColor });
   const hdr = resolveHeader(header);
@@ -38,14 +44,7 @@ const MinimalTemplate = ({ data, colors, accentColor, spacing, header, photo, li
   const alignmentClass = hdr.alignment === "center" ? "text-center" : hdr.alignment === "right" ? "text-right" : "text-left";
   const flexAlignmentClass = hdr.alignment === "center" ? "justify-center" : hdr.alignment === "right" ? "justify-end" : "justify-start";
 
-  const formatDate = (dateStr) => {
-    if (!dateStr) return "";
-    const [year, month] = dateStr.split("-");
-    return new Date(year, month - 1).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-    });
-  };
+  const formatDate = (dateStr) => formatResumeDate(dateStr, document?.dateFormat);
 
   return (
     <div

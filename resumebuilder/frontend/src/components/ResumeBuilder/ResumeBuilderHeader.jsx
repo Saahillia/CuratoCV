@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/ResumeBuilder/ResumeBuilderHeader.jsx.
+ * Purpose: provide the Resume Builder Resume Builder Header interface component.
+ * Why here: resume presentation and editing UI belong to the product package; the root shell owns routing and global providers.
+ */
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -222,6 +227,16 @@ const ResumeBuilderHeader = ({
 
                 {/* ================= LEFT SIDE: Dashboard & Tabs + Title Switcher ================= */}
                 <div className="flex items-center gap-2 sm:gap-6 w-full max-w-full pr-4">
+                    <Link
+                        to="/products/resume-builder"
+                        aria-label="All Products"
+                        title="All Products"
+                        className="shrink-0 inline-flex h-9 items-center gap-1.5 rounded-lg border border-[#D9E7F2] px-2.5 sm:px-3 text-[#17375F] hover:bg-[#EAF3FB] transition-colors text-sm font-medium"
+                    >
+                        <ChevronLeft className="size-4" />
+                        <span className="hidden md:inline">All Products</span>
+                    </Link>
+
                     {/* Back to Dashboard */}
                     <Link
                         to="/app/resumes"

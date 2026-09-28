@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/frontend/src/components/common/Breadcrumbs.jsx.
+ * Purpose: provide reusable Platform Breadcrumbs UI.
+ * Why here: common interface elements are owned by Platform and consumed through workspace exports.
+ */
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ChevronRight } from "lucide-react";

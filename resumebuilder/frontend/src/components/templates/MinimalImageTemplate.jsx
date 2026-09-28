@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/templates/MinimalImageTemplate.jsx.
+ * Purpose: provide the Minimal Image Template resume layout/template implementation.
+ * Why here: visual template decisions belong to Resume Builder, separate from canonical content and Platform shell concerns.
+ */
 import { Mail, Phone, MapPin, Globe } from "lucide-react";
 
 const LinkedInIcon = ({ className = "size-4" }) => (
@@ -17,8 +22,10 @@ import { resolveHeader } from "../../utils/headerResolver";
 import { resolvePhoto } from "../../utils/photoResolver";
 import { resolveLinks } from "../../utils/linksResolver";
 import { resolveFooter } from "../../utils/footerResolver";
+import { formatResumeDate } from "../../utils/dateFormatting";
 
-const MinimalImageTemplate = ({ data, colors, accentColor, spacing, header, photo, links, footer }) => {
+const MinimalImageTemplate = ({ data, colors, accentColor, spacing, header, photo, links, footer, document }) => {
+    // Convert saved custom settings into validated values before using them in the visual layout.
     const sp = resolveSpacing(spacing);
     const col = resolveColors(colors || { accent: accentColor });
     const hdr = resolveHeader(header);
@@ -31,6 +38,7 @@ const MinimalImageTemplate = ({ data, colors, accentColor, spacing, header, phot
     const linkClass = lnks.style === "underline" ? "underline" : "hover:underline";
     const linkColor = lnks.style === "accent" ? col.accent : col.muted;
 
+    // Support both a persisted photo URL and a temporary File selected before the user saves.
     const image = data?.personal_info?.image;
     const isImageFile = typeof File !== "undefined" && image instanceof File;
     const imageSrc = isImageFile ? URL.createObjectURL(image) : image;
@@ -46,15 +54,8 @@ const MinimalImageTemplate = ({ data, colors, accentColor, spacing, header, phot
 
     const alignmentClass = hdr.alignment === "center" ? "text-center items-center" : hdr.alignment === "right" ? "text-right items-end" : "text-left items-start";
 
-    const formatDate = (dateStr) => {
-        if (!dateStr) return "";
-        const [year, month] = dateStr.split("-");
-        const date = new Date(year, month - 1);
-        return isNaN(date.getTime()) ? dateStr : date.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "short",
-        });
-    };
+    // Stored dates use YYYY-MM; invalid values fall back to their original text rather than disappearing.
+    const formatDate = (dateStr) => formatResumeDate(dateStr, document?.dateFormat);
 
     return (
         <div

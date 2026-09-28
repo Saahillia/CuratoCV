@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/backend/src/services/billingService.js.
+ * Purpose: apply subscription, billing-period, and entitlement rules for Platform.
+ * Why here: identity, billing, and shared platform policy have one owner that product packages consume.
+ */
 import plans from "../constants/plans.js";
 
 import subscriptionRepository from "../repositories/subscriptionRepository.js";

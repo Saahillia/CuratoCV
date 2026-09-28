@@ -1,12 +1,19 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/Customize/EntrySettings.jsx.
+ * Purpose: implement a Resume Builder presentation/customization control for Entry Settings.
+ * Why here: design-setting interactions belong to the resume domain; shared shell code should only mount the product.
+ */
 import React from "react";
 import { RotateCcw } from "lucide-react";
 import { resolveEntryCustomization, updateEntryCustomization, ENTRY_CUSTOMIZATION_FIELDS } from "../../utils/sectionCustomization";
 
 const EntrySettings = ({ entry, onChange, onReset, parentSection }) => {
+  // Customization is stored per entry; resolved values apply defaults without overwriting the saved choices.
   const current = entry?.customization || {};
   const resolved = resolveEntryCustomization(current);
 
   const handleUpdate = (patch) => {
+    // Send an immutable copy upward so the parent can update the resume and autosave it.
     onChange({
       ...entry,
       customization: {
@@ -17,6 +24,7 @@ const EntrySettings = ({ entry, onChange, onReset, parentSection }) => {
   };
 
   if (!entry) {
+    // A settings panel can remain visible before the user selects an entry.
     return (
       <div className="p-4 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-500">
         Select an entry in the editor to customize its settings.

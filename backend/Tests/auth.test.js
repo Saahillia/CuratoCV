@@ -1,3 +1,8 @@
+/**
+ * Developer context for backend/Tests/auth.test.js.
+ * Purpose: documents the test scenarios for auth.test.
+ * Why separate: keep expected behavior and regression checks close to the tested contract; production behavior stays in its owning module.
+ */
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { createUser, createAuthToken } from "./factories.js";
 import userService from "../../platform/backend/src/services/userService.js";

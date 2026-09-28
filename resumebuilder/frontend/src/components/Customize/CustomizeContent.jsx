@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/Customize/CustomizeContent.jsx.
+ * Purpose: implement a Resume Builder presentation/customization control for Customize Content.
+ * Why here: design-setting interactions belong to the resume domain; shared shell code should only mount the product.
+ */
 import React, { useEffect, useRef } from "react";
 import DocumentSettings from "./DocumentSettings";
 import LayoutSettings from "./LayoutSettings";
@@ -190,7 +195,7 @@ const CustomizeContent = ({ activePanel, resumeData, onChange, onSelectPanel }) 
                     id="section-photo"
                     className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 scroll-mt-6"
                 >
-                    <PhotoSettings customization={design} onChange={updateDesign} />
+                    <PhotoSettings customization={design} onChange={updateDesign} selectedTemplate={design.template || "classic"} />
                 </div>
 
                 {/* 9. Link Formatting */}

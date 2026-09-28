@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/backend/src/utils/imageValidation.js.
+ * Purpose: validate or normalize Resume Builder image Validation input.
+ * Why here: domain validation is applied at the product boundary before external processing or persistence.
+ */
 import sharp from "sharp";
 import { URL } from "url";
 

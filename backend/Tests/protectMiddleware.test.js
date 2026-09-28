@@ -1,3 +1,8 @@
+/**
+ * Developer context for backend/Tests/protectMiddleware.test.js.
+ * Purpose: documents the test scenarios for protect Middleware.test.
+ * Why separate: keep expected behavior and regression checks close to the tested contract; production behavior stays in its owning module.
+ */
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import jwt from "jsonwebtoken";
 import protect from "../../platform/backend/src/middlewares/authMiddleware.js";

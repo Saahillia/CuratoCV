@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/frontend/src/pages/Layout.jsx.
+ * Purpose: implement the Platform Layout page workflow.
+ * Why here: account, navigation, and billing surfaces are common platform capabilities mounted by the root shell.
+ */
 import { Outlet, Link } from 'react-router-dom'
 import Navbar from '../components/common/Navbar'
 import { useSelector } from 'react-redux'

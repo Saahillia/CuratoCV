@@ -1,3 +1,8 @@
+/**
+ * Developer context for backend/Tests/resumeEntitlement.test.js.
+ * Purpose: documents the test scenarios for resume Entitlement.test.
+ * Why separate: keep expected behavior and regression checks close to the tested contract; production behavior stays in its owning module.
+ */
 import { describe, it, expect, beforeEach } from "vitest";
 import { createUser, createResume, createSubscription, createResumes } from "./factories.js";
 import resumeService from "../../resumebuilder/backend/src/services/resumeService.js";

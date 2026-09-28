@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/Customize/LayoutSettings.jsx.
+ * Purpose: implement a Resume Builder presentation/customization control for Layout Settings.
+ * Why here: design-setting interactions belong to the resume domain; shared shell code should only mount the product.
+ */
 import React from "react";
 import { RotateCcw } from "lucide-react";
 import {
@@ -48,10 +53,12 @@ const Select = ({ label, value, options, onChange }) => (
 );
 
 const LayoutSettings = ({ resumeData, onChange }) => {
+  // Read the saved nested settings safely; missing values are represented by defaults in the controls below.
   const design = resumeData?.design || {};
   const layout = design.layout || {};
 
   const updateLayout = (patch) => {
+    // Merge only the changed layout options and preserve unrelated resume/design settings.
     onChange({
       ...resumeData,
       design: { ...resumeData.design, layout: { ...layout, ...patch } },
@@ -59,6 +66,7 @@ const LayoutSettings = ({ resumeData, onChange }) => {
   };
 
   const updateSections = (newSections) => {
+    // Section ordering is resume content metadata, so send it through the same parent-owned resume update callback.
     onChange({ ...resumeData, sections: newSections });
   };
 

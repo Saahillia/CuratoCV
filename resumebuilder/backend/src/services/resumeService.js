@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/backend/src/services/resumeService.js.
+ * Purpose: apply resume-domain rules, ownership checks, and persistence workflows.
+ * Why here: product policy stays in Resume Builder; Platform and repositories supply common capabilities/data access.
+ */
 import resumeRepository from "../repositories/resumeRepository.js";
 import billingService from "@curatocv/platform-backend/services/billingService";
 import imageService from "./imageService.js";

@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/backend/src/middlewares/authMiddleware.js.
+ * Purpose: apply Platform auth Middleware request-wide or route-level policy.
+ * Why here: shared request controls are centralized so domain routes consume the same capability.
+ */
 import jwt from "jsonwebtoken";
 import logger from "../configs/logger.js";
 import ApiError from "../utils/apiError.js";

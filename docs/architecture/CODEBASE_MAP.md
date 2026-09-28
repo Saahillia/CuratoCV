@@ -8,7 +8,7 @@ CuratoCV is a pnpm workspace monorepo orchestrated by Turborepo.
 - `backend/server.js` is the Express composition root. It initializes shared middleware and the database, mounts domain routers, and handles process shutdown. Domain behavior belongs in the owning backend package.
 - `platform/backend` and `platform/frontend` own identity, authentication, billing, subscriptions, security, and shared platform UI/services.
 - `resumebuilder/backend` and `resumebuilder/frontend` own resume APIs, editor behavior, AI/PDF work, and resume persistence.
-- `memo/backend` and `memo/frontend` own Memo APIs and UI. The UI is currently a placeholder. The backend route remains mounted at `/api/notes` for API compatibility; `/notes` and `/products/notes` frontend redirects are intentional.
+- `memo/backend` and `memo/frontend` own Memo APIs and UI. The frontend currently provides a responsive workspace landing page that lists and creates documents through the existing notes API. Folder hierarchy and document editing remain future product work. The backend route remains mounted at `/api/notes` for API compatibility; `/notes` and `/products/notes` frontend redirects are intentional.
 - `packages/api-client` and `packages/shared-utils` contain cross-domain shared code.
 
 ## Dependency Direction

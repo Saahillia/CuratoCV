@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/TemplateRenderer.jsx.
+ * Purpose: provide the Resume Builder Template Renderer interface component.
+ * Why here: resume presentation and editing UI belong to the product package; the root shell owns routing and global providers.
+ */
 import ClassicTemplate from "./templates/ClassicTemplate";
 import ModernTemplate from "./templates/ModernTemplate";
 import MinimalTemplate from "./templates/MinimalTemplate";

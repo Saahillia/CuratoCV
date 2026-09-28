@@ -1,3 +1,8 @@
+/**
+ * Developer context for tests/unit/backend/constants/plans.test.js.
+ * Purpose: documents the test scenarios for plans.test.
+ * Why separate: keep expected behavior and regression checks close to the tested contract; production behavior stays in its owning module.
+ */
 import { describe, expect, it } from "vitest";
 
 import plans from "../../../../platform/backend/src/constants/plans.js";

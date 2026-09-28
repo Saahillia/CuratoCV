@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/ContentEditor/FullScreenEntryEditor.jsx.
+ * Purpose: implement the Resume Builder content-editing UI for Full Screen Entry Editor.
+ * Why here: editing controls stay inside Resume Builder and communicate through the editor's resume-data callbacks rather than owning application routing.
+ */
 import React, { useState } from "react";
 import { ChevronLeft, Check, Loader2 } from "lucide-react";
 import EntryEditor from "./EntryEditor";

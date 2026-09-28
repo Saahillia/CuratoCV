@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/backend/src/configs/db.js.
+ * Purpose: configure Platform's db infrastructure or security integration.
+ * Why here: common infrastructure has one configuration owner and should not be independently re-created by products.
+ */
 import mongoose from "mongoose";
 
 // ============================================================

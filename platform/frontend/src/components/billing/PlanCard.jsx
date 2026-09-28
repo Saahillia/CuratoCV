@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/frontend/src/components/billing/PlanCard.jsx.
+ * Purpose: provide reusable Platform Plan Card UI.
+ * Why here: common interface elements are owned by Platform and consumed through workspace exports.
+ */
 import React from "react";
 import { ArrowRight } from "lucide-react";
 

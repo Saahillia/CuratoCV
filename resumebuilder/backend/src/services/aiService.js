@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/backend/src/services/aiService.js.
+ * Purpose: enforce AI entitlement and credit rules, then coordinate model-provider calls.
+ * Why here: product policy stays in Resume Builder; Platform and repositories supply common capabilities/data access.
+ */
 import billingService from "@curatocv/platform-backend/services/billingService";
 import aiProvider from "./aiProvider.js";
 import logger from "@curatocv/platform-backend/configs/logger";

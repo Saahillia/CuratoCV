@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/Forms/ExperienceForm.jsx.
+ * Purpose: edit one Resume Builder resume-entry type (Experience Form).
+ * Why here: field-specific input behavior remains close to its domain form and is composed by the content editor.
+ */
 import { Loader2, Sparkle } from "lucide-react";
 import { useState } from "react";
 import api from "@curatocv/api-client";
@@ -17,10 +22,14 @@ const ExperienceForm = ({ data = {}, onChange }) => {
   const [generating, setGenerating] = useState(false);
 
   const setField = (field, value) => {
+    // Send a new object upward instead of mutating props; the parent owns the
+    // resume document and decides when the updated entry should be saved.
     onChange({ ...data, [field]: value });
   };
 
   const setIsCurrent = (isCurrent) => {
+    // A current job has no end date. Clearing it here prevents contradictory
+    // values from being stored when the checkbox is turned on.
     onChange({
       ...data,
       isCurrent,
@@ -30,6 +39,8 @@ const ExperienceForm = ({ data = {}, onChange }) => {
 
   const generateDescription = async () => {
     setGenerating(true);
+    // Context helps the backend produce relevant wording. The backend remains
+    // responsible for authentication, limits, and AI-credit enforcement.
     const prompt = `enhance this job description ${data.description || ""} for the position of ${data.position || ""} at ${data.company || ""}. Make it more compelling and highlight key achievements.`;
 
     try {
@@ -38,6 +49,7 @@ const ExperienceForm = ({ data = {}, onChange }) => {
       });
       setField("description", response.data.enhancedContent);
     } catch (error) {
+      // Keep the user's existing text intact and show a recoverable message.
       toast.error(error.message);
     } finally {
       setGenerating(false);

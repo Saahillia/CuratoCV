@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/frontend/src/configs/products.js.
+ * Purpose: configure Platform frontend products behavior.
+ * Why here: common UI/service settings should remain centralized in Platform.
+ */
 export const PRODUCTS = [
     {
         id: "resume-builder",

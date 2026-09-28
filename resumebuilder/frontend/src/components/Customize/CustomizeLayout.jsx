@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/Customize/CustomizeLayout.jsx.
+ * Purpose: implement a Resume Builder presentation/customization control for Customize Layout.
+ * Why here: design-setting interactions belong to the resume domain; shared shell code should only mount the product.
+ */
 import React, { useState } from "react";
 import CustomizeSidebar, { CUSTOMIZE_NAV_ITEMS } from "./CustomizeSidebar";
 import CustomizeContent from "./CustomizeContent";

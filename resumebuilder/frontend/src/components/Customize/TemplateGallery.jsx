@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/Customize/TemplateGallery.jsx.
+ * Purpose: implement a Resume Builder presentation/customization control for Template Gallery.
+ * Why here: design-setting interactions belong to the resume domain; shared shell code should only mount the product.
+ */
 import React from "react";
 import { TEMPLATES } from "../../constants/templates";
 import { Check, Sparkles } from "lucide-react";

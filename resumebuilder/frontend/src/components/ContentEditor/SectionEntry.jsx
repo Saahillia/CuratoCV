@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/ContentEditor/SectionEntry.jsx.
+ * Purpose: implement the Resume Builder content-editing UI for Section Entry.
+ * Why here: editing controls stay inside Resume Builder and communicate through the editor's resume-data callbacks rather than owning application routing.
+ */
 import React, { useState } from "react";
 import { Eye, EyeOff, Trash2, GripVertical, ChevronRight, Edit3, MoreVertical } from "lucide-react";
 import EntryEditor from "./EntryEditor";
@@ -13,9 +18,11 @@ const SectionEntry = ({
   const [isEditing, setIsEditing] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
+  // Older entries may store fields directly while newer ones wrap them in `data`; support both shapes when rendering.
   const entryData = entry.data || entry;
   const isVisible = entry.visible !== false;
 
+  // Resume data has historical naming variants, so choose the first available field for a readable summary.
   const title =
     entryData.title ||
     entryData.position ||
@@ -38,6 +45,7 @@ const SectionEntry = ({
   const location = entryData.location || entryData.field || "";
 
   const handleToggleVisibility = (e) => {
+    // Stop the card click from opening the editor, then update this entry without mutating its existing object.
     e.stopPropagation();
     onUpdate({
       ...entry,
@@ -46,11 +54,13 @@ const SectionEntry = ({
   };
 
   const handleDeleteConfirm = () => {
+    // Only the explicit confirmation action reaches the parent's delete callback.
     setShowDeleteConfirm(false);
     onDelete();
   };
 
   if (isEditing) {
+    // The editor owns field-level edits; this card forwards its result and closes only after save/cancel.
     return (
       <EntryEditor
         entry={entry}

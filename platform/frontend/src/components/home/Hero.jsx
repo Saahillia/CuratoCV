@@ -1,6 +1,12 @@
+/**
+ * Developer context for platform/frontend/src/components/home/Hero.jsx.
+ * Purpose: provide reusable Platform Hero UI.
+ * Why here: common interface elements are owned by Platform and consumed through workspace exports.
+ */
 import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import BrandLockup from "../common/BrandLockup";
 
 const Hero = () => {
   const { user } = useSelector((state) => state.auth);
@@ -92,52 +98,34 @@ const Hero = () => {
           <nav className="mx-auto flex w-full max-w-[1440px] items-center justify-between px-6 py-5 md:px-10 lg:px-16 xl:px-20">
 
             {/* Logo */}
-            <Link
-              to="/"
-              className="flex items-center"
-              aria-label="CuratoCV Home"
-            >
-              <div className="flex items-center gap-2">
-                <img
-                  src="/logo.svg"
-                  alt="CuratoCV"
-                  className="h-12 w-auto object-contain"
-                />
-
-                <img
-                  src="/brand.svg"
-                  alt="CuratoCV wordmark"
-                  className="h-10 w-auto object-contain"
-                />
-              </div>
-            </Link>
+            <BrandLockup />
 
             {/* Desktop Navigation */}
             <div className="hidden items-center gap-9 md:flex">
               <a
                 href="#home"
-                className="text-sm font-medium text-[#334155] transition hover:text-[#1D3557]"
+                className="text-sm font-medium text-[#334155] transition hover:text-[#17375F]"
               >
                 Home
               </a>
 
               <a
                 href="#features"
-                className="text-sm font-medium text-[#334155] transition hover:text-[#1D3557]"
+                className="text-sm font-medium text-[#334155] transition hover:text-[#17375F]"
               >
                 Features
               </a>
 
               <a
                 href="#how-it-works"
-                className="text-sm font-medium text-[#334155] transition hover:text-[#1D3557]"
+                className="text-sm font-medium text-[#334155] transition hover:text-[#17375F]"
               >
                 Testimonials
               </a>
 
               <a
                 href="#cta"
-                className="text-sm font-medium text-[#334155] transition hover:text-[#1D3557]"
+                className="text-sm font-medium text-[#334155] transition hover:text-[#17375F]"
               >
                 Contact
               </a>
@@ -147,7 +135,7 @@ const Hero = () => {
             <div className="hidden items-center gap-3 md:flex">
               <Link
                 to="/app?state=login"
-                className="rounded-full px-5 py-2.5 text-sm font-medium text-[#334155] transition hover:bg-white/70 hover:text-[#1D3557]"
+                className="rounded-full px-5 py-2.5 text-sm font-medium text-[#334155] transition hover:bg-white/70 hover:text-[#17375F]"
                 hidden={user}
               >
                 Log in
@@ -155,7 +143,7 @@ const Hero = () => {
 
               <Link
                 to="/app?state=register"
-                className="rounded-full bg-[#1D3557] px-5 py-2.5 text-sm font-medium text-white shadow-sm shadow-[#1D3557]/25 transition hover:bg-[#162E4E] active:scale-[0.98]"
+                className="rounded-full bg-[#17375F] px-5 py-2.5 text-sm font-medium text-white shadow-sm shadow-[#17375F]/25 transition hover:bg-[#122B4A] active:scale-[0.98]"
                 hidden={user}
               >
                 Get started
@@ -163,7 +151,7 @@ const Hero = () => {
 
               <Link
                 to="/products"
-                className="hidden rounded-full bg-[#1D3557] px-8 py-2 text-white transition hover:bg-[#162E4E] active:scale-95 md:block"
+                className="hidden rounded-full bg-[#17375F] px-8 py-2 text-white transition hover:bg-[#122B4A] active:scale-95 md:block"
                 hidden={!user}
               >
                 Dashboard
@@ -174,7 +162,7 @@ const Hero = () => {
             <button
               type="button"
               onClick={() => setMenuOpen(true)}
-              className="flex size-10 items-center justify-center rounded-xl border border-[#E2E8F0] bg-white/80 text-[#1D3557] shadow-sm transition hover:bg-white md:hidden"
+              className="cv-touch-target flex size-10 items-center justify-center rounded-xl border border-[#E2E8F0] bg-white/80 text-[#17375F] shadow-sm transition hover:bg-white md:hidden"
               aria-label="Open menu"
             >
               <svg
@@ -204,7 +192,7 @@ const Hero = () => {
           {/* Overlay */}
           <div
             onClick={() => setMenuOpen(false)}
-            className={`absolute inset-0 bg-[#1D3557]/30 backdrop-blur-sm transition-opacity duration-300 ${
+            className={`absolute inset-0 bg-[#17375F]/30 backdrop-blur-sm transition-opacity duration-300 ${
               menuOpen ? "opacity-100" : "opacity-0"
             }`}
           />
@@ -216,30 +204,12 @@ const Hero = () => {
             }`}
           >
             <div className="flex items-center justify-between">
-              <Link
-                to="/"
-                onClick={() => setMenuOpen(false)}
-                className="flex items-center"
-              >
-                <div className="flex items-center gap-2">
-                  <img
-                    src="/logo.svg"
-                    alt="CuratoCV"
-                    className="h-10 w-auto"
-                  />
-
-                  <img
-                    src="/brand.svg"
-                    alt="CuratoCV wordmark"
-                    className="h-8 w-auto"
-                  />
-                </div>
-              </Link>
+              <BrandLockup onClick={() => setMenuOpen(false)} />
 
               <button
                 type="button"
                 onClick={() => setMenuOpen(false)}
-                className="flex size-10 items-center justify-center rounded-xl border border-[#E2E8F0] text-[#1D3557] hover:bg-[#F8FAFC]"
+                className="cv-touch-target flex size-10 items-center justify-center rounded-xl border border-[#E2E8F0] text-[#17375F] hover:bg-[#F8FAFC]"
                 aria-label="Close menu"
               >
                 <svg
@@ -262,7 +232,7 @@ const Hero = () => {
               <a
                 href="#home"
                 onClick={() => setMenuOpen(false)}
-                className="rounded-xl px-4 py-3.5 text-base font-medium text-[#334155] hover:bg-[#F8FAFC] hover:text-[#1D3557]"
+                className="rounded-xl px-4 py-3.5 text-base font-medium text-[#334155] hover:bg-[#F8FAFC] hover:text-[#17375F]"
               >
                 Home
               </a>
@@ -270,7 +240,7 @@ const Hero = () => {
               <a
                 href="#features"
                 onClick={() => setMenuOpen(false)}
-                className="rounded-xl px-4 py-3.5 text-base font-medium text-[#334155] hover:bg-[#F8FAFC] hover:text-[#1D3557]"
+                className="rounded-xl px-4 py-3.5 text-base font-medium text-[#334155] hover:bg-[#F8FAFC] hover:text-[#17375F]"
               >
                 Features
               </a>
@@ -278,7 +248,7 @@ const Hero = () => {
               <a
                 href="#how-it-works"
                 onClick={() => setMenuOpen(false)}
-                className="rounded-xl px-4 py-3.5 text-base font-medium text-[#334155] hover:bg-[#F8FAFC] hover:text-[#1D3557]"
+                className="rounded-xl px-4 py-3.5 text-base font-medium text-[#334155] hover:bg-[#F8FAFC] hover:text-[#17375F]"
               >
                 How it works
               </a>
@@ -286,7 +256,7 @@ const Hero = () => {
               <a
                 href="#cta"
                 onClick={() => setMenuOpen(false)}
-                className="rounded-xl px-4 py-3.5 text-base font-medium text-[#334155] hover:bg-[#F8FAFC] hover:text-[#1D3557]"
+                className="rounded-xl px-4 py-3.5 text-base font-medium text-[#334155] hover:bg-[#F8FAFC] hover:text-[#17375F]"
               >
                 Get started
               </a>
@@ -296,7 +266,7 @@ const Hero = () => {
               <Link
                 to="/app?state=login"
                 onClick={() => setMenuOpen(false)}
-                className="flex h-12 items-center justify-center rounded-full border border-[#E2E8F0] font-medium text-[#334155] transition hover:border-[#1D3557]/30 hover:bg-[#F8FAFC]"
+                className="flex h-12 items-center justify-center rounded-full border border-[#E2E8F0] font-medium text-[#334155] transition hover:border-[#17375F]/30 hover:bg-[#F8FAFC]"
               >
                 Log in
               </Link>
@@ -304,7 +274,7 @@ const Hero = () => {
               <Link
                 to="/app?state=register"
                 onClick={() => setMenuOpen(false)}
-                className="flex h-12 items-center justify-center rounded-full bg-[#1D3557] font-medium text-white transition hover:bg-[#162E4E]"
+                className="flex h-12 items-center justify-center rounded-full bg-[#17375F] font-medium text-white transition hover:bg-[#122B4A]"
               >
                 Get started
               </Link>
@@ -314,11 +284,11 @@ const Hero = () => {
 
         {/* Hero */}
         <main id="home">
-          <section className="relative mx-auto flex max-w-[1440px] flex-col items-center px-6 pb-20 pt-20 text-center md:px-10 md:pt-28 lg:px-16 lg:pt-32 xl:px-20">
+          <section className="cv-screen-hero cv-page-gutter cv-short-landscape-compact relative mx-auto flex max-w-[1440px] flex-col items-center pb-20 pt-20 text-center md:pt-28 lg:pt-32">
 
             {/* Announcement */}
-            <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-[#1D3557]/15 bg-white/60 px-4 py-2 text-xs font-medium text-[#1D3557] shadow-sm shadow-[#1D3557]/10 backdrop-blur-sm">
-              <span className="flex size-1.5 rounded-full bg-[#00BFA6]" />
+            <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-[#17375F]/15 bg-white/60 px-4 py-2 text-xs font-medium text-[#17375F] shadow-sm shadow-[#17375F]/10 backdrop-blur-sm">
+              <span className="flex size-1.5 rounded-full bg-[#12B5B0]" />
 
               AI-powered resume creation
 
@@ -338,9 +308,9 @@ const Hero = () => {
             </div>
 
             {/* Headline */}
-            <h1 className="max-w-5xl text-5xl font-semibold leading-[1.08] tracking-[-0.04em] text-[#0F172A] sm:text-6xl md:text-7xl lg:text-[76px]">
+            <h1 className="max-w-5xl text-[clamp(2.25rem,1.25rem+5vw,4.75rem)] font-semibold leading-[1.08] tracking-[-0.04em] text-[#0F172A]">
               Create a resume that{" "}
-              <span className="bg-gradient-to-r from-[#1D3557] via-[#4A90E2] to-[#00BFA6] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#17375F] via-[#4A90E2] to-[#12B5B0] bg-clip-text text-transparent">
                 gets noticed.
               </span>
             </h1>
@@ -355,7 +325,7 @@ const Hero = () => {
             <div className="mt-9 flex w-full flex-col items-center justify-center gap-3 sm:w-auto sm:flex-row">
               <Link
                 to="/app?state=register"
-                className="group flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#1D3557] px-8 text-sm font-semibold text-white shadow-lg shadow-[#1D3557]/25 transition hover:bg-[#162E4E] hover:shadow-xl hover:shadow-[#1D3557]/30 active:scale-[0.98] sm:w-auto"
+                className="group flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#17375F] px-8 text-sm font-semibold text-white shadow-lg shadow-[#17375F]/25 transition hover:bg-[#122B4A] hover:shadow-xl hover:shadow-[#17375F]/30 active:scale-[0.98] sm:w-auto"
               >
                 Create your resume
 
@@ -378,7 +348,7 @@ const Hero = () => {
 
               <a
                 href="#features"
-                className="flex h-12 w-full items-center justify-center rounded-full border border-[#E2E8F0] bg-white/70 px-8 text-sm font-semibold text-[#334155] shadow-sm backdrop-blur-sm transition hover:border-[#1D3557]/25 hover:bg-white sm:w-auto"
+                className="flex h-12 w-full items-center justify-center rounded-full border border-[#E2E8F0] bg-white/70 px-8 text-sm font-semibold text-[#334155] shadow-sm backdrop-blur-sm transition hover:border-[#17375F]/25 hover:bg-white sm:w-auto"
               >
                 Explore features
               </a>
@@ -394,7 +364,7 @@ const Hero = () => {
 
               <div
                 id="features"
-                className="grid overflow-hidden rounded-3xl border border-[#1D3557]/10 bg-white/75 shadow-[0_20px_60px_-30px_rgba(29,53,87,0.25)] backdrop-blur-md sm:grid-cols-2 lg:grid-cols-4"
+                className="grid overflow-hidden rounded-3xl border border-[#17375F]/10 bg-white/75 shadow-[0_20px_60px_-30px_rgba(23,55,95,0.25)] backdrop-blur-md sm:grid-cols-2 lg:grid-cols-4"
               >
                 {benefits.map((benefit, index) => (
                   <div
@@ -405,7 +375,7 @@ const Hero = () => {
                         : ""
                     } ${index === 1 ? "sm:border-b lg:border-b-0" : ""}`}
                   >
-                    <div className="mb-5 flex size-10 items-center justify-center rounded-xl bg-[#F8FAFC] text-[#1D3557] transition group-hover:bg-[#1D3557] group-hover:text-white">
+                    <div className="mb-5 flex size-10 items-center justify-center rounded-xl bg-[#F8FAFC] text-[#17375F] transition group-hover:bg-[#17375F] group-hover:text-white">
                       {benefit.icon}
                     </div>
 
@@ -428,7 +398,7 @@ const Hero = () => {
             >
               <div className="absolute -inset-4 -z-10 rounded-[32px] bg-gradient-to-r from-[#F8FAFC] via-white to-[#E6F8F5] blur-2xl" />
 
-              <div className="overflow-hidden rounded-3xl border border-[#1D3557]/10 bg-white text-left shadow-[0_30px_80px_-35px_rgba(29,53,87,0.35)]">
+              <div className="overflow-hidden rounded-3xl border border-[#17375F]/10 bg-white text-left shadow-[0_30px_80px_-35px_rgba(23,55,95,0.35)]">
 
                 {/* Browser Header */}
                 <div className="flex items-center justify-between border-b border-[#E2E8F0] bg-[#F8FAFC]/80 px-5 py-3">
@@ -457,7 +427,7 @@ const Hero = () => {
                         </p>
                       </div>
 
-                      <div className="rounded-lg bg-[#E6F8F5] px-2.5 py-1 text-[10px] font-semibold text-[#00BFA6]">
+                      <div className="rounded-lg bg-[#E6F8F5] px-2.5 py-1 text-[10px] font-semibold text-[#12B5B0]">
                         AI Ready
                       </div>
                     </div>
@@ -482,10 +452,10 @@ const Hero = () => {
 
                   {/* Resume */}
                   <div className="flex items-center justify-center p-6">
-                    <div className="w-full max-w-[340px] rounded-lg border border-[#E2E8F0] bg-white p-6 shadow-lg shadow-[#1D3557]/10">
+                    <div className="w-full max-w-[340px] rounded-lg border border-[#E2E8F0] bg-white p-6 shadow-lg shadow-[#17375F]/10">
                       <div className="flex items-start justify-between border-b border-[#E2E8F0] pb-4">
                         <div>
-                          <div className="h-3 w-28 rounded bg-[#1D3557]" />
+                          <div className="h-3 w-28 rounded bg-[#17375F]" />
                           <div className="mt-2 h-2 w-36 rounded bg-[#E2E8F0]" />
                         </div>
 
@@ -494,20 +464,20 @@ const Hero = () => {
 
                       <div className="mt-5 space-y-4">
                         <div>
-                          <div className="mb-2 h-2 w-16 rounded bg-[#1D3557]" />
+                          <div className="mb-2 h-2 w-16 rounded bg-[#17375F]" />
                           <div className="h-2 w-full rounded bg-[#E2E8F0]" />
                           <div className="mt-1.5 h-2 w-5/6 rounded bg-[#E2E8F0]" />
                         </div>
 
                         <div>
-                          <div className="mb-2 h-2 w-20 rounded bg-[#1D3557]" />
+                          <div className="mb-2 h-2 w-20 rounded bg-[#17375F]" />
                           <div className="h-2 w-full rounded bg-[#E2E8F0]" />
                           <div className="mt-1.5 h-2 w-4/5 rounded bg-[#E2E8F0]" />
                           <div className="mt-1.5 h-2 w-11/12 rounded bg-[#E2E8F0]" />
                         </div>
 
                         <div>
-                          <div className="mb-2 h-2 w-14 rounded bg-[#00BFA6]" />
+                          <div className="mb-2 h-2 w-14 rounded bg-[#12B5B0]" />
 
                           <div className="flex flex-wrap gap-1.5">
                             <span className="h-5 w-12 rounded bg-[#E6F8F5]" />

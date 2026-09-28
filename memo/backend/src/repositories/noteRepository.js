@@ -1,3 +1,9 @@
+/**
+ * Developer context for memo/backend/src/repositories/noteRepository.js.
+ * Purpose: perform user-scoped Memo note Repository database operations.
+ * Why here: persistence mechanics stay separate, and user ownership filters must remain part of relevant queries.
+ */
+import Folder from "../models/Folder.js";
 import Note from "../models/Note.js";
 import logger from "@curatocv/platform-backend/configs/logger";
 import ApiError from "@curatocv/platform-backend/utils/apiError";
@@ -9,6 +15,7 @@ export const createNote = async (userId, noteData) => {
             title: noteData.title,
             content: noteData.content || "",
             folder: noteData.folder || "General",
+            folderId: noteData.folderId || null,
             tags: noteData.tags || [],
             isPinned: Boolean(noteData.isPinned),
             isArchived: Boolean(noteData.isArchived),
@@ -21,6 +28,8 @@ export const createNote = async (userId, noteData) => {
 };
 
 export const getNoteById = async (noteId, userId) => {
+    // Include the authenticated owner in the query itself. Knowing another
+    // user's note ID is not enough to retrieve that note (IDOR protection).
     const note = await Note.findOne({ _id: noteId, userId, isDeleted: false });
     return note;
 };
@@ -30,15 +39,20 @@ export const listNotes = async (userId, queryOptions = {}) => {
         page = 1,
         limit = 20,
         folder,
+        folderId,
         tag,
         search,
         isArchived = false,
         isDeleted = false,
     } = queryOptions;
 
+    // Every list query is scoped to one owner and one trash state before
+    // optional filters are added.
     const query = { userId, isDeleted: Boolean(isDeleted) };
 
-    if (folder) {
+    if (folderId) {
+        query.folderId = folderId;
+    } else if (folder) {
         query.folder = folder;
     }
 
@@ -54,6 +68,8 @@ export const listNotes = async (userId, queryOptions = {}) => {
         query.$text = { $search: search };
     }
 
+    // Clamp page size so a caller cannot request an arbitrarily large result.
+    // `skip` uses the normalized page and page size for pagination.
     const skip = (Math.max(1, parseInt(page, 10)) - 1) * parseInt(limit, 10);
     const pageSize = Math.min(100, Math.max(1, parseInt(limit, 10)));
 
@@ -75,6 +91,8 @@ export const listNotes = async (userId, queryOptions = {}) => {
 };
 
 export const updateNote = async (noteId, userId, updateData, expectedVersion) => {
+    // Owner and active-state filters are part of the database lookup, not just
+    // a check performed by the UI.
     const query = { _id: noteId, userId, isDeleted: false };
 
     if (expectedVersion !== undefined) {
@@ -84,7 +102,8 @@ export const updateNote = async (noteId, userId, updateData, expectedVersion) =>
     const note = await Note.findOne(query);
 
     if (!note) {
-        // Check if note exists at all to differentiate 404 vs 409
+        // If the owner still has this note but its version changed, tell the
+        // editor to refresh (409); otherwise report that it is unavailable (404).
         const exists = await Note.findOne({ _id: noteId, userId, isDeleted: false });
         if (exists && expectedVersion !== undefined && exists.version !== expectedVersion) {
             throw ApiError.conflict("Note has been modified elsewhere. Please refresh and try again.");
@@ -94,7 +113,12 @@ export const updateNote = async (noteId, userId, updateData, expectedVersion) =>
 
     if (updateData.title !== undefined) note.title = updateData.title;
     if (updateData.content !== undefined) note.content = updateData.content;
-    if (updateData.folder !== undefined) note.folder = updateData.folder;
+    if (updateData.folderId !== undefined) {
+        note.folderId = updateData.folderId;
+        if (updateData.folder !== undefined) note.folder = updateData.folder;
+    } else if (updateData.folder !== undefined) {
+        note.folder = updateData.folder;
+    }
     if (updateData.tags !== undefined) note.tags = updateData.tags;
     if (updateData.isPinned !== undefined) note.isPinned = updateData.isPinned;
     if (updateData.isArchived !== undefined) note.isArchived = updateData.isArchived;
@@ -106,6 +130,7 @@ export const updateNote = async (noteId, userId, updateData, expectedVersion) =>
 };
 
 export const softDeleteNote = async (noteId, userId) => {
+    // Trash is reversible: retain the document and record when it was deleted.
     const note = await Note.findOne({ _id: noteId, userId, isDeleted: false });
     if (!note) {
         throw ApiError.notFound("Note not found.");
@@ -130,11 +155,40 @@ export const restoreNote = async (noteId, userId) => {
 };
 
 export const permanentDeleteNote = async (noteId, userId) => {
+    // Only records already in trash can be permanently removed through this API.
     const note = await Note.findOneAndDelete({ _id: noteId, userId, isDeleted: true });
     if (!note) {
         throw ApiError.notFound("Deleted note not found.");
     }
     return note;
+};
+
+export const listLegacyFolderNames = async (userId) => Note.distinct("folder", {
+    userId,
+    isDeleted: false,
+    isArchived: false,
+    folderId: null,
+});
+
+export const listExplorerMetadata = async (userId) => {
+    const [notes, folders] = await Promise.all([
+        Note.find({ userId, isDeleted: false, isArchived: false }).lean(),
+        Folder.find({ userId }).lean(),
+    ]);
+    return {
+        folders: folders.map((f) => ({
+            _id: f._id,
+            name: f.name,
+            parentId: f.parentId || null,
+        })),
+        documents: notes.map((n) => ({
+            _id: n._id,
+            title: n.title,
+            folderId: n.folderId || null,
+            folder: n.folder || "General",
+            updatedAt: n.updatedAt,
+        })),
+    };
 };
 
 export default {
@@ -145,4 +199,6 @@ export default {
     softDeleteNote,
     restoreNote,
     permanentDeleteNote,
+    listLegacyFolderNames,
+    listExplorerMetadata,
 };

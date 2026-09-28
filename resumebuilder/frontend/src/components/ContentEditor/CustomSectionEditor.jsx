@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/ContentEditor/CustomSectionEditor.jsx.
+ * Purpose: implement the Resume Builder content-editing UI for Custom Section Editor.
+ * Why here: editing controls stay inside Resume Builder and communicate through the editor's resume-data callbacks rather than owning application routing.
+ */
 import React from "react";
 import { Plus, Trash2 } from "lucide-react";
 import { createClientId, normalizeEntryOrder } from "../../utils/resume";

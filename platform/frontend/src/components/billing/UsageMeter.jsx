@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/frontend/src/components/billing/UsageMeter.jsx.
+ * Purpose: provide reusable Platform Usage Meter UI.
+ * Why here: common interface elements are owned by Platform and consumed through workspace exports.
+ */
 const UsageMeter = ({ used = 0, limit = null, label = "Usage", unit = "" }) => {
   // Calculate percentage: limit === null means unlimited
   const isUnlimited = limit === null;

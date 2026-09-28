@@ -1,3 +1,8 @@
+/**
+ * Developer context for frontend/vite.config.js.
+ * Purpose: explain the responsibility of vite.config in its current module boundary.
+ * Why here: keep the concern with its canonical owner and avoid duplicating behavior in callers.
+ */
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'

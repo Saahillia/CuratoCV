@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/templates/TemplateSections.jsx.
+ * Purpose: provide the Template Sections resume layout/template implementation.
+ * Why here: visual template decisions belong to Resume Builder, separate from canonical content and Platform shell concerns.
+ */
 import { resolveTypography } from "../../utils/typography";
 import { resolveSpacing } from "../../utils/layoutSpacing";
 import {
@@ -1114,7 +1119,30 @@ export const renderCustomSections = (
     colors = {},
     typography = {},
     spacing = {},
+    section = null,
 ) => {
+    // When called as a specific section renderer (e.g., from ClassicTemplate's
+    // per-section dispatch or from a page clone with a specific section index),
+    // render that exact section instance rather than falling back to data.custom.
+    if (section) {
+        const sp = resolveSpacing(spacing);
+        const sc = resolveSectionCustomization(section.customization || {});
+        const title = section.title || "Custom Section";
+        const entries = (section.entries || []).filter((e) => e.visible !== false);
+        return (
+            <section className={`${sp.sectionSpacingClass} ${sc.alignmentClass}`}>
+                <SectionHeader title={title} colors={colors} typography={typography} sectionCustomization={section.customization || {}} />
+                <div className={sp.entrySpacingClass}>
+                    {entries.map((entry, index) => (
+                        <div key={index} className={`${sc.alignmentClass}`}>
+                            <h3 style={{ color: colors.heading || "#17375F" }}>{entry.title || entry.data?.title || ""}</h3>
+                            <p style={{ color: colors.text || "#102A43" }}>{entry.description || entry.data?.description || ""}</p>
+                        </div>
+                    ))}
+                </div>
+            </section>
+        );
+    }
     const custom = data.custom;
     if (!custom || custom.length === 0) return null;
     const sp = resolveSpacing(spacing);
@@ -1163,21 +1191,41 @@ export const renderCustomSections = (
     );
 };
 
+/**
+ * Adapt a positional section renderer — renderX(data, colors, typography,
+ * spacing) — into a React component that receives those values as props.
+ * Consumers dispatch sections by type with createElement(Renderer, {...});
+ * React passes a single props object, which would otherwise land in the
+ * renderer's first parameter and make every section render nothing.
+ * The positional functions stay exported for direct/legacy call sites.
+ */
+const asSectionComponent = (renderFn) => {
+    const SectionRenderer = ({
+        data,
+        colors = {},
+        typography = {},
+        spacing = {},
+        section = null,
+    }) => renderFn(data, colors, typography, spacing, section);
+    SectionRenderer.displayName = renderFn.name || "SectionRenderer";
+    return SectionRenderer;
+};
+
 export const SECTION_RENDER_MAP = {
-    summary: renderSummary,
-    experience: renderExperience,
-    projects: renderProjects,
-    education: renderEducation,
-    skills: renderSkills,
-    certificates: renderCertificates,
-    courses: renderCourses,
-    awards: renderAwards,
-    languages: renderLanguages,
-    interests: renderInterests,
-    organisations: renderOrganisations,
-    publications: renderPublications,
-    references: renderReferences,
-    declaration: renderDeclaration,
-    custom: renderCustomSections,
+    summary: asSectionComponent(renderSummary),
+    experience: asSectionComponent(renderExperience),
+    projects: asSectionComponent(renderProjects),
+    education: asSectionComponent(renderEducation),
+    skills: asSectionComponent(renderSkills),
+    certificates: asSectionComponent(renderCertificates),
+    courses: asSectionComponent(renderCourses),
+    awards: asSectionComponent(renderAwards),
+    languages: asSectionComponent(renderLanguages),
+    interests: asSectionComponent(renderInterests),
+    organisations: asSectionComponent(renderOrganisations),
+    publications: asSectionComponent(renderPublications),
+    references: asSectionComponent(renderReferences),
+    declaration: asSectionComponent(renderDeclaration),
+    custom: asSectionComponent(renderCustomSections),
 };
 

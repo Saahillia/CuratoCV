@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/backend/src/services/imageService.js.
+ * Purpose: upload and delete resume image assets through the configured image provider.
+ * Why here: product policy stays in Resume Builder; Platform and repositories supply common capabilities/data access.
+ */
 import imageKit from "../configs/imageKit.js";
 import logger from "@curatocv/platform-backend/configs/logger";
 

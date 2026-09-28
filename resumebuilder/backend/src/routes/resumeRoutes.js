@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/backend/src/routes/resumeRoutes.js.
+ * Purpose: declare authenticated resume endpoints and the explicitly public resume-read route.
+ * Why here: route ownership follows the product; backend/server.js mounts this router but does not implement its domain logic.
+ */
 import express from "express";
 import protect from "@curatocv/platform-backend/middlewares/authMiddleware";
 import {

@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/ContentEditor/PersonalInfoEditor.jsx.
+ * Purpose: implement the Resume Builder content-editing UI for Personal Info Editor.
+ * Why here: editing controls stay inside Resume Builder and communicate through the editor's resume-data callbacks rather than owning application routing.
+ */
 import React, { useState } from "react";
 import {
     ChevronDown,

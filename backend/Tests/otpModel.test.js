@@ -1,3 +1,8 @@
+/**
+ * Developer context for backend/Tests/otpModel.test.js.
+ * Purpose: documents the test scenarios for otp Model.test.
+ * Why separate: keep expected behavior and regression checks close to the tested contract; production behavior stays in its owning module.
+ */
 import { describe, it, expect } from "vitest";
 import mongoose from "mongoose";
 import OTP from "../../platform/backend/src/models/OTP.js";

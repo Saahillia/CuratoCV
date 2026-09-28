@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/Customize/SectionCustomizationPanel.jsx.
+ * Purpose: implement a Resume Builder presentation/customization control for Section Customization Panel.
+ * Why here: design-setting interactions belong to the resume domain; shared shell code should only mount the product.
+ */
 import React, { useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import SectionSettings from "./SectionSettings";

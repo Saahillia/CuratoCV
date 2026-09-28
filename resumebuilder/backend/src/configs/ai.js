@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/backend/src/configs/ai.js.
+ * Purpose: configure Resume Builder's ai provider/integration.
+ * Why here: integration settings belong near their product service and must be supplied through environment configuration.
+ */
 import OpenAI from "openai";
 
 // ============================================================

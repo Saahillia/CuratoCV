@@ -1,4 +1,10 @@
+/**
+ * Developer context for platform/frontend/src/components/home/Footer.jsx.
+ * Purpose: provide reusable Platform Footer UI.
+ * Why here: common interface elements are owned by Platform and consumed through workspace exports.
+ */
 import React from "react";
+import BrandLockup from "../common/BrandLockup";
 
 const Footer = () => {
   return (
@@ -60,29 +66,12 @@ const Footer = () => {
           <div className="flex flex-wrap items-start gap-10 md:gap-[50px] xl:gap-[100px]">
 
             {/* Brand */}
-            <a
-              href="/"
-              className="group"
-              aria-label="CuratoCV Home"
-            >
-              <div className="flex items-center gap-2">
-                <img
-                  src="/logo.svg"
-                  alt="CuratoCV logo"
-                  className="h-12 w-auto"
-                />
-
-                <img
-                  src="/brand.svg"
-                  alt="CuratoCV wordmark"
-                  className="h-10 w-auto"
-                />
-              </div>
-
+            <div className="group">
+              <BrandLockup />
               <p className="mt-4 max-w-[220px] leading-6 text-slate-500">
                 Build a professional resume with confidence and organize your ideas.
               </p>
-            </a>
+            </div>
 
             {/* Products */}
             <div>

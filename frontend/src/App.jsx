@@ -6,11 +6,12 @@
 // with the correct token storage key and global 401 handling.
 // ============================================================
 
-import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import Home from "@curatocv/platform-frontend/pages/Home";
 import Layout from "@curatocv/platform-frontend/pages/Layout";
 import Products from "@curatocv/platform-frontend/pages/Products";
-import MemoPlaceholder from "@curatocv/memo-frontend/pages/MemoPlaceholder";
+import MemoWorkspace from "@curatocv/memo-frontend/pages/MemoWorkspace";
+import MemoEditor from "@curatocv/memo-frontend/pages/MemoEditor";
 import Dashboard from "@curatocv/resumebuilder-frontend/pages/Dashboard";
 import ResumeBuilder from "@curatocv/resumebuilder-frontend/pages/ResumeBuilder";
 import Preview from "@curatocv/resumebuilder-frontend/pages/Preview";
@@ -26,7 +27,7 @@ import NotFound from "@curatocv/platform-frontend/pages/NotFound";
 import { useDispatch, useSelector } from "react-redux";
 import api, { TOKEN_STORAGE_KEY } from "@curatocv/api-client";
 import { login, logout, setLoading } from "@curatocv/platform-frontend/features/authSlice";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { Toaster } from "react-hot-toast";
 
 // ============================================================
@@ -40,7 +41,6 @@ import { Toaster } from "react-hot-toast";
 
 const ProtectedRoute = ({ children }) => {
     const { token, loading } = useSelector((state) => state.auth);
-    const navigate = useNavigate();
 
     if (loading) {
         return <div className="p-8 text-center text-gray-500">Loading...</div>;
@@ -56,11 +56,14 @@ const ProtectedRoute = ({ children }) => {
 const App = () => {
     const dispatch = useDispatch();
 
-    const getUserData = async () => {
+    const getUserData = useCallback(async (signal) => {
         const token = localStorage.getItem(TOKEN_STORAGE_KEY);
         try {
             if (token) {
-                const { data } = await api.get("/users/me");
+                const { data } = await api.get("/users/me", {
+                    signal,
+                    timeout: 10000
+                });
                 if (data.success && data.data) {
                     dispatch(
                         login({
@@ -85,11 +88,13 @@ const App = () => {
         } finally {
             dispatch(setLoading(false));
         }
-    };
+    }, [dispatch]);
 
     useEffect(() => {
-        getUserData();
-    }, []);
+        const controller = new AbortController();
+        getUserData(controller.signal);
+        return () => controller.abort();
+    }, [getUserData]);
 
     return (
         <>
@@ -129,7 +134,15 @@ const App = () => {
                     path="/products/memo"
                     element={
                         <ProtectedRoute>
-                            <MemoPlaceholder />
+                            <MemoWorkspace />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/products/memo/editor"
+                    element={
+                        <ProtectedRoute>
+                            <MemoEditor />
                         </ProtectedRoute>
                     }
                 />

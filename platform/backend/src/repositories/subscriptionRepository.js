@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/backend/src/repositories/subscriptionRepository.js.
+ * Purpose: perform Platform subscription Repository persistence operations.
+ * Why here: database access is separated from HTTP and platform policy.
+ */
 import Subscription from "../models/Subscription.js";
 
 // ============================================================

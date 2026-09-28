@@ -16,6 +16,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import emailService from '../services/emailService';
+import AuthPageLayout from '../components/auth/AuthPageLayout';
+import Button from '../components/common/Button';
 
 const ForgotPassword = () => {
     const navigate = useNavigate();
@@ -71,7 +73,7 @@ const ForgotPassword = () => {
 
     if (submitted) {
         return (
-            <div className="flex items-center justify-center min-h-screen bg-gray-50">
+            <AuthPageLayout>
                 <div className="sm:w-[400px] w-full text-center border border-gray-300/60 rounded-2xl px-8 bg-white py-12">
                     <div className="mb-8">
                         <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -86,19 +88,19 @@ const ForgotPassword = () => {
                         </p>
                     </div>
 
-                    <button
+                    <Button
                         onClick={() => navigate('/login', { replace: true })}
-                        className="w-full h-11 rounded-full text-white bg-blue-500 hover:opacity-90 transition-opacity font-medium"
+                        className="w-full rounded-full"
                     >
                         Back to login
-                    </button>
+                    </Button>
                 </div>
-            </div>
+            </AuthPageLayout>
         );
     }
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <AuthPageLayout>
             <div className="sm:w-[400px] w-full text-center border border-gray-300/60 rounded-2xl px-8 bg-white py-12">
                 <div className="mb-8">
                     <h1 className="text-2xl font-semibold text-gray-900 mb-2">Forgot your password?</h1>
@@ -127,13 +129,13 @@ const ForgotPassword = () => {
                         </div>
                     )}
 
-                    <button
+                    <Button
                         type="submit"
                         disabled={loading}
-                        className="w-full h-11 rounded-full text-white bg-blue-500 hover:opacity-90 transition-opacity font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full rounded-full"
                     >
                         {loading ? 'Sending...' : 'Send verification code'}
-                    </button>
+                    </Button>
                 </form>
 
                 <div className="mt-6">
@@ -145,7 +147,7 @@ const ForgotPassword = () => {
                     </Link>
                 </div>
             </div>
-        </div>
+        </AuthPageLayout>
     );
 };
 

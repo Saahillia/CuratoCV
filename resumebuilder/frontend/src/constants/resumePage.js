@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/constants/resumePage.js.
+ * Purpose: define the Resume Builder resume Page vocabulary/configuration consumed by its UI.
+ * Why here: canonical product choices should be owned by Resume Builder, not duplicated in the application shell.
+ */
 export const A4_DIMENSIONS = {
   WIDTH_MM: 210,
   HEIGHT_MM: 297,

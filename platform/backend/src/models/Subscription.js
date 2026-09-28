@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/backend/src/models/Subscription.js.
+ * Purpose: define Platform's Subscription persistence model.
+ * Why here: shared identity/billing data belongs to Platform rather than a product workspace.
+ */
 import mongoose from "mongoose";
 
 import plans from "../constants/plans.js";

@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/ColorPicker.jsx.
+ * Purpose: provide the Resume Builder Color Picker interface component.
+ * Why here: resume presentation and editing UI belong to the product package; the root shell owns routing and global providers.
+ */
 import { Check, Palette, Pipette } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
@@ -20,6 +25,7 @@ const ColorPicker = ({ selectedColor, onChange }) => {
   const pickerRef = useRef(null);
 
   useEffect(() => {
+    // Close the popover when a click lands outside it; remove the listener when this picker unmounts.
     const handleClickOutside = (event) => {
       if (pickerRef.current && !pickerRef.current.contains(event.target)) {
         setIsOpen(false);
@@ -31,6 +37,7 @@ const ColorPicker = ({ selectedColor, onChange }) => {
   }, []);
 
   const handleCustomColor = (e) => {
+    // The parent owns the resume's saved design state, so the picker reports the chosen hex value upward.
     onChange(e.target.value);
   };
 

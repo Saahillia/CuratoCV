@@ -1,3 +1,8 @@
+/**
+ * Developer context for backend/Tests/emailVerificationApi.test.js.
+ * Purpose: documents the test scenarios for email Verification Api.test.
+ * Why separate: keep expected behavior and regression checks close to the tested contract; production behavior stays in its owning module.
+ */
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import request from "supertest";
 import express from "express";

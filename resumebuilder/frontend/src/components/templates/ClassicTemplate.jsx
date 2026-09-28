@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/templates/ClassicTemplate.jsx.
+ * Purpose: provide the Classic Template resume layout/template implementation.
+ * Why here: visual template decisions belong to Resume Builder, separate from canonical content and Platform shell concerns.
+ */
 import { Mail, Phone, MapPin, Globe } from "lucide-react";
 import { resolveSpacing } from "../../utils/layoutSpacing";
 import { resolveColors } from "../../utils/colorResolver";
@@ -19,20 +24,30 @@ import { resolvePhoto } from "../../utils/photoResolver";
 import { resolveLinks } from "../../utils/linksResolver";
 import { resolveFooter } from "../../utils/footerResolver";
 import { SECTION_RENDER_MAP } from "./TemplateSections";
+import { formatResumeDate } from "../../utils/dateFormatting";
+import { createElement } from "react";
 
-const ClassicTemplate = ({ data, colors, accentColor, spacing, header, photo, links, footer }) => {
+const ClassicTemplate = ({ data, colors, accentColor, spacing, header, photo, links, footer, document }) => {
+  // Resolve stored design options into safe values used consistently by all sections below.
   const sp = resolveSpacing(spacing);
   const col = resolveColors(colors || { accent: accentColor });
   const hdr = resolveHeader(header);
   const ph = resolvePhoto(photo);
   const lnks = resolveLinks(links);
   const ftr = resolveFooter(footer);
+  const sectionOrder = (type, fallback) => {
+    const index = (data.sections || []).findIndex((section) => section.type?.toLowerCase() === type);
+    const storedOrder = index >= 0 ? data.sections[index].order : fallback;
+    return (Number.isFinite(Number(storedOrder)) ? Number(storedOrder) : fallback) + 1;
+  };
 
+  // Apply the configured navigation target and protect the current page when opening external links.
   const linkTarget = lnks.target === "same-tab" ? "_self" : "_blank";
   const linkRel = lnks.target === "same-tab" ? undefined : "noopener noreferrer";
   const linkClass = lnks.style === "underline" ? "underline" : "hover:underline";
   const linkColor = lnks.style === "accent" ? col.accent : col.muted;
 
+  // The image can be a persisted URL or an unsaved File object from the current editing session.
   const image = data?.personal_info?.image;
   const isImageUrl = typeof image === "string" && image.trim().length > 0;
   const isImageFile = typeof File !== "undefined" && image instanceof File;
@@ -52,25 +67,34 @@ const ClassicTemplate = ({ data, colors, accentColor, spacing, header, photo, li
   const alignmentClass = hdr.alignment === "center" ? "text-center" : hdr.alignment === "right" ? "text-right" : "text-left";
   const flexAlignmentClass = hdr.alignment === "center" ? "justify-center" : hdr.alignment === "right" ? "justify-end" : "justify-start";
 
-  const formatDate = (dateStr) => {
-    if (!dateStr) return "";
-    const [year, month] = dateStr.split("-");
-    const date = new Date(year, month - 1);
-    return isNaN(date.getTime()) ? "" : date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
+  // Convert the stored year-month value to a short display string; malformed dates render blank.
+  const formatDate = (dateStr) => formatResumeDate(dateStr, document?.dateFormat);
+  const renderedSections = (data.sections || [])
+    .filter((section) => section.visible !== false)
+    .sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0))
+    .map((section, index) => {
+      const type = ({ professional_summary: "summary", experiences: "experience", educations: "education", project: "projects" })[section.type?.toLowerCase()] || section.type?.toLowerCase();
+      const renderSection = SECTION_RENDER_MAP[type];
+      if (!renderSection) return null;
+      return createElement(renderSection, {
+        key: section._id || `${type}-${index}`,
+        data,
+        colors: col,
+        typography: data.design?.typography || {},
+        spacing,
+        section: type === "custom" ? section : undefined,
+      });
     });
-  };
 
   return (
     <div
       className={`max-w-4xl mx-auto leading-relaxed ${sp.densityClass}`}
-      style={{ backgroundColor: col.background, color: col.text }}
+      style={{ backgroundColor: col.background, color: col.text, display: "flex", flexDirection: "column" }}
     >
       {/* Header */}
       <header
         className={`pb-6 border-b-2 ${sp.sectionSpacingClass}`}
-        style={{ borderColor: col.border }}
+        style={{ borderColor: col.border, order: 0 }}
       >
         <div className={`flex gap-6 items-center ${hdr.alignment === "center" ? "justify-center" : hdr.alignment === "right" ? "justify-end" : "justify-start"} ${flexReverseClass}`}>
           {showPhoto && (
@@ -121,150 +145,7 @@ const ClassicTemplate = ({ data, colors, accentColor, spacing, header, photo, li
         </div>
       </header>
 
-      {/* Professional Summary */}
-      {data.professional_summary && (
-        <section className={sp.sectionSpacingClass}>
-          <h2
-            className="text-xl font-semibold mb-3"
-            style={{ color: col.heading }}
-          >
-            PROFESSIONAL SUMMARY
-          </h2>
-          <p className="leading-relaxed" style={{ color: col.text }}>
-            {data.professional_summary}
-          </p>
-        </section>
-      )}
-
-      {/* Experience */}
-      {data.experience && data.experience.length > 0 && (
-        <section className={sp.sectionSpacingClass}>
-          <h2
-            className="text-xl font-semibold mb-4"
-            style={{ color: col.heading }}
-          >
-            PROFESSIONAL EXPERIENCE
-          </h2>
-
-          <div className={sp.entrySpacingClass}>
-            {data.experience.map((exp, index) => (
-              <div
-                key={index}
-                className="border-l-3 pl-4"
-                style={{ borderColor: col.accent }}
-              >
-                <div className="flex justify-between items-start mb-2">
-                  <div>
-                    <h3 className="font-semibold" style={{ color: col.text }}>
-                      {exp.position}
-                    </h3>
-                    <p className="font-medium" style={{ color: col.accent }}>{exp.company}</p>
-                  </div>
-
-                  <div className="text-right text-sm" style={{ color: col.muted }}>
-                    <p>
-                      {formatDate(exp.start_date)} -{" "}
-                      {exp.is_current ? "Present" : formatDate(exp.end_date)}
-                    </p>
-                  </div>
-                </div>
-
-                {exp.description && (
-                  <div className="leading-relaxed whitespace-pre-line" style={{ color: col.text }}>
-                    {exp.description}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Projects */}
-      {data.project && data.project.length > 0 && (
-        <section className={sp.sectionSpacingClass}>
-          <h2
-            className="text-xl font-semibold mb-4"
-            style={{ color: col.heading }}
-          >
-            PROJECTS
-          </h2>
-
-          <div className={sp.entrySpacingClass}>
-            {data.project.map((proj, index) => (
-              <div
-                key={index}
-                className="flex justify-between items-start border-l-3 pl-6"
-                style={{ borderColor: col.border }}
-              >
-                <div>
-                  <h3 className="font-semibold" style={{ color: col.text }}>{proj.name}</h3>
-                  {proj.type && (
-                    <p className="text-sm" style={{ color: col.accent }}>
-                      {proj.type}
-                    </p>
-                  )}
-                  <p style={{ color: col.muted }}>{proj.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Education */}
-      {data.education && data.education.length > 0 && (
-        <section className={sp.sectionSpacingClass}>
-          <h2
-            className="text-xl font-semibold mb-4"
-            style={{ color: col.heading }}
-          >
-            EDUCATION
-          </h2>
-
-          <div className={sp.entrySpacingClass}>
-            {data.education.map((edu, index) => (
-              <div key={index} className="flex justify-between items-start">
-                <div>
-                  <h3 className="font-semibold" style={{ color: col.text }}>
-                    {edu.degree} {edu.field && `in ${edu.field}`}
-                  </h3>
-
-                  <p style={{ color: col.accent }}>{edu.institution}</p>
-
-                  {edu.gpa && (
-                    <p className="text-sm" style={{ color: col.muted }}>GPA: {edu.gpa}</p>
-                  )}
-                </div>
-
-                <div className="text-sm" style={{ color: col.muted }}>
-                  <p>{formatDate(edu.graduation_date)}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Skills */}
-      {data.skills && data.skills.length > 0 && (
-        <section className={sp.sectionSpacingClass}>
-          <h2
-            className="text-xl font-semibold mb-4"
-            style={{ color: col.heading }}
-          >
-            CORE SKILLS
-          </h2>
-
-          <div className="flex gap-4 flex-wrap">
-            {data.skills.map((skill, index) => (
-              <div key={index} style={{ color: col.text }}>
-                • {skill}
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
+      {renderedSections}
 
       {/* Footer */}
       {ftr.visibility === "visible" && (
@@ -274,6 +155,7 @@ const ClassicTemplate = ({ data, colors, accentColor, spacing, header, photo, li
             borderColor: col.border,
             color: col.muted,
             textAlign: ftr.alignment,
+            order: 1000,
           }}
         >
           Generated with CuratoCV

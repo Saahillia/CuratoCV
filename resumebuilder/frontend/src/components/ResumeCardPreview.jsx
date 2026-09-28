@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/ResumeCardPreview.jsx.
+ * Purpose: provide the Resume Builder Resume Card Preview interface component.
+ * Why here: resume presentation and editing UI belong to the product package; the root shell owns routing and global providers.
+ */
 import React, { useState, useRef, useEffect } from "react";
 import {
   MoreVerticalIcon,

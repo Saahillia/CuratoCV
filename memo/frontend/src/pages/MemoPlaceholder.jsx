@@ -1,6 +1,12 @@
+/**
+ * Developer context for memo/frontend/src/pages/MemoPlaceholder.jsx.
+ * Purpose: render the current Memo Memo Placeholder frontend entry.
+ * Why here: Memo owns its product UI; the current page is intentionally a placeholder mounted by the root shell.
+ */
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, NotebookPen, Sparkles } from "lucide-react";
+import BrandLockup from "@curatocv/platform-frontend/components/common/BrandLockup";
 
 const MemoPlaceholder = () => {
     const navigate = useNavigate();
@@ -10,10 +16,7 @@ const MemoPlaceholder = () => {
             {/* Header */}
             <header className="bg-white border-b border-[#D9E0E7] px-6 py-4 flex items-center justify-between sticky top-0 z-30 shadow-xs">
                 <div className="flex items-center gap-3">
-                    <Link to="/" className="flex items-center gap-2">
-                        <img src="/logo.svg" alt="CuratoCV logo" className="h-12 w-auto object-contain" />
-                        <img src="/brand.svg" alt="CuratoCV wordmark" className="h-10 w-auto object-contain" />
-                    </Link>
+                    <BrandLockup />
                     <span className="text-[#D9E0E7]">/</span>
                     <span className="text-xs font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200/60 px-3 py-1 rounded-full">
                         Memo Workspace

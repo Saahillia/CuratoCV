@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/backend/src/models/Payment.js.
+ * Purpose: define Platform's Payment persistence model.
+ * Why here: shared identity/billing data belongs to Platform rather than a product workspace.
+ */
 import mongoose from "mongoose";
 import plans from "../constants/plans.js";
 

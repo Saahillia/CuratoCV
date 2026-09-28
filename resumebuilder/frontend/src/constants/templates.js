@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/constants/templates.js.
+ * Purpose: define the Resume Builder templates vocabulary/configuration consumed by its UI.
+ * Why here: canonical product choices should be owned by Resume Builder, not duplicated in the application shell.
+ */
 export const TEMPLATES = [
     {
         id: "classic",

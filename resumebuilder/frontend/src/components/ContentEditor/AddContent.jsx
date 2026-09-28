@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/ContentEditor/AddContent.jsx.
+ * Purpose: implement the Resume Builder content-editing UI for Add Content.
+ * Why here: editing controls stay inside Resume Builder and communicate through the editor's resume-data callbacks rather than owning application routing.
+ */
 import { Plus, X, Sparkles, FileText, GraduationCap, Briefcase, FolderOpen, Sparkle, Languages, Award, BookOpen, Building2, Newspaper, UserCheck, ShieldCheck, PenTool, Layers } from "lucide-react";
 import { useState } from "react";
 import resumeSections from "../../constants/resumeSections";

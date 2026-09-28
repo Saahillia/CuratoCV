@@ -1,3 +1,8 @@
+/**
+ * Developer context for backend/Tests/otpService.test.js.
+ * Purpose: documents the test scenarios for otp Service.test.
+ * Why separate: keep expected behavior and regression checks close to the tested contract; production behavior stays in its owning module.
+ */
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import mongoose from "mongoose";
 import crypto from "crypto";

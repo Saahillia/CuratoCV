@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/Forms/ProfessionalSummaryForm.jsx.
+ * Purpose: edit one Resume Builder resume-entry type (Professional Summary Form).
+ * Why here: field-specific input behavior remains close to its domain form and is composed by the content editor.
+ */
 import { Loader2, Sparkles } from 'lucide-react'
 import { useState } from 'react';
 import toast from 'react-hot-toast';

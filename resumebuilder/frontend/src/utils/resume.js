@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/utils/resume.js.
+ * Purpose: resolve or normalize Resume Builder resume data for the UI.
+ * Why here: resume-specific transformations stay in the product rather than generic shared packages.
+ */
 import resumeDefaults from "../constants/resumeDefaults";
 import resumeSections from "../constants/resumeSections";
 import {
@@ -49,6 +54,11 @@ const isValidHexColor = (val) => typeof val === "string" && /^#([0-9A-Fa-f]{3}){
 const isPlainObject = (val) =>
   val !== null && typeof val === "object" && !Array.isArray(val);
 
+const boundedNumber = (value, fallback, min, max) => {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? Math.min(max, Math.max(min, parsed)) : fallback;
+};
+
 /**
  * Normalizes personalInfo.photo into the canonical
  * { url: String, fileId: String } shape.
@@ -91,6 +101,10 @@ const mergeDesignDefaults = (design = {}) => {
     fontSizeScale: VALID_FONT_SIZES.includes(userTypography.fontSizeScale) ? userTypography.fontSizeScale : DEFAULT_TYPOGRAPHY.fontSizeScale,
     headingScale: VALID_HEADING_SCALES.includes(userTypography.headingScale) ? userTypography.headingScale : DEFAULT_TYPOGRAPHY.headingScale,
     lineHeight: VALID_LINE_HEIGHTS.includes(userTypography.lineHeight) ? userTypography.lineHeight : DEFAULT_TYPOGRAPHY.lineHeight,
+    fontSizePt: boundedNumber(userTypography.fontSizePt, 10.5, 8, 18),
+    nameSizePt: boundedNumber(userTypography.nameSizePt, 22, 14, 36),
+    sectionHeadingSizePt: boundedNumber(userTypography.sectionHeadingSizePt, 13.5, 9, 24),
+    entryHeadingSizePt: boundedNumber(userTypography.entryHeadingSizePt, 11.5, 8, 18),
   };
 
   const userLayout = design.layout || {};
@@ -108,6 +122,9 @@ const mergeDesignDefaults = (design = {}) => {
     density: resolvedSpacing.density,
     sectionSpacing: resolvedSpacing.sectionSpacing,
     entrySpacing: resolvedSpacing.entrySpacing,
+    lineHeightMultiplier: boundedNumber(userSpacing.lineHeightMultiplier, 1.25, 1, 2),
+    sectionSpacingMm: boundedNumber(userSpacing.sectionSpacingMm, 3, 0, 12),
+    pageMarginMm: boundedNumber(userSpacing.pageMarginMm, 10, 5, 20),
   };
 
   const safeHeader = resolveHeader(design.header || {});

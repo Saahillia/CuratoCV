@@ -66,14 +66,15 @@ const Preview = () => {
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
             a.href = url;
-            a.download = response.headers["content-disposition"]?.split("filename=")?.[1]?.replace(/"/g, '') || `${resumeData.title || "resume"}_CuratoCV.pdf`;
+            a.download = `${(resumeData.title || "Resume").trim()}_CuratoCV.pdf`;
             document.body.appendChild(a);
             a.click();
             a.remove();
             URL.revokeObjectURL(url);
             toast.success("PDF downloaded!");
         } catch (err) {
-            toast.error("Unable to generate your PDF. Please try again.");
+            console.error("PDF download error:", err);
+            toast.error(err?.message || "Unable to generate your PDF. Please try again.");
         } finally {
             setIsGeneratingPdf(false);
         }

@@ -1,39 +1,38 @@
+/**
+ * Developer context for platform/frontend/src/components/common/Navbar.jsx.
+ * Purpose: provide reusable Platform Navbar UI.
+ * Why here: common interface elements are owned by Platform and consumed through workspace exports.
+ */
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import { logout } from "@curatocv/platform-frontend/features/authSlice";
-import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
+import BrandLockup from "./BrandLockup";
 
 const Navbar = () => {
+  // Read identity from the Platform-owned auth state so navigation reflects the current session.
   const { user } = useSelector((state) => state.auth);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const logoutUser = () => {
-    navigate("/");
-    dispatch(logout());
-    toast.success("Logging out successfully!", { duration: 3000 });
-    setMobileMenuOpen(false);
-  };
 
   return (
     <div className="shadow bg-white">
       <nav className="flex items-center justify-between max-w-7xl mx-auto px-4 py-3.5 text-slate-800 transition-all">
-        <Link to="/">
-          <div className="flex items-center gap-2">
-            <img src="/logo.svg" alt="CuratoCV logo" className="h-12 w-auto sm:h-12 h-9" />
-            <img src="/brand.svg"alt="CuratoCV wordmark" className="h-10 w-auto sm:h-10 h-7"/>
-          </div>
-        </Link>
+        <div className="flex items-center gap-3 sm:gap-5">
+          <BrandLockup />
+          <Link
+            to="/products/resume-builder"
+            className="hidden sm:inline-flex items-center gap-1.5 rounded-lg bg-[#E8F0F7] px-3 py-1.5 text-xs font-medium text-[#17375F] transition-colors hover:bg-[#D9E0E7]"
+          >
+            <ArrowLeft size={14} /> All Products
+          </Link>
+        </div>
         <div className="flex items-center gap-4 text-sm">
           {/* Desktop / large tablet nav — visible at lg and above */}
           <div className="hidden lg:flex items-center gap-3">
             <div className="flex items-center gap-2.5">
               <div className="relative flex size-10 items-center justify-center">
                 {/* Organic fluid rotating morphing blob background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-[#17375F] via-[#24527A] to-[#00BFA6] animate-blob opacity-90 shadow-md" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#17375F] via-[#24527A] to-[#12B5B0] animate-blob opacity-90 shadow-md" />
                 {/* User initials in center */}
                 <span className="relative z-10 text-sm font-bold text-white tracking-wider">
                   {user?.name ? user.name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase() : "CV"}
@@ -45,21 +44,11 @@ const Navbar = () => {
               </div>
             </div>
           </div>
-          <Link to="/pricing" className="hover:text-[#17375F] font-medium hidden lg:inline">Pricing</Link>
-          <Link to="/billing" className="hover:text-[#17375F] font-medium hidden lg:inline">Billing</Link>
-          <Link to="/app/profile" className="hover:text-[#17375F] font-medium hidden lg:inline">Profile</Link>
-          <button
-            onClick={logoutUser}
-            className="bg-white hover:bg-slate-50 border border-gray-300 px-7 py-1.5 rounded-full active:scale-95 transition-all hidden lg:inline-block"
-          >
-            Logout
-          </button>
-
           {/* Hamburger — visible below lg */}
           <button
             type="button"
             onClick={() => setMobileMenuOpen(true)}
-            className="lg:hidden flex items-center justify-center size-10 rounded-lg hover:bg-slate-100 transition-colors"
+            className="cv-touch-target lg:hidden flex items-center justify-center size-10 rounded-lg hover:bg-slate-100 transition-colors"
             aria-label="Open menu"
           >
             <svg className="size-6 text-slate-700" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -72,6 +61,7 @@ const Navbar = () => {
       {/* Mobile / Tablet Slide-in Drawer */}
       {mobileMenuOpen && (
         <>
+          {/* Clicking the backdrop dismisses the drawer without changing the current route. */}
           {/* Backdrop */}
           <div
             className="fixed inset-0 z-[60] bg-black/30 backdrop-blur-sm lg:hidden"
@@ -83,7 +73,7 @@ const Navbar = () => {
             <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
               <div className="flex items-center gap-2.5">
                 <div className="relative flex size-9 items-center justify-center">
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#17375F] via-[#24527A] to-[#00BFA6] rounded-lg opacity-90" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#17375F] via-[#24527A] to-[#12B5B0] rounded-lg opacity-90" />
                   <span className="relative z-10 text-xs font-bold text-white tracking-wider">
                     {user?.name ? user.name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase() : "CV"}
                   </span>
@@ -96,7 +86,7 @@ const Navbar = () => {
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-center size-8 rounded-lg hover:bg-slate-100 transition-colors"
+                className="cv-touch-target flex items-center justify-center size-8 rounded-lg hover:bg-slate-100 transition-colors"
                 aria-label="Close menu"
               >
                 <svg className="size-5 text-slate-500" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -108,36 +98,12 @@ const Navbar = () => {
             {/* Drawer Links */}
             <div className="flex-1 flex flex-col py-2 px-3 gap-1 overflow-y-auto">
               <Link
-                to="/pricing"
+                to="/products/resume-builder"
                 onClick={() => setMobileMenuOpen(false)}
                 className="flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-[#17375F] transition-colors"
               >
-                Pricing
+                <ArrowLeft size={16} /> All Products
               </Link>
-              <Link
-                to="/billing"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-[#17375F] transition-colors"
-              >
-                Billing
-              </Link>
-              <Link
-                to="/app/profile"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-[#17375F] transition-colors"
-              >
-                Profile
-              </Link>
-            </div>
-
-            {/* Drawer Footer */}
-            <div className="px-4 py-4 border-t border-slate-100">
-              <button
-                onClick={logoutUser}
-                className="w-full bg-white hover:bg-slate-50 border border-gray-300 px-4 py-2.5 rounded-xl text-sm font-medium active:scale-95 transition-all"
-              >
-                Logout
-              </button>
             </div>
           </div>
         </>

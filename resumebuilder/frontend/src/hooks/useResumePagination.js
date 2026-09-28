@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/hooks/useResumePagination.js.
+ * Purpose: encapsulate the reusable Resume Builder use Resume Pagination state/effect behavior.
+ * Why here: product-specific interaction logic stays in the product; check active imports before treating a hook as a runtime path.
+ */
 import { useState, useEffect, useCallback, useRef } from "react";
 
 /**
@@ -35,6 +40,8 @@ const useResumePagination = (sections, scale = 1) => {
 
   const collectRef = useCallback((id) => (el) => {
     if (el) {
+      // Keep the rendered measurement element by stable section ID so the
+      // layout pass can measure the matching section later.
       sectionRefs.current[id] = el;
     }
   }, []);
@@ -53,13 +60,18 @@ const useResumePagination = (sections, scale = 1) => {
       for (const sec of sections) {
         const el = sectionRefs.current[sec._id];
         if (el) {
+          // Read the browser's actual layout height; text length alone cannot
+          // predict wrapping, fonts, or custom styles.
           heightsRef.current[sec._id] = el.getBoundingClientRect().height;
         }
+        // Reuse the last measurement if this render has not produced an element yet.
         const h = heightsRef.current[sec._id] || 0;
         measured.push({ ...sec, heightPx: h });
       }
 
       // Pack into pages
+      // Greedily place each whole section on the current page. A section is
+      // never split by this algorithm; an oversized section gets a page alone.
       const newPages = [];
       let currentPage = { id: `page-${newPages.length}`, sections: [], usedHeight: 0 };
 
@@ -88,7 +100,8 @@ const useResumePagination = (sections, scale = 1) => {
       setPages(newPages);
     };
 
-    // Wait for layout to settle
+    // Measure after two animation frames so React has committed DOM updates and
+    // the browser has had a chance to calculate layout.
     raf = requestAnimationFrame(() => {
       requestAnimationFrame(compute);
     });

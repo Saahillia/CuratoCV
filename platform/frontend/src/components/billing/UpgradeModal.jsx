@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/frontend/src/components/billing/UpgradeModal.jsx.
+ * Purpose: provide reusable Platform Upgrade Modal UI.
+ * Why here: common interface elements are owned by Platform and consumed through workspace exports.
+ */
 import React from "react";
 import { XIcon, CheckCircle2Icon } from "lucide-react";
 import { useNavigate } from "react-router-dom";

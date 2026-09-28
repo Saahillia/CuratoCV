@@ -1,3 +1,8 @@
+/**
+ * Developer context for backend/Tests/resumeConcurrency.test.js.
+ * Purpose: documents the test scenarios for resume Concurrency.test.
+ * Why separate: keep expected behavior and regression checks close to the tested contract; production behavior stays in its owning module.
+ */
 import { describe, it, expect, beforeEach } from "vitest";
 import { createUser, createResume } from "./factories.js";
 import resumeService from "../../resumebuilder/backend/src/services/resumeService.js";

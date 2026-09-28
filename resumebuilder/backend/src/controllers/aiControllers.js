@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/backend/src/controllers/aiControllers.js.
+ * Purpose: validate and normalize AI request data, then shape responses for Resume Builder routes.
+ * Why here: controllers own transport concerns and delegate product rules to Resume Builder services.
+ */
 import Resume from "../models/Resume.js";
 import aiProvider from "../services/aiProvider.js";
 import aiService from "../services/aiService.js";

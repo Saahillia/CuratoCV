@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/constants/resumeDefaults.js.
+ * Purpose: define the Resume Builder resume Defaults vocabulary/configuration consumed by its UI.
+ * Why here: canonical product choices should be owned by Resume Builder, not duplicated in the application shell.
+ */
 import resumeSections from "./resumeSections.js";
 
 export const DEFAULT_PERSONAL_INFO = {
@@ -21,8 +26,8 @@ export const DEFAULT_DOCUMENT = {
 export const DEFAULT_DESIGN = {
     template: "classic",
     colors: { heading: "#17375F", accent: "#0353A4", text: "#102A43", muted: "#627D98", border: "#90C2E7", background: "#FFFFFF" },
-    typography: { fontFamily: "system", fontSizeScale: "normal", headingScale: "normal", lineHeight: "normal" },
-    spacing: { density: "normal", sectionSpacing: "normal", entrySpacing: "normal" },
+    typography: { fontFamily: "system", fontSizeScale: "normal", headingScale: "normal", lineHeight: "normal", fontSizePt: 10.5, nameSizePt: 22, sectionHeadingSizePt: 13.5, entryHeadingSizePt: 11.5 },
+    spacing: { density: "normal", sectionSpacing: "normal", entrySpacing: "normal", lineHeightMultiplier: 1.25, sectionSpacingMm: 3, pageMarginMm: 10 },
     layout: { pageWidth: "standard", columns: "single", columnRatio: "50-50", pageAlignment: "left" },
     header: { alignment: "left", layout: "standard" },
     footer: { visibility: "hidden", alignment: "center" },

@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/config/resumeSectionRegistry.js.
+ * Purpose: define the Resume Builder resume Section Registry vocabulary/configuration consumed by its UI.
+ * Why here: canonical product choices should be owned by Resume Builder, not duplicated in the application shell.
+ */
 import ExperienceForm from "../components/Forms/ExperienceForm";
 import EducationForm from "../components/Forms/EducationForm";
 import ProjectForm from "../components/Forms/ProjectForm";

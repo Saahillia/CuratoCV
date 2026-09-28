@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/ContentEditor/EntryEditor.jsx.
+ * Purpose: implement the Resume Builder content-editing UI for Entry Editor.
+ * Why here: editing controls stay inside Resume Builder and communicate through the editor's resume-data callbacks rather than owning application routing.
+ */
 import React, { useState } from "react";
 import {
   Eye,
@@ -59,6 +64,8 @@ const EntryEditor = ({
   onToggleVisibility,
   onAiEnhance,
 }) => {
+  // Editor forms in the app have used several field names over time. Build one
+  // editable shape from either the current or older names so existing resumes open correctly.
   const [data, setData] = useState(() => {
     const rawData = entry?.data || {};
     let initialSkills = [];
@@ -99,6 +106,8 @@ const EntryEditor = ({
   };
 
   const handleAddSkill = (textToAdd) => {
+    // Users can enter several skills separated by commas; trim empty values
+    // and avoid adding a skill that is already in this category.
     const text = typeof textToAdd === "string" ? textToAdd : skillInput;
     if (!text || !text.trim()) return;
     const newItems = text
@@ -123,6 +132,8 @@ const EntryEditor = ({
   };
 
   const handleApplyFormatting = (tag) => {
+    // Wrap only the selected text, preserving everything before and after it.
+    // If no text is selected, insert a small editable example for the format.
     const textarea = document.getElementById("entry-description-editor");
     if (!textarea) return;
 
@@ -144,6 +155,8 @@ const EntryEditor = ({
 
   const handleAiAction = async () => {
     if (!onAiEnhance) return;
+    // AI work is delegated to the parent so this editor does not own API policy.
+    // Keep the loading flag accurate even when the request fails.
     setIsEnhancing(true);
     try {
       const enhanced = await onAiEnhance(data.description, {
@@ -165,6 +178,8 @@ const EntryEditor = ({
 
   const handleSave = () => {
     if (sectionType === "skills") {
+      // Skills are stored as a category plus an array; the joined description
+      // is retained for older resume renderers that still read that field.
       const categoryName = (data.category || data.title || "Skills").trim();
       const skillsList = Array.isArray(data.skills) ? data.skills.filter(Boolean) : [];
       onSave({
@@ -180,7 +195,8 @@ const EntryEditor = ({
       return;
     }
 
-    // Normalise field names for legacy compatibility
+    // Keep both editor-friendly names and legacy API/model names in the saved
+    // object so records created by earlier versions remain readable.
     const normalizedData = {
       ...data,
       company: data.subtitle || data.company,

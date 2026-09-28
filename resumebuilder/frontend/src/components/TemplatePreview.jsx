@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/TemplatePreview.jsx.
+ * Purpose: provide the Resume Builder Template Preview interface component.
+ * Why here: resume presentation and editing UI belong to the product package; the root shell owns routing and global providers.
+ */
 import React, { useRef, useState, useEffect } from "react";
 import { normalizePreviewData } from "./ResumePreview";
 import TemplateRenderer from "./TemplateRenderer";

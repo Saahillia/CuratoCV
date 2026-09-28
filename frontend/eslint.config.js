@@ -1,3 +1,8 @@
+/**
+ * Developer context for frontend/eslint.config.js.
+ * Purpose: explain the responsibility of eslint.config in its current module boundary.
+ * Why here: keep the concern with its canonical owner and avoid duplicating behavior in callers.
+ */
 import js from '@eslint/js'
 import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'

@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/ContentEditor/SectionRenderer.jsx.
+ * Purpose: implement the Resume Builder content-editing UI for Section Renderer.
+ * Why here: editing controls stay inside Resume Builder and communicate through the editor's resume-data callbacks rather than owning application routing.
+ */
 import React from "react";
 import EntryList from "./EntryList";
 import { updateEntryData } from "../../utils/resume";

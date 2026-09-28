@@ -1,3 +1,8 @@
+/**
+ * Developer context for backend/vitest.config.js.
+ * Purpose: configure or support the root backend vitest.config runtime/test behavior.
+ * Why here: process composition and test orchestration are root responsibilities; domain behavior remains in its owning workspace.
+ */
 import { defineConfig } from "vitest/config";
 import fs from "fs";
 import path from "path";
@@ -6,6 +11,7 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const envTestPath = path.resolve(__dirname, ".env.test");
 
+// Load optional test-only values before Vitest imports application modules, without replacing values already set by CI.
 if (fs.existsSync(envTestPath)) {
     const envConfig = fs.readFileSync(envTestPath, "utf8");
 
@@ -31,6 +37,7 @@ export default defineConfig({
 
         globals: false,
 
+        // Keep test suites from the root test tree and legacy backend test folder discoverable under one config.
         include: [
             "../tests/unit/backend/**/*.test.js",
             "../tests/integration/backend/**/*.test.js",
@@ -40,6 +47,7 @@ export default defineConfig({
             "./Tests/**/*.spec.js",
         ],
 
+        // Both setup files establish shared test infrastructure before their corresponding suites run.
         setupFiles: ["../tests/setup.js", "./Tests/setup.js"],
 
         testTimeout: 30000,

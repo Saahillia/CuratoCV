@@ -181,6 +181,9 @@ importers:
       '@curatocv/api-client':
         specifier: workspace:*
         version: link:../../packages/api-client
+      '@curatocv/platform-frontend':
+        specifier: workspace:*
+        version: link:../../platform/frontend
       '@curatocv/shared-utils':
         specifier: workspace:*
         version: link:../../packages/shared-utils

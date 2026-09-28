@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/backend/src/models/User.js.
+ * Purpose: define Platform's User persistence model.
+ * Why here: shared identity/billing data belongs to Platform rather than a product workspace.
+ */
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 

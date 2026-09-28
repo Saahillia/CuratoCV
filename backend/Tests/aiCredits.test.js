@@ -1,3 +1,8 @@
+/**
+ * Developer context for backend/Tests/aiCredits.test.js.
+ * Purpose: documents the test scenarios for ai Credits.test.
+ * Why separate: keep expected behavior and regression checks close to the tested contract; production behavior stays in its owning module.
+ */
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { createUser, createSubscription } from "./factories.js";
 import billingService from "../../platform/backend/src/services/billingService.js";

@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/Customize/TypographySettings.jsx.
+ * Purpose: implement a Resume Builder presentation/customization control for Typography Settings.
+ * Why here: design-setting interactions belong to the resume domain; shared shell code should only mount the product.
+ */
 import React from "react";
 import { RotateCcw } from "lucide-react";
 import {
@@ -45,6 +50,26 @@ const Select = ({ label, value, options, onChange }) => (
       ))}
     </select>
   </div>
+);
+
+const SizeSlider = ({ label, value, min, max, step = 0.5, unit = "pt", onChange }) => (
+  <label className="block space-y-1.5">
+    <span className="flex items-center justify-between text-[11px] text-slate-600">
+      <span>{label}</span>
+      <span className="font-medium tabular-nums text-slate-800">{value}{unit}</span>
+    </span>
+    <input
+      type="range"
+      min={min}
+      max={max}
+      step={step}
+      value={value}
+      onChange={(event) => onChange(Number(event.target.value))}
+      aria-label={label}
+      className="h-2 w-full cursor-pointer accent-blue-600"
+    />
+    <span className="flex justify-between text-[10px] text-slate-400"><span>{min}{unit}</span><span>{max}{unit}</span></span>
+  </label>
 );
 
 const TypographySettings = ({ customization = {}, onChange, onReset }) => {
@@ -105,6 +130,14 @@ const TypographySettings = ({ customization = {}, onChange, onReset }) => {
         }))}
         onChange={(v) => update({ lineHeight: v })}
       />
+
+      <div className="space-y-4 border-t border-slate-100 pt-4">
+        <p className="text-[11px] font-semibold text-slate-700">Fine tune type sizes</p>
+        <SizeSlider label="Body text" value={typography.fontSizePt ?? 10.5} min={8} max={18} onChange={(v) => update({ fontSizePt: v })} />
+        <SizeSlider label="Full name" value={typography.nameSizePt ?? 22} min={14} max={36} onChange={(v) => update({ nameSizePt: v })} />
+        <SizeSlider label="Section headings" value={typography.sectionHeadingSizePt ?? 13.5} min={9} max={24} onChange={(v) => update({ sectionHeadingSizePt: v })} />
+        <SizeSlider label="Entry headings" value={typography.entryHeadingSizePt ?? 11.5} min={8} max={18} onChange={(v) => update({ entryHeadingSizePt: v })} />
+      </div>
     </div>
   );
 };

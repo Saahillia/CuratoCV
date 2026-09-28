@@ -22,6 +22,8 @@ import { toast } from 'react-hot-toast';
 import { login } from '../app/features/authSlice';
 import emailService from '../services/emailService';
 import OtpInput from '../components/auth/OtpInput';
+import AuthPageLayout from '../components/auth/AuthPageLayout';
+import Button from '../components/common/Button';
 
 const VerifyEmail = () => {
     const navigate = useNavigate();
@@ -192,7 +194,7 @@ const VerifyEmail = () => {
 
     if (step === 'success') {
         return (
-            <div className="flex items-center justify-center min-h-screen bg-gray-50">
+            <AuthPageLayout>
                 <div className="sm:w-[400px] w-full text-center border border-gray-300/60 rounded-2xl px-8 bg-white py-12">
                     <div className="mb-8">
                         <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -204,20 +206,20 @@ const VerifyEmail = () => {
                         <p className="text-gray-600">Your email has been verified. You can now continue to CuratoCV.</p>
                     </div>
 
-                    <button
+                    <Button
                         onClick={handleContinue}
-                        className="w-full h-11 rounded-full text-white bg-blue-500 hover:opacity-90 transition-opacity font-medium"
+                        className="w-full rounded-full"
                     >
                         Continue to CuratoCV
-                    </button>
+                    </Button>
                 </div>
-            </div>
+            </AuthPageLayout>
         );
     }
 
     if (step === 'already-verified') {
         return (
-            <div className="flex items-center justify-center min-h-screen bg-gray-50">
+            <AuthPageLayout>
                 <div className="sm:w-[400px] w-full text-center border border-gray-300/60 rounded-2xl px-8 bg-white py-12">
                     <div className="mb-8">
                         <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -229,19 +231,19 @@ const VerifyEmail = () => {
                         <p className="text-gray-600">Your email address has already been verified. You can continue to CuratoCV.</p>
                     </div>
 
-                    <button
+                    <Button
                         onClick={handleContinue}
-                        className="w-full h-11 rounded-full text-white bg-blue-500 hover:opacity-90 transition-opacity font-medium"
+                        className="w-full rounded-full"
                     >
                         Continue to CuratoCV
-                    </button>
+                    </Button>
                 </div>
-            </div>
+            </AuthPageLayout>
         );
     }
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <AuthPageLayout>
             <div className="sm:w-[400px] w-full text-center border border-gray-300/60 rounded-2xl px-8 bg-white py-12">
                 <h1 className="text-2xl font-semibold text-gray-900 mb-2">Verify your email</h1>
                 <p className="text-gray-600 mb-6">
@@ -285,13 +287,13 @@ const VerifyEmail = () => {
                     </div>
                 )}
 
-                <button
+                <Button
                     onClick={handleVerify}
                     disabled={!otp || otp.length !== 6 || loading || resendLoading}
-                    className="w-full h-11 rounded-full text-white bg-blue-500 hover:opacity-90 transition-opacity font-medium mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="mb-4 w-full rounded-full"
                 >
                     {loading ? 'Verifying...' : 'Verify'}
-                </button>
+                </Button>
 
                 <div className="text-center">
                     {resendAvailable ? (
@@ -309,7 +311,7 @@ const VerifyEmail = () => {
                     )}
                 </div>
             </div>
-        </div>
+        </AuthPageLayout>
     );
 };
 

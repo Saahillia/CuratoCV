@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/frontend/src/components/products/ProductGrid.jsx.
+ * Purpose: provide reusable Platform Product Grid UI.
+ * Why here: common interface elements are owned by Platform and consumed through workspace exports.
+ */
 import React from 'react';
 import { PRODUCTS } from '../../configs/products';
 import { ProductCard } from './ProductCard';

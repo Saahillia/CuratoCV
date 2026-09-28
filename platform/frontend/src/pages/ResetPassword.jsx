@@ -18,6 +18,8 @@ import { toast } from 'react-hot-toast';
 import { Check, X, Eye, EyeOff } from 'lucide-react';
 import emailService from '../services/emailService';
 import OtpInput from '../components/auth/OtpInput';
+import AuthPageLayout from '../components/auth/AuthPageLayout';
+import Button from '../components/common/Button';
 
 const PASSWORD_RULES = [
     { label: 'At least 8 characters', test: (pwd) => pwd.length >= 8 },
@@ -121,7 +123,7 @@ const ResetPassword = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-50 py-8 px-4">
+        <AuthPageLayout>
             <div className="sm:w-[420px] w-full text-center border border-gray-300/60 rounded-2xl px-8 bg-white py-12 shadow-sm">
                 <h1 className="text-2xl font-semibold text-gray-900 mb-2">Reset Password</h1>
                 <p className="text-gray-600 mb-6 font-medium text-sm">Step {step === 'email' ? '1' : step === 'otp' ? '2' : '3'} of 3</p>
@@ -131,14 +133,14 @@ const ResetPassword = () => {
                 {step === 'email' && (
                     <form onSubmit={handleEmailSubmit} className="space-y-4">
                         <input className="w-full h-12 px-4 rounded-full border border-gray-300 outline-none text-sm" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email address" required />
-                        <button disabled={loading} className="w-full h-11 rounded-full text-white bg-blue-500 hover:opacity-90 disabled:opacity-50 font-medium">Send verification code</button>
+                        <Button type="submit" disabled={loading} className="w-full rounded-full">Send verification code</Button>
                     </form>
                 )}
 
                 {step === 'otp' && (
                     <div className="space-y-4">
                         <OtpInput length={6} onChange={setOtp} onComplete={handleOtpVerify} disabled={loading} />
-                        <button onClick={handleOtpVerify} disabled={loading || otp.length !== 6} className="w-full h-11 rounded-full text-white bg-blue-500 hover:opacity-90 disabled:opacity-50 font-medium">Verify</button>
+                        <Button onClick={handleOtpVerify} disabled={loading || otp.length !== 6} className="w-full rounded-full">Verify</Button>
                     </div>
                 )}
 
@@ -156,7 +158,7 @@ const ResetPassword = () => {
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-4 p-1 text-gray-500 hover:text-gray-700"
+                                className="cv-touch-target absolute right-4 inline-flex items-center justify-center rounded-md p-1 text-gray-500 hover:text-gray-700"
                             >
                                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                             </button>
@@ -191,17 +193,17 @@ const ResetPassword = () => {
                             <button
                                 type="button"
                                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                className="absolute right-4 p-1 text-gray-500 hover:text-gray-700"
+                                className="cv-touch-target absolute right-4 inline-flex items-center justify-center rounded-md p-1 text-gray-500 hover:text-gray-700"
                             >
                                 {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                             </button>
                         </div>
 
-                        <button disabled={loading} className="w-full h-11 rounded-full text-white bg-blue-500 hover:opacity-90 disabled:opacity-50 font-medium mt-2">Reset password</button>
+                        <Button type="submit" disabled={loading} className="mt-2 w-full rounded-full">Reset password</Button>
                     </form>
                 )}
             </div>
-        </div>
+        </AuthPageLayout>
     );
 };
 

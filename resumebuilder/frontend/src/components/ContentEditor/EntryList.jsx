@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/ContentEditor/EntryList.jsx.
+ * Purpose: implement the Resume Builder content-editing UI for Entry List.
+ * Why here: editing controls stay inside Resume Builder and communicate through the editor's resume-data callbacks rather than owning application routing.
+ */
 import React from "react";
 import { DndContext, closestCenter } from "@dnd-kit/core";
 import {

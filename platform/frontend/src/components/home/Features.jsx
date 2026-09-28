@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/frontend/src/components/home/Features.jsx.
+ * Purpose: provide reusable Platform Features UI.
+ * Why here: common interface elements are owned by Platform and consumed through workspace exports.
+ */
 import React from "react";
 import { Zap } from "lucide-react";
 import Title from "./Title";

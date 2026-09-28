@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/frontend/src/pages/Checkout.jsx.
+ * Purpose: implement the Platform Checkout page workflow.
+ * Why here: account, navigation, and billing surfaces are common platform capabilities mounted by the root shell.
+ */
 import { useState, useEffect, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
@@ -20,7 +25,8 @@ const Checkout = () => {
 
   const processingRef = useRef(false);
 
-  // Fetch authoritative plan + billing option from backend
+  // The URL only chooses which plan to display. Fetch price details from the
+  // backend because the browser must never be the authority for payable amounts.
   useEffect(() => {
     const fetchPlanDetails = async () => {
       try {
@@ -56,7 +62,8 @@ const Checkout = () => {
   }, [planId, billingPeriod]);
 
   const handleCheckout = async () => {
-    // Idempotency guard: prevent double-click
+    // Stop two rapid clicks from creating two separate provider orders.
+    // This protects the UI flow; backend payment idempotency is still required.
     if (processingRef.current) return;
     processingRef.current = true;
 
@@ -65,7 +72,8 @@ const Checkout = () => {
     setError("");
 
     try {
-      // Create Razorpay order on backend
+      // Ask the server to resolve the plan/price and create the Razorpay order.
+      // The client receives the order details but does not choose the amount.
       const orderRes = await billingService.createOrder({ planId, billingPeriod });
       const orderData = orderRes?.data || orderRes;
 
@@ -76,7 +84,8 @@ const Checkout = () => {
       setOrderCreated(true);
       setMessage("Launching Razorpay...");
 
-      // Load Razorpay script
+      // Load the provider's checkout code only when the user starts checkout.
+      // The server secret is never placed in this browser configuration.
       await loadScript("https://checkout.razorpay.com/v1/checkout.js");
 
       const options = {
@@ -87,6 +96,8 @@ const Checkout = () => {
         description: `${planDetails?.plan?.name} - ${billingPeriod}`,
         order_id: orderData.providerOrderId,
         handler: async (response) => {
+          // A successful provider popup is not proof to CuratoCV. Send the
+          // provider identifiers/signature to the backend for verification.
           setMessage("Verifying payment...");
           try {
             const verifyRes = await billingService.verifyCheckoutPayment({
@@ -122,6 +133,8 @@ const Checkout = () => {
         },
         modal: {
           ondismiss: () => {
+            // Let the user retry only if checkout closed before an order was
+            // created. Once created, preserve the state for server reconciliation.
             if (!orderCreated) {
               setMessage("");
               setLoading(false);

@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/Customize/LinkSettings.jsx.
+ * Purpose: implement a Resume Builder presentation/customization control for Link Settings.
+ * Why here: design-setting interactions belong to the resume domain; shared shell code should only mount the product.
+ */
 import React from "react";
 import { RotateCcw } from "lucide-react";
 

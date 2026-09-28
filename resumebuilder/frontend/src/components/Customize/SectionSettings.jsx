@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/Customize/SectionSettings.jsx.
+ * Purpose: implement a Resume Builder presentation/customization control for Section Settings.
+ * Why here: design-setting interactions belong to the resume domain; shared shell code should only mount the product.
+ */
 import React from "react";
 import { RotateCcw } from "lucide-react";
 import { resolveSectionCustomization, updateSectionCustomization, updateSectionSpecific, SECTION_CUSTOMIZATION_FIELDS } from "../../utils/sectionCustomization";

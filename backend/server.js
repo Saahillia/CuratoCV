@@ -1,3 +1,8 @@
+/**
+ * Developer context for backend/server.js.
+ * Purpose: compose the API process, global middleware, domain routes, and shutdown lifecycle.
+ * Why here: one root assembly point keeps startup centralized while domain behavior remains in Platform and product workspaces.
+ */
 import express from "express";
 import cors from "cors";
 import "dotenv/config";

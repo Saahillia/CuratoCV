@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/backend/src/constants/resumeDefaults.js.
+ * Purpose: define Resume Builder's canonical resume Defaults values.
+ * Why here: product defaults and limits must have one owner so callers do not drift.
+ */
 import resumeSections from "./resumeSections.js";
 
 // ============================================================
@@ -75,12 +80,19 @@ const DEFAULT_DESIGN = Object.freeze({
         fontSizeScale: "normal",
         headingScale: "normal",
         lineHeight: "normal",
+        fontSizePt: 10.5,
+        nameSizePt: 22,
+        sectionHeadingSizePt: 13.5,
+        entryHeadingSizePt: 11.5,
     }),
 
     spacing: Object.freeze({
         density: "normal",
         sectionSpacing: "normal",
         entrySpacing: "normal",
+        lineHeightMultiplier: 1.25,
+        sectionSpacingMm: 3,
+        pageMarginMm: 10,
     }),
 
     layout: Object.freeze({

@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/Forms/SkillsForm.jsx.
+ * Purpose: edit one Resume Builder resume-entry type (Skills Form).
+ * Why here: field-specific input behavior remains close to its domain form and is composed by the content editor.
+ */
 import {
     Eye,
     EyeOff,

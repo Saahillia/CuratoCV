@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/frontend/src/pages/Profile.jsx.
+ * Purpose: implement the Platform Profile page workflow.
+ * Why here: account, navigation, and billing surfaces are common platform capabilities mounted by the root shell.
+ */
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";

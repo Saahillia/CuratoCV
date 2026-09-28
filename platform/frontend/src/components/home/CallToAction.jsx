@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/frontend/src/components/home/CallToAction.jsx.
+ * Purpose: provide reusable Platform Call To Action UI.
+ * Why here: common interface elements are owned by Platform and consumed through workspace exports.
+ */
 import React from "react";
 
 const CallToAction = () => {

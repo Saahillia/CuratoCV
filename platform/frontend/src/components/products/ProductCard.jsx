@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/frontend/src/components/products/ProductCard.jsx.
+ * Purpose: provide reusable Platform Product Card UI.
+ * Why here: common interface elements are owned by Platform and consumed through workspace exports.
+ */
 import React from 'react';
 import { ArrowRight, CheckCircle2, FileText, NotebookPen } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';

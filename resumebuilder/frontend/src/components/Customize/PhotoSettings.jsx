@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/Customize/PhotoSettings.jsx.
+ * Purpose: implement a Resume Builder presentation/customization control for Photo Settings.
+ * Why here: design-setting interactions belong to the resume domain; shared shell code should only mount the product.
+ */
 import React from "react";
 import { RotateCcw } from "lucide-react";
 
@@ -23,7 +28,7 @@ const RadioGroup = ({ label, value, options, onChange }) => (
   </div>
 );
 
-const PhotoSettings = ({ customization = {}, onChange, onReset }) => {
+const PhotoSettings = ({ customization = {}, onChange, onReset, selectedTemplate = "classic" }) => {
   const photo = customization.photo || {};
 
   const update = (patch) => {
@@ -42,6 +47,10 @@ const PhotoSettings = ({ customization = {}, onChange, onReset }) => {
         )}
       </div>
       <p className="text-xs text-slate-500 mt-0.5">Customize profile photo appearance and layout</p>
+      <p className="rounded-lg bg-blue-50 px-3 py-2 text-[11px] text-blue-800">
+        Profile photos are shown by the Minimal Image template. Your photo settings stay saved when you switch templates.
+        {selectedTemplate !== "minimal-image" && " Select Minimal Image to see these changes in the preview."}
+      </p>
 
       <RadioGroup
         label="Visibility"

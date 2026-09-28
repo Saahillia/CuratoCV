@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/backend/src/models/PasswordResetToken.js.
+ * Purpose: define Platform's Password Reset Token persistence model.
+ * Why here: shared identity/billing data belongs to Platform rather than a product workspace.
+ */
 import mongoose from "mongoose";
 import crypto from "crypto";
 

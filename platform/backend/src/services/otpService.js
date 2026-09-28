@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/backend/src/services/otpService.js.
+ * Purpose: create and verify account OTPs while enforcing their expiry and attempt limits.
+ * Why here: identity, billing, and shared platform policy have one owner that product packages consume.
+ */
 import crypto from "crypto";
 import OTP from "../models/OTP.js";
 import ApiError from "../utils/apiError.js";

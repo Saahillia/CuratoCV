@@ -1,5 +1,168 @@
+/* Developer context: root-shell global styles, typography imports, and shared design tokens live here.
+   Product-specific visual rules should stay with their owning frontend package. */
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=Open+Sans:wght@400;500;600;700&family=Lato:wght@400;700&family=Montserrat:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Merriweather:wght@400;700&family=Source+Sans+3:wght@400;600;700&display=swap');
 @import "tailwindcss";
+
+/* Vite builds from the root shell; explicitly scan every source package so Tailwind emits their utility classes. */
+@source "./";
+@source "../../platform/frontend/src";
+@source "../../resumebuilder/frontend/src";
+@source "../../memo/frontend/src";
+
+/* Product-wide identity tokens derive from the canonical logo and wordmark SVG colors. */
+@theme {
+    --color-brand-50: #f2f6fa;
+    --color-brand-100: #e8f0f7;
+    --color-brand-200: #d9e0e7;
+    --color-brand-300: #b9c9d8;
+    --color-brand-400: #7891a8;
+    --color-brand-500: #17375f;
+    --color-brand-600: #17375f;
+    --color-brand-700: #122b4a;
+    --color-brand-800: #0f2745;
+    --color-brand-900: #0a1b2f;
+    --color-accent-50: #e9f8f7;
+    --color-accent-100: #d2f1ef;
+    --color-accent-200: #a5e3df;
+    --color-accent-300: #6fd0ca;
+    --color-accent-400: #35c0b9;
+    --color-accent-500: #12b5b0;
+    --color-accent-600: #0e9692;
+    --color-accent-700: #0b7773;
+    --color-accent-800: #095b58;
+    --color-accent-900: #064340;
+
+    /* Legacy blue/indigo utility names remain source-compatible but now use the approved brand palette. */
+    --color-blue-50: var(--color-brand-50);
+    --color-blue-100: var(--color-brand-100);
+    --color-blue-200: var(--color-brand-200);
+    --color-blue-300: var(--color-brand-300);
+    --color-blue-400: var(--color-brand-400);
+    --color-blue-500: var(--color-brand-600);
+    --color-blue-600: var(--color-brand-600);
+    --color-blue-700: var(--color-brand-700);
+    --color-blue-800: var(--color-brand-800);
+    --color-blue-900: var(--color-brand-900);
+    --color-indigo-50: var(--color-brand-50);
+    --color-indigo-100: var(--color-brand-100);
+    --color-indigo-200: var(--color-brand-200);
+    --color-indigo-300: var(--color-brand-300);
+    --color-indigo-400: var(--color-brand-400);
+    --color-indigo-500: var(--color-brand-500);
+    --color-indigo-600: var(--color-brand-600);
+    --color-indigo-700: var(--color-brand-700);
+    --color-indigo-800: var(--color-brand-800);
+    --color-indigo-900: var(--color-brand-900);
+    --color-purple-50: var(--color-accent-50);
+    --color-purple-100: var(--color-accent-100);
+    --color-purple-200: var(--color-accent-200);
+    --color-purple-300: var(--color-accent-300);
+    --color-purple-400: var(--color-accent-400);
+    --color-purple-500: var(--color-accent-500);
+    --color-purple-600: var(--color-accent-600);
+    --color-purple-700: var(--color-accent-700);
+    --color-purple-800: var(--color-accent-800);
+    --color-purple-900: var(--color-accent-900);
+}
+
+:root {
+    --cv-page-gutter: clamp(1.5rem, 4vw, 5rem);
+    --cv-section-space: clamp(1.5rem, 5svh, 4rem);
+    --cv-brand-primary: #17375f;
+    --cv-brand-accent: #12b5b0;
+}
+
+.cv-page-gutter {
+    padding-inline: var(--cv-page-gutter);
+}
+
+.cv-fluid-heading {
+    font-size: clamp(1.75rem, 1.2rem + 2.4vw, 3.5rem);
+    line-height: 1.08;
+}
+
+.cv-screen-hero {
+    min-height: clamp(30rem, 88svh, 56rem);
+}
+
+.cv-button {
+    min-inline-size: 2.75rem;
+    min-block-size: 2.75rem;
+}
+
+@media (max-height: 680px) and (orientation: landscape) {
+    .cv-screen-hero {
+        min-height: auto;
+    }
+
+    .cv-short-landscape-compact {
+        padding-block: 1rem;
+    }
+
+    .cv-auth-content {
+        padding-block: 1rem;
+    }
+}
+
+/* On short screens keep Memo's primary action and empty-state entry point visible; roadmap details are secondary until space is available. */
+@media (max-height: 680px) {
+    .memo-workspace-main {
+        padding-block: 0.5rem;
+    }
+
+    .memo-workspace-hero {
+        margin-bottom: 0.75rem;
+        padding-block: 0.75rem;
+    }
+
+    .memo-workspace-intro-copy,
+    .memo-workspace-roadmap {
+        display: none;
+    }
+
+    .memo-workspace-title {
+        margin-bottom: 0.5rem;
+    }
+
+    .memo-workspace-empty-grid {
+        gap: 0.5rem;
+    }
+
+    .memo-workspace-empty-card {
+        min-block-size: 3.5rem;
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 360px) {
+    :root {
+        --cv-page-gutter: 0.75rem;
+        --cv-section-space: 1.25rem;
+    }
+}
+
+@media (pointer: coarse) {
+    .cv-touch-target,
+    .cv-button--icon {
+        min-inline-size: 2.75rem;
+        min-block-size: 2.75rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}
 
 * {
     font-family: "DM Sans", sans-serif;
@@ -22,8 +185,8 @@ body::before,
 body::after {
     content: "";
     position: fixed;
-    width: 520px;
-    height: 520px;
+    width: clamp(18rem, 55vw, 32.5rem);
+    height: clamp(18rem, 55vw, 32.5rem);
     border-radius: 9999px;
     filter: blur(100px);
     pointer-events: none;
@@ -34,14 +197,14 @@ body::after {
 body::before {
     top: -180px;
     left: -180px;
-    background: rgba(29, 53, 87, 0.13);
+    background: rgba(23, 55, 95, 0.13);
 }
 
 /* Large teal glow */
 body::after {
     right: -180px;
     bottom: -180px;
-    background: rgba(0, 191, 166, 0.10);
+    background: rgba(18, 181, 176, 0.10);
 }
 
 /* Keep the entire application above the background */
@@ -55,8 +218,8 @@ body::after {
 #root::after {
     content: "";
     position: fixed;
-    width: 420px;
-    height: 420px;
+    width: clamp(16rem, 45vw, 26.25rem);
+    height: clamp(16rem, 45vw, 26.25rem);
     border-radius: 9999px;
     filter: blur(110px);
     pointer-events: none;
@@ -72,7 +235,7 @@ body::after {
 #root::after {
     bottom: 15%;
     left: -220px;
-    background: rgba(29, 53, 87, 0.06);
+    background: rgba(23, 55, 95, 0.06);
 }
 
 @layer base {
@@ -153,4 +316,169 @@ body::after {
     width: 210mm; height: 297mm; min-height: 297mm; max-height: 297mm;
     break-after: page; page-break-after: always; box-sizing: border-box;
   }
+}
+
+/* Memo Workspace Card Silhouettes & Distinct Visual Hierarchy */
+.folder-card-container,
+.document-card-container {
+    position: relative;
+    padding-top: 0.75rem;
+    width: 90%;
+    margin-inline: auto;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.folder-card-container.group:hover {
+    transform: translateY(-4px);
+}
+
+/* Layer 1: Rectangle Tab (Bottom/Back) */
+.folder-tab {
+    position: absolute;
+    top: -1px;
+    left: 0px;
+    width: 50%;
+    height: 16px;
+    background: linear-gradient(180deg, #64a6c0 0%, #4F91AB 50%, #3a7d97 100%);
+    border: 1px solid #2a5b70;
+    border-bottom: none;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    z-index: 1;
+    transition: background 0.2s ease, border-color 0.2s ease;
+    box-shadow: 0 -2px 6px rgba(23, 63, 90, 0.2);
+}
+
+.group:hover .folder-tab {
+    background: linear-gradient(180deg, #71b3cc 0%, #5d9db8 50%, #4489a3 100%);
+    border-color: #356d84;
+    box-shadow: 0 -2px 8px rgba(23, 63, 90, 0.3);
+}
+
+/* Layer 2: Cards (Middle) */
+.folder-paper-sheet {
+    position: absolute;
+    top: 2px;
+    height: 72px;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 50%, #e2e8f0 100%);
+    border: 1px solid #cbd5e1;
+    border-top: 2px solid #94a3b8;
+    border-radius: 8px 8px 0 0;
+    box-shadow: 0 -4px 12px rgba(15, 23, 42, 0.12), 0 2px 6px rgba(15, 23, 42, 0.06);
+    opacity: 0;
+    transform: translateY(18px) rotate(0deg);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+    z-index: 2;
+    pointer-events: none;
+    padding: 6px 10px;
+}
+
+.folder-paper-sheet.sheet-1 {
+    left: 8%;
+    width: 84%;
+    z-index: 2;
+}
+
+.folder-paper-sheet.sheet-2 {
+    left: 12%;
+    width: 76%;
+    z-index: 3;
+}
+
+.folder-paper-sheet .sheet-line {
+    height: 3px;
+    background: #e2e8f0;
+    border-radius: 2px;
+    margin-bottom: 5px;
+}
+
+.group:hover .folder-paper-sheet.sheet-1 {
+    opacity: 1;
+    transform: translateY(-20px) rotate(-1.5deg);
+}
+
+.group:hover .folder-paper-sheet.sheet-2 {
+    opacity: 0.95;
+    transform: translateY(-15px) rotate(1.5deg);
+}
+
+/* Layer 3: Blue/Teal Square Box (Top/Front) */
+.folder-shape {
+    position: relative;
+    background: linear-gradient(180deg, #4F91AB 0%, #397D98 35%, #2B657F 70%, #173F5A 100%);
+    border: 1px solid #1a3d5c;
+    border-radius: 12px;
+    border-top-left-radius: 0;
+    box-shadow: 0 4px 14px rgba(23, 63, 95, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.22), inset 0 -10px 20px rgba(10, 27, 47, 0.35);
+    z-index: 10;
+    transition: box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.folder-shape::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, transparent 40%, rgba(14, 42, 48, 0.25) 100%);
+    pointer-events: none;
+    z-index: 3;
+}
+
+/* Document Card Silhouette & Multi-Sheet Paper Stack Hover */
+.document-shape {
+    position: relative;
+    background: linear-gradient(135deg, transparent 28px, #ffffff 28px);
+    border: 1px solid #cbd5e1;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s ease;
+}
+
+.document-shape::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, #94a3b8 50%, #e2e8f0 50%);
+    border-bottom-left-radius: 8px;
+    border-left: 1px solid #94a3b8;
+    border-bottom: 1px solid #94a3b8;
+    box-shadow: -3px 3px 6px rgba(15, 23, 42, 0.1);
+    z-index: 1;
+    transition: background 0.2s ease;
+}
+
+.document-shape::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgba(255,255,255,0.8) 0%, rgba(244,247,251,0.5) 100%);
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Pop cards taken out from folder bottom effect */
+.group:hover .folder-shape {
+    box-shadow:
+        0 24px 40px -8px rgba(23, 55, 95, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25),
+        inset 0 -10px 20px rgba(10, 27, 47, 0.5);
+}
+
+/* Layered physical paper stack effect on document card hover */
+.group:hover .document-shape {
+    transform: translateY(-4px);
+    border-color: #94a3b8;
+    box-shadow:
+        4px 4px 0px 0px rgba(226, 232, 240, 0.9),
+        8px 8px 0px 0px rgba(203, 213, 225, 0.6),
+        0 12px 24px -4px rgba(15, 23, 42, 0.12);
+}
+
+.folder-shape:active,
+.document-shape:active {
+    transform: translateY(0);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }

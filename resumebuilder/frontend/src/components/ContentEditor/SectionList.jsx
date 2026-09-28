@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/ContentEditor/SectionList.jsx.
+ * Purpose: implement the Resume Builder content-editing UI for Section List.
+ * Why here: editing controls stay inside Resume Builder and communicate through the editor's resume-data callbacks rather than owning application routing.
+ */
 import { DndContext, closestCenter } from "@dnd-kit/core";
 import {
     SortableContext,
@@ -25,6 +30,7 @@ const SectionList = ({
     const [expandedIds, setExpandedIds] = useState(() => new Set());
 
     useEffect(() => {
+        // Drop expansion state for sections that were removed, while preserving state for sections still present.
         setExpandedIds((previous) => {
             const currentIds = new Set(
                 sections.map((section) => section._id || section.order),
@@ -39,6 +45,7 @@ const SectionList = ({
     const existingTypes = sections.map((s) => s.type);
 
     const toggleExpanded = (sectionId) => {
+        // Keep at most one section open so the editor stays compact while users work through entries.
         setExpandedIds((prev) => {
             const isExpanded = prev.has(sectionId);
             const next = new Set();
@@ -50,6 +57,7 @@ const SectionList = ({
     };
 
     const addSection = (type, title) => {
+        // New sections start with stable client IDs and safe defaults before the backend assigns any persistent ID.
         const newId = createClientId("sec");
         const newSection = {
             _id: newId,
@@ -86,6 +94,7 @@ const SectionList = ({
     };
 
     const handleDragEnd = (event) => {
+        // Drag-and-drop reports IDs; translate them back to array positions before reordering the section data.
         const { active, over } = event;
         if (!over || active.id === over.id) return;
         const oldIndex = sections.findIndex(
@@ -97,6 +106,7 @@ const SectionList = ({
         if (oldIndex === -1 || newIndex === -1) return;
         const reordered = arrayMove(sections, oldIndex, newIndex);
         const withUpdatedOrder = normalizeSectionOrder(reordered);
+        // Notify any dedicated reorder handler, then publish the new ordered list as the editor's data change.
         if (onReorderSections) onReorderSections(withUpdatedOrder);
         onChange(withUpdatedOrder);
     };

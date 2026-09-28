@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/frontend/src/app/features/authSlice.js.
+ * Purpose: own the canonical Platform authentication state and actions.
+ * Why here: identity/session state is a shared Platform capability; product domains should consume it rather than create duplicate auth state.
+ */
 import { createSlice } from "@reduxjs/toolkit";
 
 // ============================================================

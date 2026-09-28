@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/Forms/SortableEntry.jsx.
+ * Purpose: edit one Resume Builder resume-entry type (Sortable Entry).
+ * Why here: field-specific input behavior remains close to its domain form and is composed by the content editor.
+ */
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 

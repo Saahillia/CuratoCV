@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/Customize/ColorSettings.jsx.
+ * Purpose: implement a Resume Builder presentation/customization control for Color Settings.
+ * Why here: design-setting interactions belong to the resume domain; shared shell code should only mount the product.
+ */
 import React from "react";
 import { RotateCcw } from "lucide-react";
 import ColorPicker from "../ColorPicker";

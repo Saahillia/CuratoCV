@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/backend/src/models/OTP.js.
+ * Purpose: define Platform's OTP persistence model.
+ * Why here: shared identity/billing data belongs to Platform rather than a product workspace.
+ */
 import mongoose from "mongoose";
 
 // ============================================================

@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/frontend/src/components/billing/PaymentStatus.jsx.
+ * Purpose: provide reusable Platform Payment Status UI.
+ * Why here: common interface elements are owned by Platform and consumed through workspace exports.
+ */
 import React from "react";
 
 const PaymentStatus = ({ status, planName, periodEnd, cancelAtPeriodEnd }) => {

@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/ContentEditor/ContentEditor.jsx.
+ * Purpose: implement the Resume Builder content-editing UI for Content Editor.
+ * Why here: editing controls stay inside Resume Builder and communicate through the editor's resume-data callbacks rather than owning application routing.
+ */
 import React from "react";
 import PersonalInfoEditor from "./PersonalInfoEditor";
 import SectionList from "./SectionList";
@@ -20,6 +25,8 @@ const ContentEditor = ({
     };
 
     const handleDeleteSection = (sectionId) => {
+        // Remove only the selected section, then renumber the remaining list so
+        // the persisted order has no gaps.
         const updated = (resumeData.sections || [])
             .filter((s) => String(s._id) !== String(sectionId))
             .map((s, idx) => ({ ...s, order: idx }));

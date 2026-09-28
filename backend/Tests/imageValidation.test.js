@@ -1,3 +1,8 @@
+/**
+ * Developer context for backend/Tests/imageValidation.test.js.
+ * Purpose: documents the test scenarios for image Validation.test.
+ * Why separate: keep expected behavior and regression checks close to the tested contract; production behavior stays in its owning module.
+ */
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import sharp from "sharp";
 import { validateMagicBytes, validateSafeImage, validatePhotoObject } from "../../resumebuilder/backend/src/utils/imageValidation.js";

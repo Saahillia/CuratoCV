@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/backend/src/controllers/resumeController.js.
+ * Purpose: translate resume API requests into Resume Builder service calls and HTTP responses.
+ * Why here: controllers own transport concerns and delegate product rules to Resume Builder services.
+ */
 import Resume from "../models/Resume.js";
 import resumeService from "../services/resumeService.js";
 import resumeSections from "../constants/resumeSections.js";
@@ -1284,6 +1289,7 @@ export const downloadResumePdf = async (req, res) => {
         }
 
         const html = renderResumeHtml(resume.toObject ? resume.toObject() : resume);
+
         const { buffer, filename } = await generateResumePdf({
             html,
             resumeTitle: resume.title || "Resume",

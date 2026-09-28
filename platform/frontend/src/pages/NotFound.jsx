@@ -1,3 +1,8 @@
+/**
+ * Developer context for platform/frontend/src/pages/NotFound.jsx.
+ * Purpose: implement the Platform Not Found page workflow.
+ * Why here: account, navigation, and billing surfaces are common platform capabilities mounted by the root shell.
+ */
 import { Link } from "react-router-dom";
 
 const NotFound = () => (

@@ -1,14 +1,21 @@
+/**
+ * Developer context for platform/frontend/src/pages/Products.jsx.
+ * Purpose: implement the Platform Products page workflow.
+ * Why here: account, navigation, and billing surfaces are common platform capabilities mounted by the root shell.
+ */
 import React, { useState } from 'react';
 import { ProductGrid } from '../components/products/ProductGrid';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../app/features/authSlice';
 import { useNavigate, Link } from 'react-router-dom';
-import { LogOut, LayoutGrid, HelpCircle, Settings, User, ChevronDown, Menu, X, Home, ArrowLeft, FileText, NotebookPen, ChevronRight } from 'lucide-react';
+import { LogOut, LayoutGrid, HelpCircle, Settings, User, ChevronDown, Menu, X, Home, ArrowLeft, FileText, NotebookPen, ChevronRight, CreditCard, BadgeDollarSign } from 'lucide-react';
 import Breadcrumbs from '../components/common/Breadcrumbs';
+import BrandLockup from '../components/common/BrandLockup';
 
 import toast from 'react-hot-toast';
 
 const Products = () => {
+    // Platform provides identity/navigation here; individual product functionality stays in its own workspace.
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { user } = useSelector(state => state.auth);
@@ -17,12 +24,14 @@ const Products = () => {
     const [productsExpanded, setProductsExpanded] = useState(true);
 
     const handleLogout = () => {
+        // Clear in-memory auth and the legacy browser token together, then move to the login route.
         dispatch(logout());
         localStorage.removeItem("token");
         toast.success("Logged out successfully");
         navigate('/login');
     };
 
+    // Reuse one navigation tree for desktop sidebar and mobile drawer so links/behavior stay consistent.
     const navContent = (
         <div className="flex flex-col justify-between h-full p-6">
             <div className="space-y-6">
@@ -92,6 +101,22 @@ const Products = () => {
 
             <div className="space-y-4 pt-6 border-t border-[#D9E0E7]">
                 <div className="space-y-1.5">
+                    <Link
+                        to="/pricing"
+                        onClick={() => setMobileDrawerOpen(false)}
+                        className="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-[#667085] hover:text-[#172033] hover:bg-[#F5F8FB] text-sm font-medium"
+                    >
+                        <BadgeDollarSign size={18} /> Pricing
+                    </Link>
+                    <Link
+                        to="/billing"
+                        onClick={() => setMobileDrawerOpen(false)}
+                        className="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-[#667085] hover:text-[#172033] hover:bg-[#F5F8FB] text-sm font-medium"
+                    >
+                        <CreditCard size={18} /> Billing
+                    </Link>
+                </div>
+                <div className="space-y-1.5">
                     <a
                         href="#help"
                         onClick={(e) => {
@@ -118,6 +143,7 @@ const Products = () => {
         </div>
     );
 
+    // The top-level click closes transient menus; nested controls stop propagation when they need to stay open.
     return (
         <div className="min-h-screen bg-[#F5F8FB] flex flex-col text-[#172033]" onClick={() => { setShowUserMenu(false); setMobileDrawerOpen(false); }}>
             {/* Header */}
@@ -128,16 +154,13 @@ const Products = () => {
                     <button
                         type="button"
                         onClick={() => setMobileDrawerOpen(true)}
-                        className="md:hidden p-1.5 text-[#17375F] hover:bg-[#E8F0F7] rounded-lg transition-colors"
+                        className="cv-touch-target md:hidden p-1.5 text-[#17375F] hover:bg-[#E8F0F7] rounded-lg transition-colors"
                         aria-label="Open navigation menu"
                     >
                         <Menu size={20} />
                     </button>
 
-                    <Link to="/" className="flex items-center gap-2">
-                        <img src="/logo.svg" alt="CuratoCV logo" className="h-12 w-auto object-contain" />
-                        <img src="/brand.svg" alt="CuratoCV wordmark" className="h-10 w-auto object-contain" />
-                    </Link>
+                    <BrandLockup />
 
                     <Link
                         to="/"
@@ -146,9 +169,6 @@ const Products = () => {
                         <ArrowLeft size={14} /> Back to Home
                     </Link>
                 </div>
-
-                {/* Center: Empty to maintain space */}
-                <div className="hidden md:flex items-center"></div>
 
                 {/* Right Side: User Profile Dropdown */}
                 <div className="relative">
@@ -206,7 +226,7 @@ const Products = () => {
                             <span className="font-bold text-base text-[#17375F]">Menu</span>
                             <button
                                 onClick={() => setMobileDrawerOpen(false)}
-                                className="p-1.5 text-slate-500 hover:bg-slate-100 rounded-lg"
+                                className="cv-touch-target p-1.5 text-slate-500 hover:bg-slate-100 rounded-lg"
                                 aria-label="Close menu"
                             >
                                 <X size={18} />

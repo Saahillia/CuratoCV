@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/ContentEditor/SectionCard.jsx.
+ * Purpose: implement the Resume Builder content-editing UI for Section Card.
+ * Why here: editing controls stay inside Resume Builder and communicate through the editor's resume-data callbacks rather than owning application routing.
+ */
 import {
     ChevronDown,
     ChevronRight,
@@ -32,25 +37,30 @@ const SectionCard = ({
     children,
     dragHandleProps,
 }) => {
+    // Local UI state controls expansion and title editing; the parent remains the source of saved resume data.
     const [isOpen, setIsOpen] = useState(expanded);
     const [isEditingTitle, setIsEditingTitle] = useState(false);
     const [titleInput, setTitleInput] = useState(section?.title || "");
 
     useEffect(() => {
+        // Sync when the parent opens/closes sections from elsewhere, such as an editor navigation action.
         setIsOpen(expanded);
     }, [expanded]);
 
     useEffect(() => {
+        // If another control changes the title, refresh the draft shown in this card's input.
         setTitleInput(section?.title || "");
     }, [section?.title]);
 
     const handleToggle = () => {
+        // Update local display immediately and notify the parent so any coordinated UI can follow.
         const nextState = !isOpen;
         setIsOpen(nextState);
         if (onToggle) onToggle(nextState);
     };
 
     const saveTitle = () => {
+        // Ignore whitespace-only titles; send a trimmed value so accidental spaces are not saved.
         setIsEditingTitle(false);
         if (onTitleChange && titleInput.trim()) {
             onTitleChange(titleInput.trim());

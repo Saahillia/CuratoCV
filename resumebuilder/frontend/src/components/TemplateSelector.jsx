@@ -1,3 +1,8 @@
+/**
+ * Developer context for resumebuilder/frontend/src/components/TemplateSelector.jsx.
+ * Purpose: provide the Resume Builder Template Selector interface component.
+ * Why here: resume presentation and editing UI belong to the product package; the root shell owns routing and global providers.
+ */
 import { Check, Layout } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
