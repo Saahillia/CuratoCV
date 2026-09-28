@@ -1,6 +1,6 @@
 /**
  * Owns Memo's full page editor view with responsive layout, right sidebar tool switcher,
- * live page tracking, auto-scroll, and document text editing.
+ * live page tracking, auto-scroll, document text editing, and content-anchored Bookmark Center.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -23,8 +23,12 @@ import {
     RotateCcw,
     Save,
     Pencil,
+    Bookmark as BookmarkIcon,
     Trash2,
+    ExternalLink,
 } from "lucide-react";
+import DocumentViewport from "../components/editor/DocumentViewport";
+import BookmarkRibbon from "../components/bookmark/BookmarkRibbon";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import api from "@curatocv/api-client";
 import AccountMenu from "@curatocv/platform-frontend/components/common/AccountMenu";
@@ -50,11 +54,21 @@ const MemoEditor = () => {
     const [saveStatus, setSaveStatus] = useState("Saved");
     const [error, setError] = useState("");
 
-    // Right sidebar expanded tool tab: 'explorer' | 'editor' | 'drawing'
+    // Right sidebar expanded tool tab: 'explorer' | 'editor' | 'drawing' | 'bookmarks'
     const [activeTool, setActiveTool] = useState("editor");
 
+    // Bookmarks state
+    const [bookmarks, setBookmarks] = useState([]);
+    const [isBookmarkLoading, setIsBookmarkLoading] = useState(false);
+    const [bookmarkError, setBookmarkError] = useState("");
+    const [isHighlighted, setIsHighlighted] = useState(false);
+    const [bookmarkTarget, setBookmarkTarget] = useState(null);
+
+    // Refs
+    const textareaRef = useRef(null); // Document root for contenteditable
+    const editorScrollRef = useRef(null); // Viewport scroll ref
+
     // Scroll & pagination tracking
-    const editorScrollRef = useRef(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [showBackToTop, setShowBackToTop] = useState(false);
@@ -108,6 +122,35 @@ const MemoEditor = () => {
         fetchNote();
     }, [documentId]);
 
+    // Load bookmarks (for current document & all global bookmarks if tool is open)
+    const fetchBookmarks = useCallback(async () => {
+        if (!documentId) return;
+        setIsBookmarkLoading(true);
+        try {
+            const res = await api.get("/notes/bookmarks");
+            const data = res.data?.data?.bookmarks || [];
+            setBookmarks(data);
+        } catch (err) {
+            // Silently retain or log
+        } finally {
+            setIsBookmarkLoading(false);
+        }
+    }, [documentId]);
+
+    useEffect(() => {
+        fetchBookmarks();
+    }, [fetchBookmarks]);
+
+    // Check if the current document is bookmarked at current view/selection
+    const currentDocBookmarks = useMemo(() => {
+        return bookmarks.filter((b) => {
+            const bNoteId = typeof b.noteId === "object" ? b.noteId?._id : b.noteId;
+            return String(bNoteId) === String(documentId);
+        });
+    }, [bookmarks, documentId]);
+
+    const isCurrentDocumentBookmarked = currentDocBookmarks.length > 0;
+
     // Save handler
     const handleSave = async () => {
         if (!documentId) return;
@@ -141,7 +184,6 @@ const MemoEditor = () => {
 
         setShowBackToTop(scrollTop > 150);
 
-        // Estimate pages based on viewport height or text length (min 1 page)
         const computedTotalPages = Math.max(1, Math.ceil(scrollHeight / (clientHeight || 800)));
         const computedCurrentPage = Math.min(
             computedTotalPages,
@@ -166,7 +208,21 @@ const MemoEditor = () => {
 
     // Page management helpers
     const handleAddPage = () => {
-        setContent((prev) => prev + (prev.endsWith("\n") ? "" : "\n") + "\n--- Page Break ---\n\n");
+        if (textareaRef.current) {
+            const sel = window.getSelection();
+            const range = sel.rangeCount > 0 ? sel.getRangeAt(0) : null;
+            if (range) {
+                range.deleteContents();
+                range.insertNode(document.createTextNode("\n--- Page Break ---\n"));
+                range.collapse(false);
+                sel.removeAllRanges();
+                sel.addRange(range);
+            } else {
+                setContent((prev) => prev + (prev.endsWith("\n") ? "" : "\n") + "\n--- Page Break ---\n\n");
+            }
+        } else {
+            setContent((prev) => prev + (prev.endsWith("\n") ? "" : "\n") + "\n--- Page Break ---\n\n");
+        }
         setSaveStatus("Unsaved changes");
     };
 
@@ -175,11 +231,130 @@ const MemoEditor = () => {
             const breakMarker = "\n--- Page Break ---\n";
             const lastIndex = prev.lastIndexOf(breakMarker);
             if (lastIndex !== -1) {
-                return prev.substring(0, lastIndex);
+                return prev.slice(0, lastIndex) + prev.slice(lastIndex + breakMarker.length);
+            }
+            // Also try without surrounding newlines for markers embedded in content
+            const bareMarker = "--- Page Break ---";
+            const bareIndex = prev.lastIndexOf(bareMarker);
+            if (bareIndex !== -1) {
+                return prev.slice(0, bareIndex) + prev.slice(bareIndex + bareMarker.length);
             }
             return prev;
         });
         setSaveStatus("Unsaved changes");
+    };
+
+    // --- Content-Anchored Bookmark Handlers ---
+
+    // Capture location and toggle bookmark
+    const handleToggleBookmark = async () => {
+        if (!documentId) return;
+
+        // If already bookmarked on this doc, delete the most relevant/first bookmark
+        if (isCurrentDocumentBookmarked) {
+            const targetBookmark = currentDocBookmarks[0];
+            const originalBookmarks = [...bookmarks];
+
+            // Optimistic deletion
+            setBookmarks((prev) => prev.filter((b) => b._id !== targetBookmark._id));
+
+            try {
+                await api.delete(`/notes/bookmarks/${targetBookmark._id}`);
+            } catch (err) {
+                // Rollback on failure
+                setBookmarks(originalBookmarks);
+                setBookmarkError("Failed to remove bookmark. Please try again.");
+            }
+            return;
+        }
+
+        // Otherwise create a new content-anchored bookmark
+        let anchorText = "";
+        let startOffset = 0;
+        let snippet = "";
+
+        if (textareaRef.current) {
+            const textarea = textareaRef.current;
+            const selStart = textarea.selectionStart;
+            const selEnd = textarea.selectionEnd;
+
+            if (selEnd > selStart) {
+                // User has text selected
+                anchorText = content.substring(selStart, selEnd).trim().slice(0, 500);
+                startOffset = selStart;
+                snippet = anchorText.slice(0, 150);
+            } else {
+                // Derive anchor from cursor position or visible scroll estimate
+                startOffset = selStart || 0;
+                const surrounding = content.substring(startOffset, startOffset + 200).trim();
+                anchorText = surrounding.split("\n")[0] || content.slice(0, 100) || "Document Start";
+                snippet = anchorText.slice(0, 150);
+            }
+        } else {
+            anchorText = content.slice(0, 100) || "Document Start";
+        }
+
+        const optimisticId = `temp-${Date.now()}`;
+        const newBookmark = {
+            _id: optimisticId,
+            noteId: { _id: documentId, title },
+            anchorText,
+            startOffset,
+            title: anchorText.slice(0, 40) || title,
+            snippet,
+            createdAt: new Date().toISOString(),
+        };
+
+        const originalBookmarks = [...bookmarks];
+        setBookmarks((prev) => [newBookmark, ...prev]);
+
+        try {
+            const res = await api.post(`/notes/${documentId}/bookmarks`, {
+                anchorText,
+                startOffset,
+                title: newBookmark.title,
+                snippet,
+            });
+            const created = res.data?.data?.bookmark;
+            if (created) {
+                setBookmarks((prev) =>
+                    prev.map((b) => (b._id === optimisticId ? { ...created, noteId: { _id: documentId, title } } : b))
+                );
+            }
+        } catch (err) {
+            // Rollback on failure
+            setBookmarks(originalBookmarks);
+            setBookmarkError(getErrorMessage(err));
+        }
+    };
+
+    // Delete single bookmark from sidebar
+    const handleDeleteBookmark = async (bookmarkId, e) => {
+        if (e) e.stopPropagation();
+        const originalBookmarks = [...bookmarks];
+        setBookmarks((prev) => prev.filter((b) => b._id !== bookmarkId));
+
+        try {
+            await api.delete(`/notes/bookmarks/${bookmarkId}`);
+        } catch (err) {
+            setBookmarks(originalBookmarks);
+            setBookmarkError("Failed to delete bookmark.");
+        }
+    };
+
+    // Navigate to a bookmark's exact content location and trigger visual highlight
+    const handleNavigateBookmark = (bookmark) => {
+        const bNoteId = typeof bookmark.noteId === "object" ? bookmark.noteId?._id : bookmark.noteId;
+
+        // If on another document, navigate to it
+        if (String(bNoteId) !== String(documentId)) {
+            navigate(`/products/memo/editor?id=${bNoteId}`);
+            return;
+        }
+
+        if (bookmark.anchorText) {
+            setBookmarkTarget({ anchorText: bookmark.anchorText });
+        }
     };
 
     // Drawing Canvas handlers
@@ -543,22 +718,37 @@ const MemoEditor = () => {
                 {/* Left/Center Editor Canvas */}
                 <main className="flex-1 flex flex-col min-w-0 relative">
                     {/* Scrollable Text Area Surface */}
-                    <div
-                        ref={editorScrollRef}
-                        onScroll={handleScroll}
-                        className="flex-1 overflow-y-auto p-6 sm:p-10 bg-slate-100 flex justify-center"
-                    >
-                        <div className="w-full max-w-5xl bg-white min-h-[85vh] rounded-2xl border border-slate-200 shadow-sm p-8 sm:p-12 flex flex-col">
-                            <textarea
-                                value={content}
-                                onChange={(e) => {
-                                    setContent(e.target.value);
-                                    setSaveStatus("Unsaved changes");
-                                }}
-                                placeholder="Start typing your memo or notes here..."
-                                className="w-full flex-1 resize-none bg-transparent text-base leading-relaxed text-slate-800 outline-none placeholder:text-slate-400"
+                    <div className="relative flex-1 flex flex-col overflow-hidden">
+                        {/* Bookmark Ribbon attached to top-right corner of document paper */}
+                        <div className="absolute top-4 right-12 z-20">
+                            <BookmarkRibbon
+                                active={isCurrentDocumentBookmarked}
+                                onToggle={handleToggleBookmark}
+                                pageIndex={currentPage}
                             />
                         </div>
+
+                        <DocumentViewport
+                            content={content}
+                            onChange={(updatedContent) => {
+                                setContent(updatedContent);
+                                setSaveStatus("Unsaved changes");
+                            }}
+                            scale={1.0}
+                            isHighlighted={isHighlighted}
+                            bookmarkTarget={bookmarkTarget}
+                            onNavigateComplete={(found, targetNode) => {
+                                if (found) {
+                                    setIsHighlighted(true);
+                                    setTimeout(() => setIsHighlighted(false), 1200);
+                                }
+                            }}
+                            onPageStatsChange={({ pageCount }) => {
+                                setTotalPages(pageCount);
+                            }}
+                            documentRootRefPassed={textareaRef}
+                            viewportRefPassed={editorScrollRef}
+                        />
                     </div>
 
                     {/* Floating Back to Top & Live Page Counter */}
@@ -579,20 +769,20 @@ const MemoEditor = () => {
                 </main>
 
                 {/* Right Sidebar with Collapsible/Expandable Tools */}
-                <aside aria-label="Memo Right Tools Sidebar" className="w-72 shrink-0 border-l border-slate-200 bg-white flex flex-col">
-                    {/* Tool Switcher Rail (Icons of non-expanded tools, expanded tool takes remaining space) */}
+                <aside aria-label="Memo Right Tools Sidebar" className="w-80 shrink-0 border-l border-slate-200 bg-white flex flex-col">
+                    {/* Tool Switcher Rail */}
                     <div className="flex items-center justify-around border-b border-slate-200 bg-slate-100 p-1.5">
                         <button
                             type="button"
                             onClick={() => setActiveTool("explorer")}
                             title="File Explorer"
-                            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
+                            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition ${
                                 activeTool === "explorer"
                                     ? "bg-white text-brand-700 shadow-sm"
                                     : "text-slate-500 hover:text-slate-800"
                             }`}
                         >
-                            <Folder size={16} />
+                            <Folder size={15} />
                             {activeTool === "explorer" && <span>Explorer</span>}
                         </button>
 
@@ -600,13 +790,13 @@ const MemoEditor = () => {
                             type="button"
                             onClick={() => setActiveTool("editor")}
                             title="Text Editor Tools"
-                            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
+                            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition ${
                                 activeTool === "editor"
                                     ? "bg-white text-brand-700 shadow-sm"
                                     : "text-slate-500 hover:text-slate-800"
                             }`}
                         >
-                            <FileText size={16} />
+                            <FileText size={15} />
                             {activeTool === "editor" && <span>Editor</span>}
                         </button>
 
@@ -614,14 +804,28 @@ const MemoEditor = () => {
                             type="button"
                             onClick={() => setActiveTool("drawing")}
                             title="Drawing Canvas"
-                            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
+                            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition ${
                                 activeTool === "drawing"
                                     ? "bg-white text-brand-700 shadow-sm"
                                     : "text-slate-500 hover:text-slate-800"
                             }`}
                         >
-                            <NotebookPen size={16} />
+                            <NotebookPen size={15} />
                             {activeTool === "drawing" && <span>Drawing</span>}
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={() => setActiveTool("bookmarks")}
+                            title="Bookmark Center"
+                            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition ${
+                                activeTool === "bookmarks"
+                                    ? "bg-white text-brand-700 shadow-sm"
+                                    : "text-slate-500 hover:text-slate-800"
+                            }`}
+                        >
+                            <BookmarkIcon size={15} />
+                            {activeTool === "bookmarks" && <span>Bookmarks</span>}
                         </button>
                     </div>
 
@@ -747,7 +951,6 @@ const MemoEditor = () => {
                                     </button>
                                 </div>
 
-                                {/* Dedicated option below pen and eraser for size / thickness */}
                                 <div className="rounded-lg border border-slate-200 bg-slate-50 p-2.5 space-y-2">
                                     <div className="flex items-center justify-between text-xs font-semibold text-slate-700">
                                         <span>{drawMode === "pen" ? "Pen Thickness" : "Eraser Size"}</span>
@@ -828,6 +1031,81 @@ const MemoEditor = () => {
                                         className="w-full h-52 touch-none"
                                     />
                                 </div>
+                            </div>
+                        )}
+
+                        {activeTool === "bookmarks" && (
+                            <div className="space-y-4">
+                                <div className="flex items-center justify-between">
+                                    <h3 className="text-sm font-bold text-slate-800 flex items-center gap-1.5">
+                                        <BookmarkIcon size={16} className="text-brand-600" /> Bookmark Center
+                                    </h3>
+                                    <span className="rounded-full bg-brand-50 text-brand-700 px-2 py-0.5 text-[10px] font-bold">
+                                        {bookmarks.length} saved
+                                    </span>
+                                </div>
+
+                                {bookmarkError && (
+                                    <div className="rounded-lg bg-red-50 border border-red-200 p-2 text-xs text-red-700 flex justify-between items-center">
+                                        <span>{bookmarkError}</span>
+                                        <button onClick={() => setBookmarkError("")} className="font-bold">×</button>
+                                    </div>
+                                )}
+
+                                {bookmarks.length === 0 ? (
+                                    <div className="rounded-xl border border-dashed border-slate-200 p-6 text-center">
+                                        <BookmarkIcon size={24} className="mx-auto text-slate-300 mb-2" />
+                                        <p className="text-xs font-semibold text-slate-600 mb-1">No bookmarks yet</p>
+                                        <p className="text-[11px] text-slate-400">
+                                            Click the ribbon bookmark at the top-right of your document to mark your current place.
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <div className="space-y-2.5">
+                                        {bookmarks.map((bm) => {
+                                            const noteTitle = typeof bm.noteId === "object" ? bm.noteId?.title : "Untitled Document";
+                                            const isThisDoc = String(typeof bm.noteId === "object" ? bm.noteId?._id : bm.noteId) === String(documentId);
+
+                                            return (
+                                                <div
+                                                    key={bm._id}
+                                                    onClick={() => handleNavigateBookmark(bm)}
+                                                    className="group relative rounded-xl border border-slate-200 bg-white p-3 hover:border-brand-500 hover:shadow-sm cursor-pointer transition flex flex-col gap-1"
+                                                >
+                                                    <div className="flex items-start justify-between gap-2">
+                                                        <span className="text-xs font-bold text-slate-800 line-clamp-1 group-hover:text-brand-700 transition">
+                                                            {bm.title || bm.anchorText || "Bookmark"}
+                                                        </span>
+                                                        <button
+                                                            type="button"
+                                                            onClick={(e) => handleDeleteBookmark(bm._id, e)}
+                                                            className="text-slate-300 hover:text-red-600 p-1 opacity-0 group-hover:opacity-100 transition shrink-0"
+                                                            title="Delete bookmark"
+                                                        >
+                                                            <Trash2 size={13} />
+                                                        </button>
+                                                    </div>
+
+                                                    <div className="text-[11px] font-medium text-slate-500 flex items-center gap-1.5">
+                                                        <FileText size={11} className="text-slate-400" />
+                                                        <span className="truncate">{noteTitle}</span>
+                                                        {isThisDoc && (
+                                                            <span className="rounded bg-emerald-50 px-1 py-0.2 text-[9px] font-semibold text-emerald-700 ml-auto shrink-0">
+                                                                Current note
+                                                            </span>
+                                                        )}
+                                                    </div>
+
+                                                    {bm.snippet && (
+                                                        <p className="text-[11px] text-slate-600 line-clamp-2 bg-slate-50 rounded p-1.5 mt-1 border border-slate-100 font-mono text-[10px]">
+                                                            "{bm.snippet}"
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>

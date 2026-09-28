@@ -19,11 +19,22 @@ import {
     deleteFolder,
     permanentDeleteFolder,
 } from "../controllers/noteController.js";
+import {
+    createBookmark,
+    listBookmarksByNote,
+    listAllBookmarks,
+    deleteBookmark,
+    deleteBookmarkByLocation,
+} from "../controllers/bookmarkController.js";
 
 const notesRouter = express.Router();
 
 // Protect the whole router once so every note operation receives the same authenticated-user context.
 notesRouter.use(protect);
+
+// Global bookmark endpoint (all bookmarks belonging to current user)
+notesRouter.get("/bookmarks", listAllBookmarks);
+notesRouter.delete("/bookmarks/:bookmarkId", deleteBookmark);
 
 // Folder and explorer metadata endpoints share the authenticated /api/notes contract and precede the dynamic note-ID route.
 notesRouter.get("/explorer", listExplorer);
@@ -31,6 +42,11 @@ notesRouter.get("/folders", listFolders);
 notesRouter.post("/folders", createFolder);
 notesRouter.delete("/folders/:id/permanent", permanentDeleteFolder);
 notesRouter.delete("/folders/:id", deleteFolder);
+
+// Per-note bookmarks endpoints
+notesRouter.get("/:noteId/bookmarks", listBookmarksByNote);
+notesRouter.post("/:noteId/bookmarks", createBookmark);
+notesRouter.delete("/:noteId/bookmarks", deleteBookmarkByLocation);
 
 // Keep these HTTP paths stable: the root composition mounts this router under the legacy-compatible /api/notes prefix.
 notesRouter.get("/", listNotes);

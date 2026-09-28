@@ -28,11 +28,12 @@ This root folder contains one learning note per independently teachable concept,
 
 ### Memo
 
+- [MEMO — PAGE BOOKMARKS V1](memo-page-bookmarks-v1.md)
+- [Memo Editor V2 Architecture](memo-editor-v2-architecture.md)
 - [Memo Notes API](memo-notes-api.md)
 - [Memo workspace: document list and creation](memo-workspace-document-list-and-create.md)
 - [Memo folder hierarchy and responsive navigation](memo-folder-hierarchy-and-responsive-navigation.md)
 - [Memo recursive folder deletion](memo-recursive-folder-deletion.md)
-- [Memo workspace cards (Phase C)](memo-workspace-cards-phase-c.md)
 - [Memo hybrid search](memo-search-hybrid.md)
 
 ### Shared and Foundational Concepts

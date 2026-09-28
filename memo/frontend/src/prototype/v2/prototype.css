@@ -1,0 +1,145 @@
+/**
+ * prototype.css - Isolated styles for Phase 2 Document Editor V2 Prototype
+ */
+
+.DocumentViewport {
+    width: 100%;
+    height: calc(100vh - 180px);
+    overflow-y: auto;
+    overflow-x: auto;
+    background-color: #f1f5f9;
+    padding: 32px 16px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    scroll-behavior: smooth;
+}
+
+.DocumentScaleWrapper {
+    transform-origin: top center;
+    transition: transform 0.15s ease-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.DocumentRoot {
+    outline: none;
+    cursor: text;
+    user-select: text;
+    -webkit-user-select: text;
+}
+
+.PageContainer {
+    width: 794px;
+    height: 1123px;
+    min-height: 1123px;
+    max-height: 1123px;
+    padding: 96px;
+    box-sizing: border-box;
+    background: #ffffff;
+    box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(15, 23, 42, 0.05);
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden; /* STRICT: No internal page scrollbars */
+}
+
+.PageContainer:last-child {
+    margin-bottom: 0;
+}
+
+.PageHeaderArea {
+    position: absolute;
+    top: 36px;
+    left: 96px;
+    right: 96px;
+    height: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: #94a3b8;
+    user-select: none;
+    pointer-events: none;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.PageFooterArea {
+    position: absolute;
+    bottom: 36px;
+    left: 96px;
+    right: 96px;
+    height: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: #94a3b8;
+    user-select: none;
+    pointer-events: none;
+    border-top: 1px solid #f1f5f9;
+}
+
+.PageContent {
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* STRICT: No internal page scrollbars */
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    color: #0f172a;
+    outline: none;
+}
+
+.doc-block {
+    margin: 0 0 12px 0;
+    line-height: 24px;
+    font-size: 16px;
+    color: #0f172a;
+    word-break: break-word;
+    white-space: pre-wrap;
+}
+
+.doc-block.split-tail {
+    margin-top: 0;
+}
+
+.page-break-marker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 16px 0;
+    padding: 6px 12px;
+    border: 1px dashed #cbd5e1;
+    background: #f8fafc;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #64748b;
+    user-select: none;
+    font-family: monospace;
+}
+
+.bookmark-highlight-ring {
+    outline: 3px solid #3b82f6 !important;
+    outline-offset: 2px !important;
+    background-color: rgba(59, 130, 246, 0.15) !important;
+    border-radius: 2px !important;
+    animation: bookmarkPulse 1.2s cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+
+@keyframes bookmarkPulse {
+    0% {
+        outline-color: rgba(59, 130, 246, 1);
+        background-color: rgba(59, 130, 246, 0.35);
+    }
+    70% {
+        outline-color: rgba(59, 130, 246, 0.8);
+        background-color: rgba(59, 130, 246, 0.15);
+    }
+    100% {
+        outline-color: rgba(59, 130, 246, 0);
+        background-color: transparent;
+    }
+}
