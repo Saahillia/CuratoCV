@@ -5,7 +5,7 @@
  */
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
     User,
     Mail,
@@ -26,10 +26,13 @@ import api from "@curatocv/api-client";
 import authService from "../services/authService";
 import { updateUser, logout } from "../app/features/authSlice";
 import Breadcrumbs from "../components/common/Breadcrumbs";
+import AccountCenterNav from "../components/common/AccountCenterNav";
+import PlatformSkeleton from "../components/common/PlatformSkeleton";
 
 const Profile = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const { user: authUser } = useSelector((state) => state.auth);
 
@@ -94,6 +97,16 @@ const Profile = () => {
     useEffect(() => {
         fetchProfile();
     }, [fetchProfile]);
+
+    useEffect(() => {
+        if (isLoading || !location.hash) return undefined;
+        const frame = requestAnimationFrame(() => {
+            const target = document.getElementById(location.hash.slice(1));
+            target?.scrollIntoView?.({ block: "start" });
+            target?.focus?.({ preventScroll: true });
+        });
+        return () => cancelAnimationFrame(frame);
+    }, [isLoading, location.hash]);
 
     // =========================================================================
     // Start editing
@@ -272,22 +285,8 @@ const Profile = () => {
             <main className="min-h-screen bg-[#F7FAFC] py-6 sm:py-8">
                 <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
                     <Breadcrumbs />
-
-                    <div className="mt-6 flex min-h-[320px] items-center justify-center rounded-2xl border border-[#D9E7F2] bg-white shadow-sm">
-                        <div className="flex flex-col items-center text-center">
-                            <div className="flex size-11 items-center justify-center rounded-xl bg-[#E8F0F7]">
-                                <Loader2 className="size-5 animate-spin text-[#17375F]" />
-                            </div>
-
-                            <p className="mt-3 text-sm font-semibold text-[#102A43]">
-                                Loading profile
-                            </p>
-
-                            <p className="mt-1 text-xs text-[#627D98]">
-                                Please wait while we load your account.
-                            </p>
-                        </div>
-                    </div>
+                    <AccountCenterNav />
+                    <PlatformSkeleton type="profile" />
                 </div>
             </main>
         );
@@ -301,6 +300,7 @@ const Profile = () => {
                 ================================================================= */}
 
                 <Breadcrumbs />
+                <AccountCenterNav />
 
                 {/* =================================================================
                     Page heading
@@ -447,7 +447,7 @@ const Profile = () => {
                     Personal Information
                 ================================================================= */}
 
-                <section className="mb-6 overflow-hidden rounded-2xl border border-[#D9E7F2] bg-white shadow-sm">
+                <section id="personal-information" tabIndex={-1} className="mb-6 scroll-mt-6 overflow-hidden rounded-2xl border border-[#D9E7F2] bg-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#0353A4]">
                     {/* Header */}
 
                     <div className="border-b border-[#D9E7F2] px-5 py-5 sm:px-7">
@@ -601,10 +601,9 @@ const Profile = () => {
                                     {/* Save Changes */}
 
                                     <button
-                                        type="button"
-                                        onClick={handleCancelEditing}
+                                        type="submit"
                                         disabled={isSaving}
-                                        className="inline-flex h-10 items-center justify-center rounded-xl border border-[#D9E7F2] bg-white px-5 text-sm font-semibold text-[#486581] transition hover:bg-[#F7FAFC] hover:text-[#102A43] focus:outline-none focus:ring-4 focus:ring-[#17375F]/10 disabled:cursor-not-allowed disabled:opacity-50"
+                                        className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-[#17375F] px-5 text-sm font-semibold text-white transition hover:bg-[#24527A] focus:outline-none focus:ring-4 focus:ring-[#17375F]/20 disabled:cursor-not-allowed disabled:opacity-50"
                                     >
                                         {isSaving ? (
                                             <>
@@ -728,7 +727,7 @@ const Profile = () => {
                     Danger Zone
                 ================================================================= */}
 
-                <section className="mb-6 rounded-2xl border border-red-200 bg-[#FFF8F8]">
+                <section id="danger-zone" tabIndex={-1} className="mb-6 scroll-mt-6 rounded-2xl border border-red-200 bg-[#FFF8F8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-red-600">
                     <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
                         <div className="flex min-w-0 items-start gap-3">
                             <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-red-100">

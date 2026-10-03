@@ -29,7 +29,7 @@ const Navbar = () => {
         <div className="flex items-center gap-4 text-sm">
           {/* Desktop / large tablet nav — visible at lg and above */}
           <div className="hidden lg:flex items-center gap-3">
-            <div className="flex items-center gap-2.5">
+            <Link to="/app/profile" aria-label="Open your profile" className="flex items-center gap-2.5 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0353A4]">
               <div className="relative flex size-10 items-center justify-center">
                 {/* Organic fluid rotating morphing blob background */}
                 <div className="absolute inset-0 bg-gradient-to-br from-[#17375F] via-[#24527A] to-[#12B5B0] animate-blob opacity-90 shadow-md" />
@@ -42,7 +42,7 @@ const Navbar = () => {
                 <span className="text-sm font-semibold text-[#17375F] tracking-wide">Hi, {user?.name || "Guest"}</span>
                 <span className="text-xs text-slate-400">{new Date().getHours() < 12 ? "Good morning" : new Date().getHours() < 17 ? "Good afternoon" : "Good evening"}</span>
               </div>
-            </div>
+            </Link>
           </div>
           {/* Hamburger — visible below lg */}
           <button
@@ -71,7 +71,7 @@ const Navbar = () => {
           <div className="fixed top-0 right-0 z-[70] h-full w-72 max-w-[80vw] bg-white shadow-2xl flex flex-col lg:hidden animate-slide-in-right">
             {/* Drawer Header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
-              <div className="flex items-center gap-2.5">
+              <Link to="/app/profile" aria-label="Open your profile" className="flex items-center gap-2.5 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0353A4]">
                 <div className="relative flex size-9 items-center justify-center">
                   <div className="absolute inset-0 bg-gradient-to-br from-[#17375F] via-[#24527A] to-[#12B5B0] rounded-lg opacity-90" />
                   <span className="relative z-10 text-xs font-bold text-white tracking-wider">
@@ -82,7 +82,7 @@ const Navbar = () => {
                   <span className="text-sm font-semibold text-[#17375F]">{user?.name || "Guest"}</span>
                   <span className="text-[11px] text-slate-400">{user?.email || ""}</span>
                 </div>
-              </div>
+              </Link>
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(false)}

@@ -8,7 +8,7 @@ import {
     XIcon,
     UploadCloud,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import api from "@curatocv/api-client";
 import aiService from "../services/aiService";
@@ -19,11 +19,14 @@ import UpgradeModal from "@curatocv/platform-frontend/components/billing/Upgrade
 import Breadcrumbs from "@curatocv/platform-frontend/components/common/Breadcrumbs";
 import toast from "react-hot-toast";
 import pdfToText from "react-pdftotext";
+import { notifyResumeCollectionUpdated } from "@curatocv/platform-frontend/services/resumeUsageEvents";
+import ResumeSkeleton from "../components/ResumeSkeleton";
 
 const Dashboard = () => {
     const { token, user } = useSelector((state) => state.auth);
 
     const [allResumes, setAllResumes] = useState([]);
+    const [isResumesLoading, setIsResumesLoading] = useState(true);
 
     const [showCreateResume, setShowCreateResume] = useState(false);
     const [showUploadResume, setShowUploadResume] = useState(false);
@@ -42,7 +45,10 @@ const Dashboard = () => {
     const navigate = useNavigate();
 
     const loadAllResumes = useCallback(async () => {
-        if (!token) return;
+        if (!token) {
+            setIsResumesLoading(false);
+            return;
+        }
 
         try {
             const { data } = await api.get("/users/resumes");
@@ -54,6 +60,8 @@ const Dashboard = () => {
             toast.error(error?.response?.data?.message || error.message, {
                 duration: 3000,
             });
+        } finally {
+            setIsResumesLoading(false);
         }
     }, [token]);
 
@@ -140,6 +148,7 @@ const Dashboard = () => {
             const finalResume = createdRes?.data?.resume ?? createdRes?.resume;
             if (finalResume) {
                 setAllResumes((prev) => [...prev, finalResume]);
+                notifyResumeCollectionUpdated();
                 toast.success("Resume duplicated successfully!");
             }
         } catch (error) {
@@ -182,6 +191,7 @@ const Dashboard = () => {
             if (createdResume) {
                 setAllResumes((prev) => [...prev, createdResume]);
             }
+            notifyResumeCollectionUpdated();
 
             setTitle("");
             setShowCreateResume(false);
@@ -279,6 +289,7 @@ const Dashboard = () => {
                         },
                     ];
                 });
+                notifyResumeCollectionUpdated();
                 navigate(`/app/resumes/${uploadedResumeId}/edit`);
             }
         } catch (error) {
@@ -351,6 +362,7 @@ const Dashboard = () => {
             setAllResumes((prev) =>
                 prev.filter((resume) => resume._id !== resumeId),
             );
+            notifyResumeCollectionUpdated();
 
             toast.success(
                 data?.data?.message ||
@@ -417,6 +429,8 @@ const Dashboard = () => {
         },
     ];
 
+    if (isResumesLoading) return <ResumeSkeleton type="dashboard" />;
+
     return (
         <main className="min-h-screen bg-[#F3F7FA]">
             <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -425,9 +439,9 @@ const Dashboard = () => {
 
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
                             <div className="flex items-center gap-4">
-                                <div className="flex size-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#17375F] to-[#24527A] text-xl font-bold text-white shadow-lg shadow-[#17375F]/20">
+                                <Link to="/app/profile" aria-label="Open your profile" className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#17375F] to-[#24527A] text-xl font-bold text-white shadow-lg shadow-[#17375F]/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0353A4]">
                                     {user?.name ? user.name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase() : "CV"}
-                                </div>
+                                </Link>
                                 <div className="flex flex-col">
                                     <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
                                         {new Date().getHours() < 12 ? "Good morning," : new Date().getHours() < 17 ? "Good afternoon," : "Good evening,"} {user?.name || "Guest"}!

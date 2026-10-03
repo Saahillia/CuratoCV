@@ -1,7 +1,7 @@
 import { useParams, Link, useLocation } from "react-router-dom";
 import ResumePreview from "../components/ResumePreview";
 import { useEffect, useState } from "react";
-import Loader from "@curatocv/platform-frontend/components/common/Loader";
+import ResumeSkeleton from "../components/ResumeSkeleton";
 import { ArrowLeftIcon, Download, Globe, Loader2 } from "lucide-react";
 import api from "@curatocv/api-client";
 import { toast } from "react-hot-toast";
@@ -81,11 +81,7 @@ const Preview = () => {
     };
 
     if (isLoading) {
-        return (
-            <div className="flex h-screen items-center justify-center bg-slate-50">
-                <Loader />
-            </div>
-        );
+        return <ResumeSkeleton type="preview" />;
     }
 
     if (error || !resumeData) {

@@ -1,6 +1,5 @@
 import {
     RotateCcw,
-    Loader2,
     ChevronLeft,
     ZoomIn,
     ZoomOut,
@@ -11,6 +10,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import ResumePreview from "../components/ResumePreview";
+import ResumeSkeleton from "../components/ResumeSkeleton";
 import TemplateSelector from "../components/TemplateSelector";
 import ColorSettings from "../components/Customize/ColorSettings";
 import TypographySettings from "../components/Customize/TypographySettings";
@@ -657,14 +657,7 @@ const ResumeBuilder = () => {
     ];
 
     if (isLoading) {
-        return (
-            <div className="min-h-screen bg-slate-100 flex items-center justify-center">
-                <div className="text-center">
-                    <Loader2 className="size-10 animate-spin text-blue-600 mx-auto mb-3" />
-                    <p className="text-slate-600">Loading your resume...</p>
-                </div>
-            </div>
-        );
+        return <ResumeSkeleton type="editor" />;
     }
 
     return (

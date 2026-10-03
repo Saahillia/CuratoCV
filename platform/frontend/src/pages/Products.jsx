@@ -199,8 +199,11 @@ const Products = () => {
                             <Link to="/app/profile" className="flex items-center gap-2 px-4 py-2 text-xs text-[#172033] hover:bg-[#F5F8FB]">
                                 <User size={14} className="text-[#667085]" /> Profile
                             </Link>
-                            <Link to="/app/billing" className="flex items-center gap-2 px-4 py-2 text-xs text-[#172033] hover:bg-[#F5F8FB]">
+                            <Link to="/app/settings" className="flex items-center gap-2 px-4 py-2 text-xs text-[#172033] hover:bg-[#F5F8FB]">
                                 <Settings size={14} className="text-[#667085]" /> Settings
+                            </Link>
+                            <Link to="/app/billing" className="flex items-center gap-2 px-4 py-2 text-xs text-[#172033] hover:bg-[#F5F8FB]">
+                                <Settings size={14} className="text-[#667085]" /> Billing
                             </Link>
                             <div className="border-t border-[#D9E0E7] my-1"></div>
                             <button

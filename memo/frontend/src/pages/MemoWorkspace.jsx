@@ -1350,9 +1350,15 @@ const MemoWorkspace = () => {
                             </div>
 
                             {isLoadingExplorer && currentDirectFolders.length === 0 && currentDirectDocuments.length === 0 && (
-                                <div role="status" className="mb-4 flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-6 text-sm text-slate-600">
-                                    <LoaderCircle aria-hidden="true" className="animate-spin text-brand-700" size={18} />
-                                    Loading workspace items…
+                                <div role="status" aria-label="Loading Memo documents" aria-busy="true" className="mb-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                                    <span className="sr-only">Loading Memo documents…</span>
+                                    {[0, 1, 2].map((card) => (
+                                        <div key={card} aria-hidden="true" className="space-y-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                                            <div className="h-5 w-2/3 animate-pulse rounded bg-slate-200" />
+                                            <div className="h-24 w-full animate-pulse rounded-xl bg-slate-100" />
+                                            <div className="h-4 w-1/2 animate-pulse rounded bg-slate-200" />
+                                        </div>
+                                    ))}
                                 </div>
                             )}
 

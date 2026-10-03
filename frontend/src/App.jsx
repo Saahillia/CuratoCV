@@ -23,12 +23,15 @@ import Pricing from "@curatocv/platform-frontend/pages/Pricing";
 import Checkout from "@curatocv/platform-frontend/pages/Checkout";
 import Billing from "@curatocv/platform-frontend/pages/Billing";
 import Profile from "@curatocv/platform-frontend/pages/Profile";
+import Settings from "@curatocv/platform-frontend/pages/Settings";
 import NotFound from "@curatocv/platform-frontend/pages/NotFound";
 import { useDispatch, useSelector } from "react-redux";
 import api, { TOKEN_STORAGE_KEY } from "@curatocv/api-client";
 import { login, logout, setLoading } from "@curatocv/platform-frontend/features/authSlice";
 import { useEffect, useCallback } from "react";
 import { Toaster } from "react-hot-toast";
+
+import RouteLoadingFallback from "./components/performance/RouteLoadingFallback";
 
 // ============================================================
 // ProtectedRoute
@@ -43,7 +46,7 @@ const ProtectedRoute = ({ children }) => {
     const { token, loading } = useSelector((state) => state.auth);
 
     if (loading) {
-        return <div className="p-8 text-center text-gray-500">Loading...</div>;
+        return <RouteLoadingFallback />;
     }
 
     if (!token) {
@@ -189,6 +192,7 @@ const App = () => {
                     <Route path="resumes/:resumeId/preview" element={<Preview />} />
                     <Route path="billing" element={<Billing />} />
                     <Route path="profile" element={<Profile />} />
+                    <Route path="settings" element={<Settings />} />
                 </Route>
 
                 {/* Standalone Authenticated Resume Builder (no global Navbar) */}

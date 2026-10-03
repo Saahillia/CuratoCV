@@ -2,6 +2,7 @@
  * Owns Memo's full page editor view with responsive layout, right sidebar tool switcher,
  * live page tracking, auto-scroll, document text editing, and content-anchored Bookmark Center.
  */
+import MemoSkeleton from "../components/MemoSkeleton";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
     ArrowLeft,
@@ -404,6 +405,7 @@ const MemoEditor = () => {
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     };
+    if (isLoading) return <MemoSkeleton type="editor" />;
 
     return (
         <div className="min-h-screen bg-slate-50 text-slate-900 font-sans flex flex-col">

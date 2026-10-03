@@ -9,6 +9,7 @@ import { ArrowLeft } from "lucide-react";
 import billingService from "../services/billingService";
 import BillingPeriodSelector from "../components/billing/BillingPeriodSelector";
 import PlanCard from "../components/billing/PlanCard";
+import PlatformSkeleton from "../components/common/PlatformSkeleton";
 
 const Pricing = () => {
   const navigate = useNavigate();
@@ -65,11 +66,7 @@ const Pricing = () => {
         </div>
 
         {loading ? (
-          <div className="grid gap-6 md:grid-cols-3">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="h-96 rounded-2xl bg-white shadow animate-pulse" />
-            ))}
-          </div>
+          <PlatformSkeleton type="pricing" />
         ) : plans.length === 0 ? (
           <div className="text-center text-slate-500 py-12">
             Unable to load plans. Please try again later.

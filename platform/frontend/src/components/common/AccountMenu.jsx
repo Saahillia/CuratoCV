@@ -5,7 +5,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { ChevronDown, LogOut, Settings, UserRound } from "lucide-react";
+import { ChevronDown, CreditCard, LogOut, Settings, UserRound } from "lucide-react";
 import { logout } from "@curatocv/platform-frontend/features/authSlice";
 
 const AccountMenu = () => {
@@ -85,11 +85,19 @@ const AccountMenu = () => {
                     </Link>
                     <Link
                         role="menuitem"
+                        to="/app/settings"
+                        onClick={() => setIsOpen(false)}
+                        className="flex min-h-10 items-center gap-2 px-4 text-sm text-slate-700 hover:bg-brand-50"
+                    >
+                        <Settings aria-hidden="true" size={16} /> Settings
+                    </Link>
+                    <Link
+                        role="menuitem"
                         to="/app/billing"
                         onClick={() => setIsOpen(false)}
                         className="flex min-h-10 items-center gap-2 px-4 text-sm text-slate-700 hover:bg-brand-50"
                     >
-                        <Settings aria-hidden="true" size={16} /> Billing
+                        <CreditCard aria-hidden="true" size={16} /> Billing
                     </Link>
                     <div className="my-1 border-t border-slate-100" />
                     <button

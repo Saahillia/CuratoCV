@@ -10,10 +10,12 @@ This root folder contains one learning note per independently teachable concept,
 - [Application composition and routing](application-composition-and-routing.md)
 - [SOLID principles](software-design/solid-principles.md)
 - [Shared branding and responsive design system](shared-branding-and-responsive-design-system.md)
+- [Page-specific loading skeletons and loading system](performance-loading-system.md)
 
 ### Platform
 
 - [Authentication and account lifecycle](platform-authentication-and-account-lifecycle.md)
+- [Account center and settings navigation](platform-account-center-and-settings.md)
 - [Billing, payments, subscriptions, and entitlements](billing-payments-and-entitlements.md)
 
 ### Resume Builder

@@ -8,6 +8,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import billingService from "../services/billingService";
 import { loadScript } from "../utils/loadScript";
+import PlatformSkeleton from "../components/common/PlatformSkeleton";
 
 const Checkout = () => {
   const [searchParams] = useSearchParams();
@@ -153,18 +154,6 @@ const Checkout = () => {
     }
   };
 
-  // Render loading state while fetching plan details
-  if (initializing) {
-    return (
-      <div className="min-h-screen bg-[#F3F7FA] flex items-center justify-center p-6">
-        <div className="max-w-md w-full bg-white rounded-2xl shadow-lg p-8 text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#17375F] border-t-transparent mx-auto mb-4" />
-          <p className="text-slate-500">Loading checkout...</p>
-        </div>
-      </div>
-    );
-  }
-
   // Render error state
   if (error && !loading) {
     return (
@@ -186,6 +175,10 @@ const Checkout = () => {
         </div>
       </div>
     );
+  }
+
+  if (initializing) {
+    return <main className="min-h-screen bg-[#F3F7FA] px-4 py-8"><div className="mx-auto max-w-5xl"><PlatformSkeleton type="checkout" /></div></main>;
   }
 
   const plan = planDetails?.plan;
