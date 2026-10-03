@@ -1,9 +1,7 @@
 import {
-    RotateCcw,
     ChevronLeft,
     ZoomIn,
     ZoomOut,
-    Sparkles,
 } from "lucide-react";
 import { useEffect, useState, useCallback, useRef } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
@@ -26,6 +24,8 @@ import CustomizeLayout from "../components/Customize/CustomizeLayout";
 import ContentEditor from "../components/ContentEditor/ContentEditor";
 import FullScreenEntryEditor from "../components/ContentEditor/FullScreenEntryEditor";
 import ResumeBuilderHeader from "../components/ResumeBuilder/ResumeBuilderHeader";
+import ResumeJobTailoring from "../components/ResumeBuilder/ResumeJobTailoring";
+import { applyResumeSuggestions } from "../utils/applyResumeSuggestions";
 import { saveResumeToLocal, loadResumeFromLocal } from "../utils/localStorage";
 import {
     toCanonicalResume,
@@ -76,6 +76,7 @@ const ResumeBuilder = () => {
     const [isUpdatingVisibility, setIsUpdatingVisibility] = useState(false);
     const [zoom, setZoom] = useState(0.85);
     const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+    const [aiUndoSnapshot, setAiUndoSnapshot] = useState(null);
 
     // --------------------------------------------------------------
     // Entry Editor Mode
@@ -503,6 +504,22 @@ const ResumeBuilder = () => {
         saveToServer(resumeData);
     }, [saveToServer, resumeData]);
 
+    const applyAIChanges = useCallback((suggestions) => {
+        const after = applyResumeSuggestions(resumeData, suggestions);
+        if (!after) return false;
+        const before = resumeData;
+        setAiUndoSnapshot({ before, after });
+        setResumeData(after);
+        return true;
+    }, [resumeData]);
+
+    const undoAIChanges = useCallback(() => {
+        if (aiUndoSnapshot && JSON.stringify(resumeData) === JSON.stringify(aiUndoSnapshot.after)) {
+            setResumeData(aiUndoSnapshot.before);
+        }
+        setAiUndoSnapshot(null);
+    }, [aiUndoSnapshot, resumeData]);
+
     // Auto-save on data changes
     useEffect(() => {
         if (isLoading || !isHydratedRef.current || !resumeData) {
@@ -680,6 +697,12 @@ const ResumeBuilder = () => {
 
             {/* ================= MAIN BUILDER VIEWPORT ================= */}
             <main className="flex-1 min-h-0 max-w-[1600px] w-full mx-auto px-6 py-4 lg:overflow-hidden">
+                {aiUndoSnapshot && JSON.stringify(resumeData) === JSON.stringify(aiUndoSnapshot.after) && (
+                    <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-green-300 bg-green-50 px-3 py-2 text-sm text-green-950">
+                        <span>AI edits are in your resume draft.</span>
+                        <button type="button" onClick={undoAIChanges} className="min-h-10 rounded-md border border-green-700 px-3 font-semibold hover:bg-green-100">Undo AI edits</button>
+                    </div>
+                )}
                 <div className="flex lg:flex-row flex-col gap-5 h-full min-h-0 relative">
                     {/* LEFT PANE: Editor Panel */}
                     <section className={`w-full lg:w-[46%] h-full min-h-0 flex flex-col print:hidden ${builderView === "editor" ? "flex" : "hidden lg:flex"}`}>
@@ -689,7 +712,7 @@ const ResumeBuilder = () => {
                             {entryEditorState ? (
                                 <FullScreenEntryEditor
                                     resumeData={resumeData}
-                                    setResumeData={setResumeData}
+                                    onApplyChanges={applyAIChanges}
                                     sectionId={entryEditorState.sectionId}
                                     entryId={entryEditorState.entryId}
                                     mode={entryEditorState.mode}
@@ -774,35 +797,13 @@ const ResumeBuilder = () => {
                             )}
 
                             {builderTab === "ai_tools" && (
-                                <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4 shadow-sm">
-                                    <div className="flex items-center gap-2">
-                                        <Sparkles className="size-5 text-purple-600" />
-                                        <div>
-                                            <h3 className="text-base font-semibold text-slate-800">
-                                                AI Assistant
-                                            </h3>
-                                            <p className="text-xs text-slate-500">
-                                                Smart enhancements for your
-                                                resume sections
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="p-4 bg-purple-50/70 rounded-xl border border-purple-100 text-xs text-purple-900 leading-relaxed">
-                                        ✨{" "}
-                                        <strong>
-                                            Interactive Section Enhancements:
-                                        </strong>{" "}
-                                        AI tools are built right into each
-                                        section card! Look for the{" "}
-                                        <span className="inline-flex items-center font-semibold text-purple-700">
-                                            Enhance with AI
-                                        </span>{" "}
-                                        buttons on your summary, experience, and
-                                        project descriptions to rewrite or
-                                        optimize them automatically.
-                                    </div>
-                                </div>
+                                <ResumeJobTailoring
+                                    resumeData={resumeData}
+                                    setResumeData={setResumeData}
+                                    resumeId={resumeId}
+                                    resumeVersion={versionRef.current}
+                                    isSaving={isSaving}
+                                />
                             )}
                             </>
                         )}

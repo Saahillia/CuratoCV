@@ -64,6 +64,16 @@ async function getEntryTips({ section, entry }) {
     return response.data;
 }
 
+async function analyzeResumeForJob(payload) {
+    const response = await api.post("/ai/tailor-resume", payload);
+    return response.data;
+}
+
+async function scoreResumeDraft(payload) {
+    const response = await api.post("/ai/tailor-resume/score", payload);
+    return response.data;
+}
+
 /**
  * Upload and parse resume text for AI processing.
  * Backend endpoint: POST /api/ai/upload-resume
@@ -117,6 +127,8 @@ const aiService = {
     enhanceJobDescription,
     uploadResume,
     getEntryTips,
+    analyzeResumeForJob,
+    scoreResumeDraft,
 
     // TODO: Uncomment and implement when backend adds generic endpoints
     // generateContent,

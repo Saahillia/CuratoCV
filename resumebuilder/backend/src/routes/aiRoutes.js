@@ -8,6 +8,8 @@ import protect from "@curatocv/platform-backend/middlewares/authMiddleware";
 import {
     enhanceJobDescription,
     enhanceProfessionalSummary,
+    analyzeResumeForJob,
+    scoreResumeDraft,
     getEntryTips,
     uploadResume,
 } from "../controllers/aiControllers.js";
@@ -18,5 +20,7 @@ aiRouter.post("/enhance-pro-sum", protect, enhanceProfessionalSummary);
 aiRouter.post("/enhance-job-desc", protect, enhanceJobDescription);
 aiRouter.post("/upload-resume", protect, uploadResume);
 aiRouter.post("/entry-tips", protect, getEntryTips);
+aiRouter.post("/tailor-resume", protect, analyzeResumeForJob);
+aiRouter.post("/tailor-resume/score", protect, scoreResumeDraft);
 
 export default aiRouter;

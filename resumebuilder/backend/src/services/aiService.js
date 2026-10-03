@@ -90,7 +90,7 @@ const stripControlCharacters = (text) => {
 // Helper: Validate and Normalize Prompt
 // ============================================================
 
-const validatePrompt = (value) => {
+const validatePrompt = (value, maxLength = MAX_PROMPT_LENGTH) => {
     if (typeof value !== "string") {
         return {
             valid: false,
@@ -107,10 +107,10 @@ const validatePrompt = (value) => {
         };
     }
 
-    if (cleaned.length > MAX_PROMPT_LENGTH) {
+    if (cleaned.length > maxLength) {
         return {
             valid: false,
-            message: `Prompt exceeds the maximum allowed length of ${MAX_PROMPT_LENGTH} characters.`,
+            message: `Prompt exceeds the maximum allowed length of ${maxLength} characters.`,
         };
     }
 
@@ -244,6 +244,8 @@ export const generateContent = async (
     prompt,
     systemPrompt,
     maxTokens = 300,
+    maxPromptLength = MAX_PROMPT_LENGTH,
+    maxOutputLength = MAX_AI_OUTPUT_LENGTH,
 ) => {
     // ====================================================
     // Check Entitlement
@@ -265,7 +267,7 @@ export const generateContent = async (
     // Validate Prompt
     // ====================================================
 
-    const promptValidation = validatePrompt(prompt);
+    const promptValidation = validatePrompt(prompt, maxPromptLength);
 
     if (!promptValidation.valid) {
         const error = new Error(promptValidation.message);
@@ -350,7 +352,7 @@ export const generateContent = async (
 
     const generatedContent = getMessageContent(response);
 
-    if (!generatedContent || generatedContent.length > MAX_AI_OUTPUT_LENGTH) {
+    if (!generatedContent || generatedContent.length > maxOutputLength) {
         logger.error("AI returned invalid content:", {
             userId,
             contentLength: generatedContent?.length,

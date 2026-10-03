@@ -23,6 +23,7 @@ This root folder contains one learning note per independently teachable concept,
 - [Editor and persistence](resume-builder-editor-and-persistence.md)
 - [Profile image upload and validation](resume-image-upload-and-validation.md)
 - [AI assistance](resume-ai-assistance.md)
+- [Job tailoring and deterministic scoring](resume-job-tailoring-and-deterministic-scoring.md)
 - [Rendering and PDF export](resume-rendering-and-pdf-export.md)
 - [Preview section rendering and section dispatch](resume-preview-section-rendering.md)
 - [Scale-independent A4 pagination](scale-independent-a4-pagination.md)
